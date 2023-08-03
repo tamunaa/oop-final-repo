@@ -1,0 +1,46 @@
+package objects.questions;
+
+import java.util.HashSet;
+
+public class MultipleChoiceWithMultipleAnswer implements Question {
+    private final String questionText;
+    private final String choices;
+    private final HashSet correctAnswers;
+    private int timer;
+    private final int numAnswers;
+
+    public MultipleChoiceWithMultipleAnswer(String questionText, String[] choices, String[] answers) {
+        this.questionText = questionText.trim();
+        this.choices = Parser.StringArrayToString(choices);
+        this.numAnswers = choices.length;
+        this.correctAnswers = new HashSet();
+        for (int i = 0; i < answers.length; i++) {
+            this.correctAnswers.add(answers[i].trim().toLowerCase());
+        }
+    }
+
+    @Override
+    public String getQuestion() {
+        return questionText + ":" + choices;
+    }
+
+    @Override
+    public int evaluate(String answer) {
+        return EvaluateScoreForMultipleUnorderedAnswers.evaluate(correctAnswers, answer, true);
+    }
+
+    @Override
+    public void setTimer(int timer) {
+        this.timer = timer;
+    }
+
+    @Override
+    public int getTimer() {
+        return timer;
+    }
+
+    @Override
+    public int getNumFields() {
+        return numAnswers;
+    }
+}
