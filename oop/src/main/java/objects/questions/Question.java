@@ -6,10 +6,8 @@ public interface Question {
     void setTimer(int timer);
     int getTimer();
     int getNumFields();
-//    String[] getChoices();
-//    String[] correctAnswers();
-//    boolean isOrdered();
+    String[] getOptions();
+    String[] getCorrectAnswers();
+    boolean isOrdered();
+    String getQuestionType();
 }
-
-// isOrdered
-// getAnswers

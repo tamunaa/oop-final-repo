@@ -4,10 +4,10 @@ import java.util.*;
 
 public class Matching implements Question {
     private final String questionText;
-    private final String questions;
-    private final String choices;
     private final HashMap<String, String> correctAnswer;
     private final int numFields;
+    private final String[] questions;
+    private final String[] choices;
     private int timer;
 
     public Matching(String questionText, String[] questions, String[] choices) {
@@ -17,13 +17,13 @@ public class Matching implements Question {
         for (int i = 0; i < questions.length; i++) {
             correctAnswer.put(questions[i].trim().toLowerCase(), choices[i].trim().toLowerCase());
         }
-        Collections.shuffle(Arrays.asList(choices));
-        this.choices = Parser.StringArrayToString(choices);
-        this.questions = Parser.StringArrayToString(questions);
+        this.questions = questions.clone();
+        this.choices = choices.clone();
+        Collections.shuffle(Arrays.asList(this.choices));
     }
     @Override
     public String getQuestion() {
-        return questions + ":" + choices;
+        return questionText;
     }
 
     @Override
@@ -51,5 +51,25 @@ public class Matching implements Question {
     @Override
     public int getNumFields() {
         return numFields;
+    }
+
+    @Override
+    public String[] getOptions() {
+        return questions.clone();
+    }
+
+    @Override
+    public String[] getCorrectAnswers() {
+        return choices.clone();
+    }
+
+    @Override
+    public boolean isOrdered() {
+        return true;
+    }
+
+    @Override
+    public String getQuestionType() {
+        return "Matching";
     }
 }

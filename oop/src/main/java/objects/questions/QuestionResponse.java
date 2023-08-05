@@ -4,10 +4,12 @@ public class QuestionResponse implements Question {
 
     private final String questionText;
     private final String correctAnswer;
+    private final String untrimmedCorrectAnswer;
     private int timer;
 
     public QuestionResponse(String questionText, String correctAnswer) {
         this.questionText = questionText.trim();
+        this.untrimmedCorrectAnswer = correctAnswer;
         this.correctAnswer = correctAnswer.trim().toLowerCase();
     }
     @Override
@@ -33,5 +35,25 @@ public class QuestionResponse implements Question {
     @Override
     public int getNumFields() {
         return 1;
+    }
+
+    @Override
+    public String[] getOptions() {
+        return null;
+    }
+
+    @Override
+    public String[] getCorrectAnswers() {
+        return new String[] {untrimmedCorrectAnswer};
+    }
+
+    @Override
+    public boolean isOrdered() {
+        return false;
+    }
+
+    @Override
+    public String getQuestionType() {
+        return "QuestionResponse";
     }
 }

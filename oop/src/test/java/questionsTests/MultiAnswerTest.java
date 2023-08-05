@@ -4,7 +4,10 @@ import objects.questions.MultiAnswer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MultiAnswerTest {
 
@@ -131,5 +134,37 @@ public class MultiAnswerTest {
 
         assertEquals(expectedNumFields, actualNumFieldsOrdered);
         assertEquals(expectedNumFields, actualNumFieldsUnordered);
+    }
+
+    @Test
+    public void testGetQuestionType() {
+        assertEquals("MultiAnswer", orderedMultiAnswer.getQuestionType());
+        assertEquals("MultiAnswer", unorderedMultiAnswer.getQuestionType());
+    }
+
+    @Test
+    public void testIsOrdered() {
+        assertEquals(true, orderedMultiAnswer.isOrdered());
+        assertEquals(false, unorderedMultiAnswer.isOrdered());
+    }
+
+    @Test
+    public void testGetOptions() {
+        assertArrayEquals(null, orderedMultiAnswer.getOptions());
+        assertArrayEquals(null, unorderedMultiAnswer.getOptions());
+    }
+
+    @Test
+    public void testGetAnswersUnordered() {
+        String actualAnswer = Arrays.toString(unorderedMultiAnswer.getCorrectAnswers());
+        System.out.println(actualAnswer);
+        assertTrue(actualAnswer.contains("Paris"));
+        assertTrue(actualAnswer.contains("Berlin"));
+        assertTrue(actualAnswer.contains("Rome"));
+    }
+
+    @Test
+    public void testGetAnswersOrdered() {
+        assertArrayEquals(new String[] {"Paris", "Berlin", "Rome"}, orderedMultiAnswer.getCorrectAnswers());
     }
 }

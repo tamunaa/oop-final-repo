@@ -3,6 +3,8 @@ package questionsTests;
 import objects.questions.QuestionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuestionResponseTest {
@@ -60,5 +62,23 @@ public class QuestionResponseTest {
         int expectedNumFields = 1;
         int actualNumFields = questionResponse.getNumFields();
         assertEquals(expectedNumFields, actualNumFields);
+    }
+
+    public void testGetQuestionType() {
+        assertEquals("QuestionResponse", questionResponse.getQuestionType());
+    }
+    @Test
+    public void testIsOrdered() {
+        assertEquals(false, questionResponse.isOrdered());
+    }
+
+    @Test
+    public void testGetOptions() {
+        assertArrayEquals(null, questionResponse.getOptions());
+    }
+
+    @Test
+    public void testGetAnswers() {
+        assertArrayEquals(new String[] {"Paris"}, questionResponse.getCorrectAnswers());
     }
 }

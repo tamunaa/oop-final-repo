@@ -3,6 +3,8 @@ package questionsTests;
 import objects.questions.PictureRespnose;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PictureResponseTest {
@@ -68,5 +70,25 @@ public class PictureResponseTest {
         int expectedNumFields = 1;
         int actualNumFields = pictureResponse.getNumFields();
         assertEquals(expectedNumFields, actualNumFields);
+    }
+
+    @Test
+    public void testGetQuestionType() {
+        assertEquals("PictureResponse", pictureResponse.getQuestionType());
+    }
+
+    @Test
+    public void testIsOrdered() {
+        assertEquals(false, pictureResponse.isOrdered());
+    }
+
+    @Test
+    public void testGetOptions() {
+        assertArrayEquals(null, pictureResponse.getOptions());
+    }
+
+    @Test
+    public void testGetAnswers() {
+        assertArrayEquals(new String[] {"A bullet"}, pictureResponse.getCorrectAnswers());
     }
 }

@@ -3,6 +3,8 @@ package questionsTests;
 import objects.questions.FillInTheBlank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FillInTheBlankTest {
@@ -67,5 +69,25 @@ public class FillInTheBlankTest {
         int expectedNumFields = 1;
         int actualNumFields = fillInTheBlank.getNumFields();
         assertEquals(expectedNumFields, actualNumFields);
+    }
+
+    @Test
+    public void testGetQuestionType() {
+        assertEquals("FillInTheBlank", fillInTheBlank.getQuestionType());
+    }
+
+    @Test
+    public void testIsOrdered() {
+        assertEquals(false, fillInTheBlank.isOrdered());
+    }
+
+    @Test
+    public void testGetOptions() {
+        assertArrayEquals(null, fillInTheBlank.getOptions());
+    }
+
+    @Test
+    public void testGetAnswers() {
+        assertArrayEquals(new String[] {"Tbilisi"}, fillInTheBlank.getCorrectAnswers());
     }
 }

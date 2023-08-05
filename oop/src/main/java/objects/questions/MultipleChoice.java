@@ -2,20 +2,22 @@ package objects.questions;
 
 public class MultipleChoice implements Question {
     private final String questionText;
-    private final String choices;
+    private final String[] choices;
     private final String correctAnswer;
+    private final String untrimmedCorrectAnswer;
     private final int numFields;
     private int timer;
 
     public MultipleChoice(String questionText, String[] choices, String answer) {
         this.questionText = questionText.trim();
+        this.untrimmedCorrectAnswer = answer;
         this.correctAnswer = answer.trim().toLowerCase();
-        this.choices = Parser.StringArrayToString(choices);
+        this.choices = choices.clone();
         this.numFields = choices.length;
     }
     @Override
     public String getQuestion() {
-        return questionText + ":" + choices;
+        return questionText;
     }
 
     @Override
@@ -36,5 +38,25 @@ public class MultipleChoice implements Question {
     @Override
     public int getNumFields() {
         return numFields;
+    }
+
+    @Override
+    public String[] getOptions() {
+        return choices.clone();
+    }
+
+    @Override
+    public String[] getCorrectAnswers() {
+        return new String[] {untrimmedCorrectAnswer};
+    }
+
+    @Override
+    public boolean isOrdered() {
+        return false;
+    }
+
+    @Override
+    public String getQuestionType() {
+        return "MultipleChoice";
     }
 }

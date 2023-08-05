@@ -4,7 +4,10 @@ import objects.questions.MultipleChoiceWithMultipleAnswer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MultipleChoiceWithMultipleAnswerTest {
 
@@ -20,7 +23,7 @@ public class MultipleChoiceWithMultipleAnswerTest {
 
     @Test
     public void testGetQuestion() {
-        String expectedQuestion = "Select all the countries in Europe.:France,Germany,Italy,Nigeria";
+        String expectedQuestion = "Select all the countries in Europe.";
         String actualQuestion = multipleChoiceWithMultipleAnswer.getQuestion();
         assertEquals(expectedQuestion, actualQuestion);
     }
@@ -78,5 +81,27 @@ public class MultipleChoiceWithMultipleAnswerTest {
         int expectedNumFields = 4;
         int actualNumFields = multipleChoiceWithMultipleAnswer.getNumFields();
         assertEquals(expectedNumFields, actualNumFields);
+    }
+
+    @Test
+    public void testGetQuestionType() {
+        assertEquals("MultipleChoiceWithMultipleAnswer", multipleChoiceWithMultipleAnswer.getQuestionType());
+    }
+
+    @Test
+    public void testIsOrdered() {
+        assertEquals(false, multipleChoiceWithMultipleAnswer.isOrdered());
+    }
+
+    @Test
+    public void testGetOptions() {
+        String[] actualOptions = {"France", "Germany", "Italy", "Nigeria"};
+        assertArrayEquals(actualOptions, multipleChoiceWithMultipleAnswer.getOptions());
+    }
+
+    @Test
+    public void testGetAnswers() {
+        String[] correctAnswers = {"France", "Germany", "Italy"};
+        assertArrayEquals(correctAnswers, multipleChoiceWithMultipleAnswer.getCorrectAnswers());
     }
 }

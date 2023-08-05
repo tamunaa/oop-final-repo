@@ -4,8 +4,10 @@ import objects.questions.Matching;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class MatchingTest {
 
@@ -21,14 +23,9 @@ public class MatchingTest {
 
     @Test
     public void testGetQuestion() {
-        String expectedQuestion = "France,Germany,Italy:Berlin,Paris,Rome";
+        String expectedQuestion = "Match the capitals with their respective countries.";
         String actualQuestion = matching.getQuestion();
-
-        assertEquals(expectedQuestion.substring(0, expectedQuestion.indexOf(':')),
-                actualQuestion.substring(0, actualQuestion.indexOf(':')));
-        assertTrue(actualQuestion.contains("Berlin"));
-        assertTrue(actualQuestion.contains("Paris"));
-        assertTrue(actualQuestion.contains("Rome"));
+        assertEquals(expectedQuestion, actualQuestion);
     }
 
     @Test
@@ -77,4 +74,29 @@ public class MatchingTest {
         int actualNumFields = matching.getNumFields();
         assertEquals(expectedNumFields, actualNumFields);
     }
+
+    @Test
+    public void testGetQuestionType() {
+        assertEquals("Matching", matching.getQuestionType());
+    }
+
+    @Test
+    public void testIsOrdered() {
+        assertEquals(true, matching.isOrdered());
+    }
+
+    @Test
+    public void testGetOptions() {
+        assertArrayEquals(new String[] {"France", "Germany", "Italy"}, matching.getOptions());
+    }
+
+    @Test
+    public void testGetAnswers() {
+        String actualAnswer = Arrays.toString(matching.getCorrectAnswers());
+        System.out.println(actualAnswer);
+        assertTrue(actualAnswer.contains("Paris"));
+        assertTrue(actualAnswer.contains("Berlin"));
+        assertTrue(actualAnswer.contains("Rome"));
+    }
+
 }

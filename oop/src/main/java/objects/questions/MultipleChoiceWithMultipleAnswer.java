@@ -4,14 +4,16 @@ import java.util.HashSet;
 
 public class MultipleChoiceWithMultipleAnswer implements Question {
     private final String questionText;
-    private final String choices;
+    private final String[] choices;
+    private final String[] answers;
     private final HashSet correctAnswers;
     private int timer;
     private final int numAnswers;
 
     public MultipleChoiceWithMultipleAnswer(String questionText, String[] choices, String[] answers) {
         this.questionText = questionText.trim();
-        this.choices = Parser.StringArrayToString(choices);
+        this.choices = choices.clone();
+        this.answers = answers.clone();
         this.numAnswers = choices.length;
         this.correctAnswers = new HashSet();
         for (int i = 0; i < answers.length; i++) {
@@ -21,7 +23,7 @@ public class MultipleChoiceWithMultipleAnswer implements Question {
 
     @Override
     public String getQuestion() {
-        return questionText + ":" + choices;
+        return questionText;
     }
 
     @Override
@@ -42,5 +44,25 @@ public class MultipleChoiceWithMultipleAnswer implements Question {
     @Override
     public int getNumFields() {
         return numAnswers;
+    }
+
+    @Override
+    public String[] getOptions() {
+        return choices.clone();
+    }
+
+    @Override
+    public String[] getCorrectAnswers() {
+        return answers.clone();
+    }
+
+    @Override
+    public boolean isOrdered() {
+        return false;
+    }
+
+    @Override
+    public String getQuestionType() {
+        return "MultipleChoiceWithMultipleAnswer";
     }
 }

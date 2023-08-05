@@ -2,13 +2,17 @@ package objects.questions;
 
 public class MultiAnswer implements Question {
     private final String questionText;
+    private final String answers[];
     private final int numFields;
     private final MultiAnswerType questionType;
+    private final boolean isOrdered;
     private int timer;
 
     public 	MultiAnswer(String questionText, String answers[], int numFields, boolean isOrdered) {
         this.questionText = questionText;
         this.numFields = numFields;
+        this.isOrdered = isOrdered;
+        this.answers = answers.clone();
         this.questionType = isOrdered ? new OrderedMultiAnswer(answers) : new UnorderedMultiAnswer(answers);
     }
 
@@ -35,5 +39,25 @@ public class MultiAnswer implements Question {
     @Override
     public int getNumFields() {
         return numFields;
+    }
+
+    @Override
+    public String[] getOptions() {
+        return null;
+    }
+
+    @Override
+    public String[] getCorrectAnswers() {
+        return answers.clone();
+    }
+
+    @Override
+    public boolean isOrdered() {
+        return isOrdered;
+    }
+
+    @Override
+    public String getQuestionType() {
+        return "MultiAnswer";
     }
 }

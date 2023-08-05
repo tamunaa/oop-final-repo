@@ -4,7 +4,10 @@ import objects.questions.MultipleChoice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MultipleChoiceTest {
 
@@ -20,7 +23,7 @@ public class MultipleChoiceTest {
 
     @Test
     public void testGetQuestion() {
-        String expectedQuestion = "What is the capital of France?:Paris,Berlin,Rome";
+        String expectedQuestion = "What is the capital of France?";
         String actualQuestion = multipleChoice.getQuestion();
         assertEquals(expectedQuestion, actualQuestion);
     }
@@ -62,5 +65,25 @@ public class MultipleChoiceTest {
         int expectedNumFields = 3;
         int actualNumFields = multipleChoice.getNumFields();
         assertEquals(expectedNumFields, actualNumFields, "getNumFields should return the correct number of fields");
+    }
+
+    @Test
+    public void testGetQuestionType() {
+        assertEquals("MultipleChoice", multipleChoice.getQuestionType());
+    }
+
+    @Test
+    public void testIsOrdered() {
+        assertEquals(false, multipleChoice.isOrdered());
+    }
+
+    @Test
+    public void testGetOptions() {
+        assertArrayEquals(new String[] {"Paris", "Berlin", "Rome"}, multipleChoice.getOptions());
+    }
+
+    @Test
+    public void testGetAnswers() {
+        assertArrayEquals(new String[] {"Paris"}, multipleChoice.getCorrectAnswers());
     }
 }
