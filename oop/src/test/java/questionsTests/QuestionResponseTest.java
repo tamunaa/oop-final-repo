@@ -64,6 +64,7 @@ public class QuestionResponseTest {
         assertEquals(expectedNumFields, actualNumFields);
     }
 
+    @Test
     public void testGetQuestionType() {
         assertEquals("QuestionResponse", questionResponse.getQuestionType());
     }
