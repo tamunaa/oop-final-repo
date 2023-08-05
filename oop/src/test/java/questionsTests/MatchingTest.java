@@ -99,4 +99,11 @@ public class MatchingTest {
         assertTrue(actualAnswer.contains("Rome"));
     }
 
+    @Test
+    public void testSetAndGetQuestionId() {
+        assertEquals(-1, matching.getQuestionId());
+        int questionId = 28;
+        matching.setQuestionId(questionId);
+        assertEquals(questionId, matching.getQuestionId());
+    }
 }

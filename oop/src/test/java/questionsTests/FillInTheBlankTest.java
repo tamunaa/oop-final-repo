@@ -65,6 +65,14 @@ public class FillInTheBlankTest {
     }
 
     @Test
+    public void testSetAndGetQuestionId() {
+        assertEquals(-1, fillInTheBlank.getQuestionId());
+        int questionId = 28;
+        fillInTheBlank.setQuestionId(questionId);
+        assertEquals(questionId, fillInTheBlank.getQuestionId());
+    }
+
+    @Test
     public void testGetNumFields() {
         int expectedNumFields = 1;
         int actualNumFields = fillInTheBlank.getNumFields();

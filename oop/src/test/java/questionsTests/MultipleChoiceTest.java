@@ -86,4 +86,13 @@ public class MultipleChoiceTest {
     public void testGetAnswers() {
         assertArrayEquals(new String[] {"Paris"}, multipleChoice.getCorrectAnswers());
     }
+
+
+    @Test
+    public void testSetAndGetQuestionId() {
+        assertEquals(-1, multipleChoice.getQuestionId());
+        int questionId = 28;
+        multipleChoice.setQuestionId(questionId);
+        assertEquals(questionId, multipleChoice.getQuestionId());
+    }
 }

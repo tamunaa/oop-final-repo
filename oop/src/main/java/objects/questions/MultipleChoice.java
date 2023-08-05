@@ -7,6 +7,7 @@ public class MultipleChoice implements Question {
     private final String untrimmedCorrectAnswer;
     private final int numFields;
     private int timer;
+    private int questionId = -1;
 
     public MultipleChoice(String questionText, String[] choices, String answer) {
         this.questionText = questionText.trim();
@@ -58,5 +59,15 @@ public class MultipleChoice implements Question {
     @Override
     public String getQuestionType() {
         return "MultipleChoice";
+    }
+
+    @Override
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    @Override
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
     }
 }

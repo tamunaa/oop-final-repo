@@ -9,6 +9,7 @@ public class MultipleChoiceWithMultipleAnswer implements Question {
     private final HashSet correctAnswers;
     private int timer;
     private final int numAnswers;
+    private int questionId = -1;
 
     public MultipleChoiceWithMultipleAnswer(String questionText, String[] choices, String[] answers) {
         this.questionText = questionText.trim();
@@ -64,5 +65,15 @@ public class MultipleChoiceWithMultipleAnswer implements Question {
     @Override
     public String getQuestionType() {
         return "MultipleChoiceWithMultipleAnswer";
+    }
+
+    @Override
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    @Override
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
     }
 }

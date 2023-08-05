@@ -7,6 +7,7 @@ public class MultiAnswer implements Question {
     private final MultiAnswerType questionType;
     private final boolean isOrdered;
     private int timer;
+    private int questionId = -1;
 
     public 	MultiAnswer(String questionText, String answers[], int numFields, boolean isOrdered) {
         this.questionText = questionText;
@@ -59,5 +60,15 @@ public class MultiAnswer implements Question {
     @Override
     public String getQuestionType() {
         return "MultiAnswer";
+    }
+
+    @Override
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    @Override
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
     }
 }

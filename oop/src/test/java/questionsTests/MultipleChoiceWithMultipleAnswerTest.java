@@ -104,4 +104,13 @@ public class MultipleChoiceWithMultipleAnswerTest {
         String[] correctAnswers = {"France", "Germany", "Italy"};
         assertArrayEquals(correctAnswers, multipleChoiceWithMultipleAnswer.getCorrectAnswers());
     }
+
+
+    @Test
+    public void testSetAndGetQuestionId() {
+        assertEquals(-1, multipleChoiceWithMultipleAnswer.getQuestionId());
+        int questionId = 28;
+        multipleChoiceWithMultipleAnswer.setQuestionId(questionId);
+        assertEquals(questionId, multipleChoiceWithMultipleAnswer.getQuestionId());
+    }
 }

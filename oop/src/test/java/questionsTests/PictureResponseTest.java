@@ -91,4 +91,13 @@ public class PictureResponseTest {
     public void testGetAnswers() {
         assertArrayEquals(new String[] {"A bullet"}, pictureResponse.getCorrectAnswers());
     }
+
+
+    @Test
+    public void testSetAndGetQuestionId() {
+        assertEquals(-1, pictureResponse.getQuestionId());
+        int questionId = 28;
+        pictureResponse.setQuestionId(questionId);
+        assertEquals(questionId, pictureResponse.getQuestionId());
+    }
 }

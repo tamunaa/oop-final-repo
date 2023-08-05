@@ -82,4 +82,13 @@ public class QuestionResponseTest {
     public void testGetAnswers() {
         assertArrayEquals(new String[] {"Paris"}, questionResponse.getCorrectAnswers());
     }
+
+
+    @Test
+    public void testSetAndGetQuestionId() {
+        assertEquals(-1, questionResponse.getQuestionId());
+        int questionId = 28;
+        questionResponse.setQuestionId(questionId);
+        assertEquals(questionId, questionResponse.getQuestionId());
+    }
 }

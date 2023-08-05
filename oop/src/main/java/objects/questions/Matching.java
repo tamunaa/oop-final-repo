@@ -9,6 +9,7 @@ public class Matching implements Question {
     private final String[] questions;
     private final String[] choices;
     private int timer;
+    private int questionId = -1;
 
     public Matching(String questionText, String[] questions, String[] choices) {
         this.questionText = questionText;
@@ -71,5 +72,15 @@ public class Matching implements Question {
     @Override
     public String getQuestionType() {
         return "Matching";
+    }
+
+    @Override
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    @Override
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
     }
 }

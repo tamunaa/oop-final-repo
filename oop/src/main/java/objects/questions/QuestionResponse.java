@@ -6,6 +6,7 @@ public class QuestionResponse implements Question {
     private final String correctAnswer;
     private final String untrimmedCorrectAnswer;
     private int timer;
+    private int questionId = -1;
 
     public QuestionResponse(String questionText, String correctAnswer) {
         this.questionText = questionText.trim();
@@ -55,5 +56,15 @@ public class QuestionResponse implements Question {
     @Override
     public String getQuestionType() {
         return "QuestionResponse";
+    }
+
+    @Override
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    @Override
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
     }
 }

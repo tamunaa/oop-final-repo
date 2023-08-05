@@ -10,4 +10,6 @@ public interface Question {
     String[] getCorrectAnswers();
     boolean isOrdered();
     String getQuestionType();
+    int getQuestionId();
+    void setQuestionId(int questionId);
 }

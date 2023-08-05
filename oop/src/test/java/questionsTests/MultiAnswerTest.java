@@ -167,4 +167,21 @@ public class MultiAnswerTest {
     public void testGetAnswersOrdered() {
         assertArrayEquals(new String[] {"Paris", "Berlin", "Rome"}, orderedMultiAnswer.getCorrectAnswers());
     }
+
+    @Test
+    public void testSetAndGetQuestionId1() {
+        assertEquals(-1, unorderedMultiAnswer.getQuestionId());
+        int questionId = 28;
+        unorderedMultiAnswer.setQuestionId(questionId);
+        assertEquals(questionId, unorderedMultiAnswer.getQuestionId());
+    }
+
+
+    @Test
+    public void testSetAndGetQuestionId2() {
+        assertEquals(-1, orderedMultiAnswer.getQuestionId());
+        int questionId = 28;
+        orderedMultiAnswer.setQuestionId(questionId);
+        assertEquals(questionId, orderedMultiAnswer.getQuestionId());
+    }
 }
