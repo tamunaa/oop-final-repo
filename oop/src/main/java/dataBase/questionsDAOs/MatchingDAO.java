@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchingDAO implements QuestionDAOType {
+class MatchingDAO implements QuestionDAOType {
     private final BasicDataSource basicDataSource;
 
     public MatchingDAO(BasicDataSource basicDataSource) {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class MultipleChoiceDAO implements QuestionDAOType {
+class MultipleChoiceDAO implements QuestionDAOType {
     private final BasicDataSource basicDataSource;
 
     public MultipleChoiceDAO(BasicDataSource basicDataSource) {
