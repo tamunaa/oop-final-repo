@@ -85,7 +85,7 @@ public class MultipleChoiceWithMultipleAnswerTest {
 
     @Test
     public void testGetQuestionType() {
-        assertEquals("MultipleChoiceWithMultipleAnswer", multipleChoiceWithMultipleAnswer.getQuestionType());
+        assertEquals("MultipleChoiceMultipleAnswer", multipleChoiceWithMultipleAnswer.getQuestionType());
     }
 
     @Test

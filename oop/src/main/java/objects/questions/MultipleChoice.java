@@ -6,7 +6,7 @@ public class MultipleChoice implements Question {
     private final String correctAnswer;
     private final String untrimmedCorrectAnswer;
     private final int numFields;
-    private int timer;
+    private int timer = 0;
     private int questionId = -1;
 
     public MultipleChoice(String questionText, String[] choices, String answer) {

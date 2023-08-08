@@ -7,7 +7,7 @@ public class MultipleChoiceWithMultipleAnswer implements Question {
     private final String[] choices;
     private final String[] answers;
     private final HashSet correctAnswers;
-    private int timer;
+    private int timer = 0;
     private final int numAnswers;
     private int questionId = -1;
 

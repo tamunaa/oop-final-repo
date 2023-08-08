@@ -93,7 +93,6 @@ public class MatchingTest {
     @Test
     public void testGetAnswers() {
         String actualAnswer = Arrays.toString(matching.getCorrectAnswers());
-        System.out.println(actualAnswer);
         assertTrue(actualAnswer.contains("Paris"));
         assertTrue(actualAnswer.contains("Berlin"));
         assertTrue(actualAnswer.contains("Rome"));

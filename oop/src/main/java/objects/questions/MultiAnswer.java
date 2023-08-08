@@ -6,7 +6,7 @@ public class MultiAnswer implements Question {
     private final int numFields;
     private final MultiAnswerType questionType;
     private final boolean isOrdered;
-    private int timer;
+    private int timer = 0;
     private int questionId = -1;
 
     public 	MultiAnswer(String questionText, String answers[], int numFields, boolean isOrdered) {

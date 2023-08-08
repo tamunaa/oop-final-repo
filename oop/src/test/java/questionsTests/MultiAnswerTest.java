@@ -157,7 +157,6 @@ public class MultiAnswerTest {
     @Test
     public void testGetAnswersUnordered() {
         String actualAnswer = Arrays.toString(unorderedMultiAnswer.getCorrectAnswers());
-        System.out.println(actualAnswer);
         assertTrue(actualAnswer.contains("Paris"));
         assertTrue(actualAnswer.contains("Berlin"));
         assertTrue(actualAnswer.contains("Rome"));

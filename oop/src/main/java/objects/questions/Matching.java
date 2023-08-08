@@ -6,21 +6,23 @@ public class Matching implements Question {
     private final String questionText;
     private final HashMap<String, String> correctAnswer;
     private final int numFields;
-    private final String[] questions;
-    private final String[] choices;
-    private int timer;
+    private final String[] source;
+    private final String[] target;
+    private int timer = 0;
     private int questionId = -1;
 
-    public Matching(String questionText, String[] questions, String[] choices) {
+    public Matching(String questionText, String[] source, String[] target) {
         this.questionText = questionText;
-        this.numFields = questions.length;
+        this.numFields = source.length;
         this.correctAnswer = new HashMap<>();
-        for (int i = 0; i < questions.length; i++) {
-            correctAnswer.put(questions[i].trim().toLowerCase(), choices[i].trim().toLowerCase());
+        int n = Math.min(source.length, target.length);
+        this.source = new String[n];
+        this.target = new String[n];
+        for (int i = 0; i < n; i++) {
+            correctAnswer.put(source[i].trim().toLowerCase(), target[i].trim().toLowerCase());
+            this.source[i] = source[i];
+            this.target[i] = target[i];
         }
-        this.questions = questions.clone();
-        this.choices = choices.clone();
-        Collections.shuffle(Arrays.asList(this.choices));
     }
     @Override
     public String getQuestion() {
@@ -56,12 +58,13 @@ public class Matching implements Question {
 
     @Override
     public String[] getOptions() {
-        return questions.clone();
+        return source.clone();
     }
 
     @Override
+    /** Needs to be shuffled **/
     public String[] getCorrectAnswers() {
-        return choices.clone();
+        return target.clone();
     }
 
     @Override

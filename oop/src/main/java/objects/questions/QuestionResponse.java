@@ -5,7 +5,7 @@ public class QuestionResponse implements Question {
     private final String questionText;
     private final String correctAnswer;
     private final String untrimmedCorrectAnswer;
-    private int timer;
+    private int timer = 0;
     private int questionId = -1;
 
     public QuestionResponse(String questionText, String correctAnswer) {
