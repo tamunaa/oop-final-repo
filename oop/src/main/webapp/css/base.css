@@ -1,0 +1,25 @@
+html, body {
+    height: 100%; /* Set the height to 100% of the viewport */
+}
+
+/* Add custom CSS for the layout */
+body, head {
+    display: flex; /* Use flexbox for layout */
+    font-family: Times New Roman, sans-serif, "Inter Semi Bold";
+}
+
+.content {
+    flex: 2; /* Take up remaining space */
+    padding: 10px; /* Add some space for content */
+}
+
+/*.interactions{*/
+/*    display: flex;*/
+/*    flex: 2;*/
+/*    flex-direction: row;*/
+/*}*/
+
+.page{
+    height: 100%;
+    width: 80%;
+}
