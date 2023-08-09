@@ -1,23 +1,24 @@
 html, body {
     height: 100%; /* Set the height to 100% of the viewport */
+    width: 90%;
+    background-color: rgba(180, 225, 237, 0.12);
+}
+#page{
+    background: rgba(255, 247, 230, 0.24);
+}
+#wrapper{
+    background-color: rgba(203, 157, 241, 0.15);
 }
 
-/* Add custom CSS for the layout */
 body, head {
     display: flex; /* Use flexbox for layout */
     font-family: Times New Roman, sans-serif, "Inter Semi Bold";
 }
 
-.content {
-    flex: 2; /* Take up remaining space */
-    padding: 10px; /* Add some space for content */
+.wrapper{
+    height: 100%;
+    width: 100%;
 }
-
-/*.interactions{*/
-/*    display: flex;*/
-/*    flex: 2;*/
-/*    flex-direction: row;*/
-/*}*/
 
 .page{
     height: 100%;

@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+
     <title>List of Quizzes</title>
     <style>
         table {
@@ -9,7 +13,7 @@
         }
 
         th, td {
-            border: 1px solid #dddddd;
+            border: 1px solid rgba(221, 221, 221, 0.99);
             text-align: left;
             padding: 8px;
         }
