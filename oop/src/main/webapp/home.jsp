@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,10 +17,6 @@
             overflow-y: auto;
             border: 1px solid #ccc;
             padding: 10px;
-        }
-
-        .feed-item {
-            margin-bottom: 10px;
         }
     </style>
 
