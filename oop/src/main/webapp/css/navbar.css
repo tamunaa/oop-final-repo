@@ -1,0 +1,17 @@
+.navbar{
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-family: Times New Roman, sans-serif, "Inter Semi Bold";
+    font-size: 10px;
+}
+
+
+.navbar a{
+    text-decoration: none;
+}

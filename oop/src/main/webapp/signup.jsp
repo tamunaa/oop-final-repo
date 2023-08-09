@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,24 +8,21 @@
 </head>
 <body>
 
-<%--<form action="sad gadagvyavs" method="post">--%>
-<form>
-    <label>username</label>
+<form action="sad gadagvyavs" method="post">
+    <label>fist name</label>
     <br>
-    <input type="text" name="username" autofocus required/>
+    <input type="text" name="first name" autofocus required/>
     <br>
 
     <label>password</label>
     <br>
     <input type="password" name="password" required/>
     <br><br>
-<%--    <input type="submit" value="sign in"/>--%>
-    <a href="home.jsp">sign in</a>
-
+    <input type="submit" value="sign up"/>
     <br>
 </form>
 
-<a href="signup.jsp">sign up</a>
+<a href="index.jsp">go back to sign in</a>
 
 </body>
 </html>
