@@ -1,6 +1,6 @@
 package questionsTests;
 
-import objects.questions.PictureRespnose;
+import objects.questions.PictureResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PictureResponseTest {
 
-    private PictureRespnose pictureResponse;
+    private PictureResponse pictureResponse;
 
     @BeforeEach
     public void setUp() {
         String questionText = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
         String correctAnswer = "A bullet";
-        pictureResponse = new PictureRespnose(questionText, correctAnswer);
+        pictureResponse = new PictureResponse(questionText, correctAnswer);
     }
 
     @Test
