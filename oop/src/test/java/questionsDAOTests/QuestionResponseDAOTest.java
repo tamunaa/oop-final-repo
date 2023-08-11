@@ -2,7 +2,7 @@ package questionsDAOTests;
 
 import dataBase.questionsDAOs.QuestionsDAO;
 import objects.questions.FillInTheBlank;
-import objects.questions.PictureRespnose;
+import objects.questions.PictureResponse;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import objects.questions.Question;
@@ -102,7 +102,7 @@ public class QuestionResponseDAOTest {
     public void testAddAndGetPictureResponseType() {
         String questionText = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
         String correctAnswer = "A bullet";
-        Question question = new PictureRespnose(questionText, correctAnswer);
+        Question question = new PictureResponse(questionText, correctAnswer);
         question.setTimer(17);
 
         int questionId = questionsDAO.addQuestion(question, 1);
@@ -122,7 +122,7 @@ public class QuestionResponseDAOTest {
     public void testRemovePictureResponseQuestion() {
         String questionText = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
         String correctAnswer = "A bullet";
-        Question question = new PictureRespnose(questionText, correctAnswer);
+        Question question = new PictureResponse(questionText, correctAnswer);
         int questionId = questionsDAO.addQuestion(question, 2);
 
         questionsDAO.removeQuestion(questionId);

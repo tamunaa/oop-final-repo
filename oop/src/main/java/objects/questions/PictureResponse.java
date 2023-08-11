@@ -1,7 +1,7 @@
 package objects.questions;
 
-public class PictureRespnose extends QuestionResponse {
-    public PictureRespnose(String URL, String correctAnswer) {
+public class PictureResponse extends QuestionResponse {
+    public PictureResponse(String URL, String correctAnswer) {
         super(URL, correctAnswer);
     }
 
