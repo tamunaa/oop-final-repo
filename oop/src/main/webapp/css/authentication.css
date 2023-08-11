@@ -1,0 +1,107 @@
+/* Apply a background gradient to the body */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, rgba(52, 152, 219, 0.31), rgba(142, 68, 173, 0.18));
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+    align-items: center;
+    min-height: 270px;
+    width: 100%;
+    margin-top: 20%;
+}
+
+.input{
+    height: 20px;
+    width: 50px;
+}
+
+
+/* Center the container and add some spacing */
+.container {
+    width: 400px; /* Adjust the width as desired */
+    height: 400px; /* Adjust the height as desired */
+    /*padding: 20px;*/
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Rest of your CSS remains unchanged */
+
+/* Style the h1 element */
+h1 {
+    /*margin-bottom: 20px;*/
+    color: #333;
+}
+
+/* Style form labels */
+label {
+    display: block;
+    /*margin-bottom: 10px;*/
+    color: #555;
+    font-weight: bold;
+}
+
+/* Style text inputs */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    outline: none;
+}
+
+/* Style the Sign In button */
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #16a085;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button[type="submit"]:hover {
+    background-color: #1abc9c;
+}
+
+/* Style the "Sign Up" link */
+p {
+    margin-top: 15px;
+    color: #555;
+    /*font-size: 30px;*/
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+    /*font-size: 20px;*/
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    /*display: none;*/
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.form{
+    font-size: 20px;
+}
