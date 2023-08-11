@@ -80,11 +80,9 @@
         %>
         <button type="submit">Sign Up</button>
     </form>
-<div>
-
-<div><a href="index.jsp">go back to sign in</a></div>
 </div>
 
+<div><a href="index.jsp">go back to sign in</a></div>
 
 </body>
 </html>
