@@ -60,8 +60,9 @@ public class QuizDAOTest extends TestCase {
     public void testGetQuizzesByAuthor(){
         beforeEach();
         List<Quiz> quizzes = quizDAO.getQuizzesByAuthor(1);
-        assertEquals(quizzes.size(), 6);
+        assertEquals(7, quizzes.size());
         Quiz q1 = quizzes.get(1);
+        assertEquals(15, q1.getID());
         assertEquals(q1.getAuthor(), 1);
         assertEquals(q1.getTimer(), 20);
         assertEquals(q1.getQuizName(), "qvizi");
@@ -70,6 +71,7 @@ public class QuizDAOTest extends TestCase {
         quizzes = quizDAO.getQuizzesByAuthor(2);
         assertEquals(quizzes.size(), 6);
         Quiz q2 = quizzes.get(1);
+        assertEquals(18, q2.getID());
         assertEquals(q2.getAuthor(), 2);
         assertEquals(q2.getTimer(), 30);
         assertEquals(q2.getQuizName(), "qvizi2");
