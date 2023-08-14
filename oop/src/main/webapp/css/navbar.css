@@ -21,7 +21,6 @@ body {
 .navbar-nav .nav-item .nav-link {
     color: #131326;
     transition: color 0.3s ease;
-    border-radius: 50%;
 }
 .navbar-nav .nav-item .nav-link i {
     font-size: 24px;
@@ -29,13 +28,13 @@ body {
 }
 
 .navbar-nav .nav-item .nav-link:hover {
-    color: #232121;
+    color: #1010e4;
 }
 
 .custom-input {
     border: 2px solid #b5cee2;
     border-radius: 25px;
-    padding: 5px 15px;
+    /*padding: 5px 15px;*/
     transition: border-color 0.3s ease;
 }
 
@@ -48,7 +47,7 @@ body {
     color: black;
     color-scheme: dark;
     background-color: rgb(244, 239, 239);
-    border-radius: 25px;
+    border-radius: 24px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
