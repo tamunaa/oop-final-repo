@@ -23,7 +23,7 @@ body {
     transition: color 0.3s ease;
 }
 .navbar-nav .nav-item .nav-link i {
-    font-size: 24px;
+    font-size: 15px;
     font-weight: bold;
 }
 
