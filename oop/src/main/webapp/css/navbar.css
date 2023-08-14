@@ -1,36 +1,60 @@
-.navbar{
-    width: 35vh;
-    height: 100vh;
-    font-family: Times New Roman, sans-serif, "Inter Semi Bold";
-    font-size: 8px;
-    background: linear-gradient(to bottom, rgba(181, 224, 231, 0.8), rgba(195, 195, 248, 0.72));
-    /*background: repeating-linear-gradient(132deg, rgba(152, 231, 154, 0.11), rgba(235, 223, 213, 0.2) 20px, rgba(255, 153, 153, 0.28) 40px);*/
-
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+.navbar-nav li{
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
-a{
-    text-decoration: none;
+.animated-bg {
+    background-image: linear-gradient(45deg, rgba(96, 240, 211, 0.12), rgba(120, 107, 223, 0.33), rgba(255, 117, 234, 0.08));
+    animation: gradientAnimation 10s ease infinite;
 }
 
-.nav-link{
-    font-size: 20px;
-    margin-left: 0;
+@keyframes gradientAnimation {
+    0%, 100% { background-position: 0 50%; }
+    50% { background-position: 100% 50%; }
 }
 
-.navbar a {
-    color: black;
+/* Custom Font and Styles */
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #131326;
+    transition: color 0.3s ease;
+    border-radius: 50%;
+}
+.navbar-nav .nav-item .nav-link i {
+    font-size: 24px;
     font-weight: bold;
-    transition: color 0.2s ease;
-
 }
 
-.navbar a:hover {
-    color: rgb(3, 164, 151);
+.navbar-nav .nav-item .nav-link:hover {
+    color: #232121;
 }
 
-.nav-link {
-    margin-bottom: 20px; /* Adjust the spacing as needed */
+.custom-input {
+    border: 2px solid #b5cee2;
+    border-radius: 25px;
+    padding: 5px 15px;
+    transition: border-color 0.3s ease;
 }
 
+.custom-input:focus {
+    border-color: rgba(118, 129, 221, 0.52);
+    box-shadow: 0 0 5px rgb(200, 182, 180);
+}
 
+.custom-btn {
+    color: black;
+    color-scheme: dark;
+    background-color: rgb(244, 239, 239);
+    border-radius: 25px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-btn:hover {
+    background-color: rgb(255, 255, 255);
+    color: #0d0c0c;
+}
+
+/* Add more custom styles and animations as needed */
