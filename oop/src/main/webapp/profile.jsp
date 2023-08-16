@@ -57,9 +57,9 @@
                 <div class="profile-card">
                     <h2>Taken Quizzes</h2>
                     <ul>
-                        <li><a href="quiz_page.html">Quiz 1</a></li>
-                        <li><a href="quiz_page.html">Quiz 2</a></li>
-                        <li><a href="quiz_page.html">Quiz 3</a></li>
+                        <li><a href="quizPage.jsp">Quiz 1</a></li>
+                        <li><a href="quizPage.jsp">Quiz 2</a></li>
+                        <li><a href="quizPage.jsp">Quiz 3</a></li>
                     </ul>
                 </div>
             </div>
@@ -69,9 +69,9 @@
                 <div class="profile-card">
                     <h2>Created Quizzes</h2>
                     <ul>
-                        <li><a href="quiz_creation.html">Quiz 1</a></li>
-                        <li><a href="quiz_creation.html">Quiz 2</a></li>
-                        <li><a href="quiz_creation.html">Quiz 3</a></li>
+                        <li><a href="quizPage.jsp">Quiz 1</a></li>
+                        <li><a href="quizPage.jsp">Quiz 2</a></li>
+                        <li><a href="quizPage.jsp">Quiz 3</a></li>
                     </ul>
                 </div>
             </div>
