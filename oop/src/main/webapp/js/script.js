@@ -10,7 +10,6 @@ function showCreatedQuizzes() {
 }
 
 function showTakenQuizzes() {
-    console.log("showAchievements taken quizzes is called!"); // Add this line
     const dynamicContent = document.getElementById('dynamic-content');
     dynamicContent.innerHTML = `
         <ul>
@@ -22,13 +21,23 @@ function showTakenQuizzes() {
 }
 
 function showAchievements() {
-    console.log("showAchievements function is called!"); // Add this line
 
     const dynamicContent = document.getElementById('dynamic-content');
     dynamicContent.innerHTML = `
         <ul>
             <li>Achievement A</li>
             <li>Achievement B</li>
+        </ul>
+    `;
+}
+
+function showFriends() {
+
+    const dynamicContent = document.getElementById('dynamic-content');
+    dynamicContent.innerHTML = `
+        <ul>
+            <li>Friend A</li>
+            <li>Friend B</li>
         </ul>
     `;
 }

@@ -1,107 +1,110 @@
-/* Apply a background gradient to the body */
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, rgba(52, 152, 219, 0.31), rgba(142, 68, 173, 0.18));
-    display: flex;
-    flex-direction: column;
-    /*justify-content: center;*/
-    align-items: center;
-    min-height: 270px;
-    width: 100%;
-    margin-top: 20%;
+    font-family: "Droid Sans Mono Slashed", Serif, serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(147, 91, 161, 0.33);
+
 }
 
-.input{
-    height: 20px;
-    width: 50px;
-}
-
-
-/* Center the container and add some spacing */
-.container {
-    width: 400px; /* Adjust the width as desired */
-    height: 400px; /* Adjust the height as desired */
-    /*padding: 20px;*/
-    background-color: rgba(255, 255, 255, 0.9);
+.signin-container {
+    background-color: #ffffff;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Add this line to center align content */
+}
+
+.signin-header {
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin-bottom: 20px;
 }
 
-/* Rest of your CSS remains unchanged */
-
-/* Style the h1 element */
-h1 {
-    /*margin-bottom: 20px;*/
-    color: #333;
+.signin-header img {
+    max-width: 100px;
 }
 
-/* Style form labels */
+.form-group {
+    margin-bottom: 15px;
+    text-align: center; /* Add this line to center align content */
+}
+
 label {
     display: block;
-    /*margin-bottom: 10px;*/
-    color: #555;
     font-weight: bold;
+    margin-bottom: 5px;
 }
 
-/* Style text inputs */
-input[type="text"],
-input[type="password"] {
-    width: 100%;
+input {
+    width: 100%; /* Change the width to 100% */
+    max-width: 350px; /* Add max-width for better readability */
     padding: 10px;
-    margin-bottom: 15px;
-    border: none;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f7f7f7;
-    outline: none;
 }
 
-/* Style the Sign In button */
-button[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    background-color: #16a085;
-    color: #fff;
+.signin-button {
+    display: block;
+    width: 100%; /* Change the width to 100% */
+    max-width: 300px; /* Add max-width for better readability */
+    padding: 10px;
+    margin: 30px auto;
+    background-color: #1028cb;
+    color: #ffffff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.3s;
 }
 
-button[type="submit"]:hover {
-    background-color: #1abc9c;
+.signin-button:hover {
+    background-color: #2664ca;
 }
 
-/* Style the "Sign Up" link */
-p {
-    margin-top: 15px;
-    color: #555;
-    /*font-size: 30px;*/
+.new-to-natureconnect {
+    text-align: center;
+    margin-top: 20px;
 }
 
-a {
-    color: #3498db;
-    text-decoration: none;
+.join-link {
+    color: #0f36c8;
     font-weight: bold;
-    /*font-size: 20px;*/
+    text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
+/* ... your existing styles ... */
+.input-icon {
+    position: relative;
 }
 
-.error-message {
-    /*display: none;*/
-    color: #e74c3c;
-    font-size: 14px;
-    margin-top: 5px;
+.input-icon input {
+    padding-right: 40px; /* Provide space for the icon and toggle button */
 }
 
-.form{
-    font-size: 20px;
+.input-icon i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.input-icon .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.toggle-password i {
+    color: #aaa;
+}
+
+.toggle-password:hover i {
+    color: #666;
 }

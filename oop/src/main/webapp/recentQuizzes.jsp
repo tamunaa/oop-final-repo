@@ -1,67 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="css/navbar.css">
-    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <link rel="stylesheet" type="text/css" href="css/quiz.css">
+    <script src="js/navbar.js"></script>
 
-    <title>List of Quizzes</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            border: 1px solid rgba(221, 221, 221, 0.99);
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <title>List of Popular Quizzes</title>
 </head>
+
 <body>
 
 <jsp:include page="navbar.jsp" />
+<jsp:include page="notificationbar.jsp" />
 
-<h1>List of Quizzes</h1>
-latest quizzes
-<table>
-    <tr>
-        <th>Author</th>
-        <th>Quiz Name</th>
-        <th>Description</th>
-        <th>Timer</th>
-        <th>Is Random</th>
-        <th>Display Type</th>
-        <th>Corrects Immediately</th>
-        <th>Is Practice</th>
-    </tr>
-    <!-- Sample data rows -->
-    <tr>
-        <td>1</td>
-        <td><a href="quiz.jsp">Quiz 1</a></td>
-        <td>Sample description for Quiz 1</td>
-        <td>60</td>
-        <td>true</td>
-        <td>Single Choice</td>
-        <td>true</td>
-        <td>false</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td><a href="quiz.jsp">Quiz 2</a></td>
-        <td>Another description for Quiz 2</td>
-        <td>120</td>
-        <td>false</td>
-        <td>Multiple Choice</td>
-        <td>false</td>
-        <td>true</td>
-    </tr>
-    <!-- Add more rows for other quizzes -->
-</table>
+<div id="wrapper" class="wrapper">
+    <div id="page" class="page">
+        <h1 class="text-center">List of Recent Quizzes</h1>
+
+        <div>
+
+            <div class="quiz-card">
+                <p> <a href="quiz.jsp"> Quiz 1 </a> </p>
+                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
+                <p>Description: Test your knowledge on history.</p>
+                <p><i class="bi bi-clock"></i> 10 minutes</p>
+                <p>Is Random: <i class="bi bi-x-lg"></i></p>
+                <p>Display Type: Multiple Choice</p>
+                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
+                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+            </div>
+            <div class="quiz-card">
+                <p> <a href="quiz.jsp"> Quiz 1 </a> </p>
+                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
+                <p>Description: Test your knowledge on history.</p>
+                <p><i class="bi bi-clock"></i> 10 minutes</p>
+                <p>Is Random: <i class="bi bi-x-lg"></i></p>
+                <p>Display Type: Multiple Choice</p>
+                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
+                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+
+                <div class="tags">
+                    <span class="tag">History</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p> <a href="quiz.jsp"> Quiz 1 </a> </p>
+                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
+                <p>Description: Test your knowledge on history.</p>
+                <p><i class="bi bi-clock"></i> 10 minutes</p>
+                <p>Is Random: <i class="bi bi-x-lg"></i></p>
+                <p>Display Type: Multiple Choice</p>
+                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
+                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+                <div class="tags">
+                    <span class="tag">History</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+
+
+                </div>
+            </div>
+            <div class="quiz-card">
+                <p> <a href="quiz.jsp"> Quiz 1 </a> </p>
+                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
+                <p>Description: Test your knowledge on history.</p>
+                <p><i class="bi bi-clock"></i> 10 minutes</p>
+                <p>Is Random: <i class="bi bi-x-lg"></i></p>
+                <p>Display Type: Multiple Choice</p>
+                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
+                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+
+                <div class="tags">
+                    <span class="tag">History</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p> <a href="quiz.jsp"> Quiz 1 </a> </p>
+                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
+                <p>Description: Test your knowledge on history.</p>
+                <p><i class="bi bi-clock"></i> 10 minutes</p>
+                <p>Is Random: <i class="bi bi-x-lg"></i></p>
+                <p>Display Type: Multiple Choice</p>
+                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
+                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+                <div class="tags">
+                    <span class="tag">History</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p> <a href="quiz.jsp"> Quiz 1 </a> </p>
+                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
+                <p>Description: Test your knowledge on history.</p>
+                <p><i class="bi bi-clock"></i> 10 minutes</p>
+                <p>Is Random: <i class="bi bi-x-lg"></i></p>
+                <p>Display Type: Multiple Choice</p>
+                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
+                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+
+                <div class="tags">
+                    <span class="tag">History</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p> <a href="quiz.jsp"> Quiz 1 </a> </p>
+                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
+                <p>Description: Test your knowledge on history.</p>
+                <p><i class="bi bi-clock"></i> 10 minutes</p>
+                <p>Is Random: <i class="bi bi-x-lg"></i></p>
+                <p>Display Type: Multiple Choice</p>
+                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
+                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+                <div class="tags">
+                    <span class="tag">History</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

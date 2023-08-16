@@ -52,17 +52,17 @@
 
             <ul class="navbar-nav">
                 <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Messages">
-                    <a class="nav-link" href="messages.jsp">
+                    <a class="message-icon" href="messages.jsp">
                         <i class="bi bi-envelope"></i>
                     </a>
                 </li>
                 <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Notifications">
-                    <a class="nav-link" href="notifications.jsp">
+                    <a class="notification-icon" onclick="toggleNotificationPanel()">
                         <i class="bi bi-bell"></i>
                     </a>
                 </li>
                 <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Log Out">
-                    <a class="nav-link" href="index.jsp">
+                    <a class="log-out" href="index.jsp">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 </li>
@@ -70,6 +70,9 @@
         </div>
     </div>
 </nav>
+
+<jsp:include page="notificationbar.jsp" />
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"></script>

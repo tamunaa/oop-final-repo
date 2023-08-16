@@ -1,55 +1,110 @@
-.profile {
-    padding: 50px;
+body {
+    font-family: 'Quicksand', sans-serif;
     background-color: #f8f9fa;
-    border: 3px solid #dee2e6;
-    border-radius: 13px;
-    margin: 40px 20px 70px;
-    font-size: 25px;
+}
+.profile-card {
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+.profile-header {
+    background-color: rgba(34, 50, 106, 0.96);
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.profile-info {
+    padding: 20px;
+    text-align: center;
+}
+.profile-actions {
+    padding: 20px;
+    text-align: center;
+}
+.custom-btn2 {
+    background-color: rgba(56, 83, 178, 0.88);
+    color: white;
+    width: 300px;
+    padding: 10px 20px;
+    margin: 5px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-
-#user-profile{
-    margin: 1px 20px 50px;
+.custom-btn2:hover {
+    background-color: #74b6eb;
+    color: #fff;
 }
-
-#send-friend-request{
-    margin: 10px;
-    width: 50%;
+.friends-list {
+    margin-top: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
 }
-
-#send-message{
-    margin: 10px;
-    width: 50%;
-}
-
-
-.user-details {
+.friend-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+}
+.friend-name {
+    font-weight: bold;
 }
 
-.user-info {
-    flex: 1;
-    padding-right: 20px;
+/* Add your custom styles here */
+.profile-section {
+    margin-bottom: 20px;
 }
 
-.user-info-item {
+.profile-card {
+    background-color: rgba(254, 250, 254, 0.62);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.profile--card {
+    border: 1px solid rgba(218, 218, 220, 0.52);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: radial-gradient(circle, #fcfcfc, rgba(224, 229, 234, 0.53));
+
+}
+
+
+.profile-card h2 {
+    font-size: 1.5rem;
     margin-bottom: 10px;
 }
 
-.label {
-    font-weight: bold;
-    color: #6c757d;
+.profile-card ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
 }
 
-.value {
-    color: #292e32;
+.profile-card li {
+    margin-bottom: 5px;
 }
 
-.user-actions {
-    flex: 1;
-    text-align: center;
+.profile-card a {
+    text-decoration: none;
+    color: #333;
 }
 
-
+.profile-card a:hover {
+    text-decoration: underline;
+}

@@ -2,8 +2,10 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="css/navbar.css">
-    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <script src="js/navbar.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/home.css">
 
     <title>Quiz Page - Quiz Name</title>
     <style>
@@ -44,9 +46,7 @@
 
 <script>
     function startQuiz() {
-        // Add your logic to start the quiz here
-        // Redirect the user to the actual quiz questions page
-        window.location.href = "quiz_questions.html"; // Replace with the actual URL
+        window.location.href = "quiz_questions.html";
     }
 </script>
 </body>

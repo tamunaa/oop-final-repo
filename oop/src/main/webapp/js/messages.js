@@ -3,7 +3,7 @@ const chatContainer = document.getElementById('chat-container');
 const chatMessages = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
-
+console.log(messageInput)
 
 const userChats = {
     'User 1': ["user1"],
