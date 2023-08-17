@@ -3,20 +3,21 @@ package objects;
 import java.sql.Timestamp;
 
 public class Announcement {
-    private final int id;
+    private int id;
     private final String title;
     private final int creatorId;
     private final Timestamp creationDate;
     private final String text;
 
 
-    public Announcement(int id, int creatorId, Timestamp creationDate, String title, String text) {
-        this.id = id;
+    public Announcement(int creatorId, Timestamp creationDate, String title, String text) {
+        this.id = -1;
         this.creatorId = creatorId;
         this.creationDate = creationDate;
         this.title = title;
         this.text = text;
     }
+    public void setId(int id){ this.id = id; }
 
     public int getId() {
         return id;
