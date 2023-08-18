@@ -1,6 +1,6 @@
 package objects;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class History {
     private int id;
