@@ -14,9 +14,9 @@
 <body>
 <div class="signin-container">
     <div class="signin-header">
-        <h2>Welcome to Quiz app</h2>
+        <h2>Join to Quiz app</h2>
     </div>
-    <form class="signin-form" action="java/servlets/signIn" method="POST">
+    <form class="signin-form" action="java/servlets/signUp" method="POST">
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="Enter your username" required>
@@ -32,11 +32,9 @@
             </div>
         </div>
 
-        <div><button class="signin-button">Sign In</button></div>
+        <div><button class="signin-button">Register</button></div>
     </form>
-    <div class="new-to-natureconnect">
-        <p>New to quiz app? <a href="signup.jsp" class="join-link">Join Now</a></p>
-    </div>
+
 </div>
 
 </body>

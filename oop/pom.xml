@@ -61,6 +61,12 @@
           <version>4.13.2</version>
           <scope>compile</scope>
       </dependency>
+      <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter</artifactId>
+          <version>5.8.1</version>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
 
   <build>
@@ -118,6 +124,23 @@
         </configuration>
       </plugin>
     </plugins>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <!-- Add your webapp directory as a resource -->
+      <resource>
+        <directory>src/main/webapp</directory>
+        <targetPath>WEB-INF/classes</targetPath>
+        <includes>
+          <!-- List any specific files you want to include -->
+          <include>**/*.js</include>
+          <!-- You can include other file types too, like CSS, images, etc. -->
+        </includes>
+      </resource>
+    </resources>
+
   </build>
 
 </project>
