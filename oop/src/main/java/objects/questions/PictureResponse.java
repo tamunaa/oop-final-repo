@@ -1,6 +1,8 @@
 package objects.questions;
 
-public class PictureResponse extends QuestionResponse {
+import java.io.Serializable;
+
+public class PictureResponse extends QuestionResponse implements Serializable {
     public PictureResponse(String URL, String correctAnswer) {
         super(URL, correctAnswer);
     }

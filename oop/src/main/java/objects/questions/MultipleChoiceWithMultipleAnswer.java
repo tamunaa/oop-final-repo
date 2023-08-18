@@ -1,8 +1,9 @@
 package objects.questions;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class MultipleChoiceWithMultipleAnswer implements Question {
+public class MultipleChoiceWithMultipleAnswer implements Question, Serializable {
     private final String questionText;
     private final String[] choices;
     private final String[] answers;
