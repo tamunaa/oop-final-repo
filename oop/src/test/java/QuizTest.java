@@ -11,7 +11,7 @@ class QuizTest {
     private Timestamp time;
     @BeforeEach
     void setUp() {
-        quiz = new Quiz(3, "Quiz", "Test Quiz", 30);
+        quiz = new Quiz(3, "Quiz", "Test Quiz", 30, "math");
         time = quiz.getDateCreated();
     }
 
@@ -106,5 +106,16 @@ class QuizTest {
     void setID() {
         quiz.setID(30);
         assertEquals(30, quiz.getID());
+    }
+
+    @Test
+    void getCategory() {
+        assertEquals("math", quiz.getCategory());
+    }
+
+    @Test
+    void setCategory() {
+        quiz.setCategory("history");
+        assertEquals("history", quiz.getCategory());
     }
 }

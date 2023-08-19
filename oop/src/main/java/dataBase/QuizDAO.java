@@ -19,4 +19,5 @@ public interface QuizDAO {
     public List<Review> getReviews(Quiz quiz);
     public Double getRating(Quiz quiz);
     public List<Quiz> getTopRatedQuizzes(int top);
+    public String getCategory(Quiz quiz);
 }
