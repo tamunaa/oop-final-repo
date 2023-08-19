@@ -1,28 +1,89 @@
-.quiz-card {
-    background-color: rgba(219, 221, 221, 0.16);
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    margin: 30px;
-    width: 25%;
-    display: inline-block;
-    vertical-align: top;
-    box-sizing: border-box;
-    margin-left: 90px;
+/* quiz.css */
+/* Add your custom styles for the quiz container here */
+
+/* navbar.css */
+/* Add your custom styles for the navbar here */
+
+/* base.css */
+/* Add your base styles here */
+
+/* Additional styles for your specific page elements */
+.quiz-container {
+    width: 60%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.bi-plus-lg{
-    color:green;
-}
-.bi-x-lg{
-    color: red;
+.quiz-info {
+    margin-bottom: 20px;
 }
 
-.tag {
-    display: inline-block;
-    padding: 5px 10px;
-    background-color: #e0e0e0;
+.quiz-info h1 {
+    font-size: 28px;
+    margin: 0;
     color: #333;
-    border-radius: 4px;
-    margin: 5px;
+}
+
+.quiz-info p {
+    margin: 10px 0;
+    color: #666;
+}
+
+.quiz-info a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.quiz-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.quiz-options a {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.practice-btn {
+    background-color: #28a745;
+}
+
+.take-btn {
+    background-color: #007bff;
+}
+
+.quiz-history {
+    margin-top: 20px;
+}
+
+.quiz-history table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.quiz-history th, .quiz-history td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #e1e1e1;
+    color: #333;
+}
+
+.quiz-history th {
+    font-weight: bold;
+    background-color: #f4f4f4;
+}
+
+.clear {
+    clear: both;
 }
