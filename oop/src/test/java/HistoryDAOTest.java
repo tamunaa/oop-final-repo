@@ -20,7 +20,7 @@ public class HistoryDAOTest {
         dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/test_history");
         dataSource.setUsername("root");
-        dataSource.setPassword("root:root");
+        dataSource.setPassword("");
         historyDAO = new HistoryDAOSQL(dataSource);
     }
 
