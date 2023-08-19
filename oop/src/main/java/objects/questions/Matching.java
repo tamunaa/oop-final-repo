@@ -1,8 +1,9 @@
 package objects.questions;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Matching implements Question {
+public class Matching implements Question, Serializable {
     private final String questionText;
     private final HashMap<String, String> correctAnswer;
     private final int numFields;
@@ -62,8 +63,10 @@ public class Matching implements Question {
     }
 
     @Override
-    /** Needs to be shuffled **/
+    //marjvena mxare
     public String[] getCorrectAnswers() {
+        List<String> stringList = new ArrayList<String>(Arrays.asList(target));
+        Collections.shuffle(stringList);
         return target.clone();
     }
 

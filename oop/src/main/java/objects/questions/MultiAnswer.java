@@ -1,6 +1,8 @@
 package objects.questions;
 
-public class MultiAnswer implements Question {
+import java.io.Serializable;
+
+public class MultiAnswer implements Question, Serializable {
     private final String questionText;
     private final String answers[];
     private final int numFields;
