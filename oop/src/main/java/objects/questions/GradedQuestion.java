@@ -1,18 +1,23 @@
 package objects.questions;
 
-public class GradedQuestion implements GradedQuestionType{
+public class GradedQuestion implements Question{
     private final String questionText;
     private int timer = 0;
     private int questionId = -1;
     private String answer;
 
-    public GradedQuestion(String questionText){
+    public GradedQuestion(String questionText) {
         this.questionText = questionText;
-
     }
+
     @Override
     public String getQuestion() {
-        return questionText;
+        return this.questionText;
+    }
+
+    @Override
+    public int evaluate(String answer) {
+        return 0;
     }
 
     @Override
@@ -25,15 +30,24 @@ public class GradedQuestion implements GradedQuestionType{
         return this.timer;
     }
 
-
     @Override
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public int getNumFields() {
+        return 0;
     }
 
     @Override
-    public String getAnswer() {
-        return this.answer;
+    public String[] getOptions() {
+        return null;
+    }
+
+    @Override
+    public String[] getCorrectAnswers() {
+        return null;
+    }
+
+    @Override
+    public boolean isOrdered() {
+        return false;
     }
 
     @Override

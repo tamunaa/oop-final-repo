@@ -2,7 +2,7 @@ import objects.questions.GradedQuestion;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class GradedQuestionTest {
     private GradedQuestion gradedQuestion;
@@ -26,12 +26,6 @@ public class GradedQuestionTest {
     }
 
     @Test
-    public void testSetAndGetAnswer() {
-        gradedQuestion.setAnswer("Paris");
-        assertEquals("Paris", gradedQuestion.getAnswer());
-    }
-
-    @Test
     public void testGetQuestionType() {
         String expectedQuestionType = "Graded";
         assertEquals(expectedQuestionType, gradedQuestion.getQuestionType());
@@ -46,5 +40,25 @@ public class GradedQuestionTest {
     @Test
     public void testDefaultQuestionId() {
         assertEquals(-1, gradedQuestion.getQuestionId());
+    }
+
+    @Test
+    public void testIsOrdered(){
+        assertFalse(gradedQuestion.isOrdered());
+    }
+
+    @Test
+    public void testGetCorrectAnswers(){
+        assertNull(gradedQuestion.getCorrectAnswers());
+    }
+
+    @Test
+    public void testGetNumFields(){
+        assertEquals(0, gradedQuestion.getNumFields());
+    }
+
+    @Test
+    public void testGetOptions(){
+        assertNull(gradedQuestion.getOptions());
     }
 }
