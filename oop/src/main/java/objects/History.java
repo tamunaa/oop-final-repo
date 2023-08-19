@@ -7,10 +7,10 @@ public class History {
     private int quizId;
     private int userId;
     private int score;
-    private int timeRelapsed;
+    private double timeRelapsed;
     private Timestamp dateTaken;
 
-    public History(int quizId, int userId, int score, int timeRelapsed, Timestamp dateTaken) {
+    public History(int quizId, int userId, int score, double timeRelapsed, Timestamp dateTaken) {
         this.quizId = quizId;
         this.userId = userId;
         this.score = score;
@@ -38,7 +38,7 @@ public class History {
         return score;
     }
 
-    public int getTimeElapsed() {
+    public double getTimeRelapsed() {
         return timeRelapsed;
     }
 

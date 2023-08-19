@@ -35,7 +35,7 @@ public class HistoryDAOTest {
         assertEquals(history.getQuizId(), retrievedHistory.getQuizId());
         assertEquals(history.getUserId(), retrievedHistory.getUserId());
         assertEquals(history.getScore(), retrievedHistory.getScore());
-        assertEquals(history.getTimeElapsed(), retrievedHistory.getTimeElapsed());
+        assertEquals(history.getTimeRelapsed(), retrievedHistory.getTimeRelapsed());
     }
 
     @Test

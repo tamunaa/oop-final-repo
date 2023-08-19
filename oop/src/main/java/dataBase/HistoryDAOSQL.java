@@ -28,7 +28,7 @@ public class HistoryDAOSQL implements HistoryDAO{
             preparedStatement.setInt(1, history.getQuizId());
             preparedStatement.setInt(2, history.getUserId());
             preparedStatement.setInt(3, history.getScore());
-            preparedStatement.setInt(4, history.getTimeElapsed());
+            preparedStatement.setDouble(4, history.getTimeRelapsed());
             preparedStatement.setTimestamp(5, history.getDateTaken());
 
             int rowsAffected = preparedStatement.executeUpdate();
