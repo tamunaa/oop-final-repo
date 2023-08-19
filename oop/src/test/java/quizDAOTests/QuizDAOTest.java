@@ -142,7 +142,7 @@ public class QuizDAOTest extends TestCase {
         answers = new String[]{"Paris", "Berlin", "Rome"};
         int numFields = answers.length;
 
-        question = new MultiAnswer(questionText, answers, numFields, true);
+        question = new MultiAnswer(questionText, answers, true);
         question.setTimer(17);
         questionId = questionsDAO.addQuestion(question, 20);
 
@@ -151,7 +151,7 @@ public class QuizDAOTest extends TestCase {
         HashSet<String> answersSet = new HashSet<>();
         numFields = answers.length;
 
-        question = new MultiAnswer(questionText, answers, numFields, false);
+        question = new MultiAnswer(questionText, answers, false);
         question.setTimer(15);
 
         questionId = questionsDAO.addQuestion(question, 22);

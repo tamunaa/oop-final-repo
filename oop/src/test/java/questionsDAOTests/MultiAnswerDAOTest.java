@@ -28,9 +28,8 @@ public class MultiAnswerDAOTest {
     public void testAddAndGetOrderedMultiAnswerType() {
         String questionText = "Whats the capitals of France, Germany and Italy?";
         String[] answers = {"Paris", "Berlin", "Rome"};
-        int numFields = answers.length;
 
-        Question question = new MultiAnswer(questionText, answers, numFields, true);
+        Question question = new MultiAnswer(questionText, answers, true);
         question.setTimer(17);
 
         int questionId = questionsDAO.addQuestion(question, 1);
@@ -50,9 +49,8 @@ public class MultiAnswerDAOTest {
     public void testRemoveOrderedMultiQuestion() {
         String questionText = "Whats the capitals of France, Germany and Italy?";
         String[] answers = {"Paris", "Berlin", "Rome"};
-        int numFields = answers.length;
 
-        Question question = new MultiAnswer(questionText, answers, numFields, true);
+        Question question = new MultiAnswer(questionText, answers, true);
         int questionId = questionsDAO.addQuestion(question, 2);
 
         questionsDAO.removeQuestion(questionId);
@@ -65,9 +63,8 @@ public class MultiAnswerDAOTest {
         String questionText = "Whats the capitals of France, Germany and Italy?";
         String[] answers = {"Paris", "Berlin", "Rome"};
         HashSet<String> answersSet = new HashSet<>();
-        int numFields = answers.length;
 
-        Question question = new MultiAnswer(questionText, answers, numFields, false);
+        Question question = new MultiAnswer(questionText, answers, false);
         question.setTimer(17);
 
         int questionId = questionsDAO.addQuestion(question, 1);
@@ -89,9 +86,8 @@ public class MultiAnswerDAOTest {
     public void testRemoveUnorderedMultiQuestion() {
         String questionText = "Whats the capitals of France, Germany and Italy?";
         String[] answers = {"Paris", "Berlin", "Rome"};
-        int numFields = answers.length;
 
-        Question question = new MultiAnswer(questionText, answers, numFields, false);
+        Question question = new MultiAnswer(questionText, answers, false);
         int questionId = questionsDAO.addQuestion(question, 2);
 
         questionsDAO.removeQuestion(questionId);
