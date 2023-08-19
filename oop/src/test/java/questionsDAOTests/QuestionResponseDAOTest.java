@@ -11,6 +11,8 @@ import objects.questions.QuestionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLOutput;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -100,17 +102,18 @@ public class QuestionResponseDAOTest {
 
     @Test
     public void testAddAndGetPictureResponseType() {
-        String questionText = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
+        String questionText = "What's in the picture?";
+        String URL = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
         String correctAnswer = "A bullet";
-        Question question = new PictureResponse(questionText, correctAnswer);
+        Question question = new PictureResponse(questionText, URL, correctAnswer);
         question.setTimer(17);
 
         int questionId = questionsDAO.addQuestion(question, 1);
 
         Question retrievedQuestion = questionsDAO.getQuestionByQuestionId(questionId);
-
         assertNotNull(retrievedQuestion);
         assertEquals(questionText, retrievedQuestion.getQuestion());
+        assertEquals(URL, retrievedQuestion.getOptions()[0]);
         assertEquals(correctAnswer, retrievedQuestion.getCorrectAnswers()[0]);
         assertEquals("PictureResponse", retrievedQuestion.getQuestionType());
         assertEquals(17, retrievedQuestion.getTimer());
@@ -120,9 +123,10 @@ public class QuestionResponseDAOTest {
 
     @Test
     public void testRemovePictureResponseQuestion() {
-        String questionText = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
+        String questionText = "What's in the picture?";
+        String URL = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
         String correctAnswer = "A bullet";
-        Question question = new PictureResponse(questionText, correctAnswer);
+        Question question = new PictureResponse(questionText, URL, correctAnswer);
         int questionId = questionsDAO.addQuestion(question, 2);
 
         questionsDAO.removeQuestion(questionId);
