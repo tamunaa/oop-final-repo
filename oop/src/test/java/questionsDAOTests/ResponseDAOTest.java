@@ -2,6 +2,7 @@ package questionsDAOTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import dataBase.questionsDAOs.GradeDAO;
 import dataBase.questionsDAOs.ResponseDAO;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +16,7 @@ public class ResponseDAOTest {
 
     private static Connection connection;
     private ResponseDAO responseDAO;
+    private GradeDAO gradeDAO;
 
     @BeforeAll
     static void setupConnection() throws SQLException {
@@ -34,6 +36,7 @@ public class ResponseDAOTest {
     @BeforeEach
     void setup() {
         responseDAO = new ResponseDAO(connection);
+        gradeDAO = new GradeDAO(connection);
     }
 
     @Test
@@ -93,5 +96,26 @@ public class ResponseDAOTest {
     void TestNullResponse(){
         responseDAO.addScoreAndMarkAsGraded(2, 0);
         assertNull(responseDAO.getResponseByHistory(1));
+    }
+
+
+    //GRADE DAO TEST
+
+//    +----+-------------+------------+-------+-----------+----------+
+//            | ID | Question_ID | History_ID | grade | Is_graded | Response |
+//            +----+-------------+------------+-------+-----------+----------+
+//            |  1 |           1 |          1 |     1 |         1 | Paris    |
+//            |  2 |           2 |          1 |     0 |         1 | Mars     |
+//            |  3 |           3 |          1 |   100 |         1 | Au       |
+//            +----+-------------+------------+-------+-----------+----------+
+    @Test
+    void TestGradeDAO(){
+        responseDAO.getResponseByHistory(1);
+        assertEquals(101, gradeDAO.getScoreByHistoryId(1));
+    }
+
+    @Test
+    void TestUngradedGradeDAO(){
+        assertEquals(0, gradeDAO.getScoreByHistoryId(2));
     }
 }
