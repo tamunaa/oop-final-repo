@@ -1,7 +1,9 @@
 package servlets;
 
 import dataBase.QuizDAO;
+import dataBase.UserDAO;
 import objects.Quiz;
+import objects.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,13 +18,23 @@ import java.util.List;
 public class SearchQuizServlet extends HttpServlet {
 
     private QuizDAO quizDAO;
+    private UserDAO userDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         quizDAO = (QuizDAO) request.getServletContext().getAttribute("quizDao");
-        String quizName = request.getParameter("quizName");
+        String passed = request.getParameter("quizName");
 
-        List<Quiz> searchResults = quizName == null ? Collections.emptyList() : quizDAO.getQuizByQuizName(quizName);
+        List<Quiz> searchResults = passed == null ? Collections.emptyList() : quizDAO.getQuizByQuizName(passed);
+
+        //search quizzes by author username
+        userDAO = (UserDAO) request.getServletContext().getAttribute("quizDao");
+        User author = userDAO.getUserByUsername(passed);
+        if(author != null){
+            int userID = author.getId();
+            List<Quiz> searchResultsByAuthor = passed == null ? Collections.emptyList() : quizDAO.getQuizzesByAuthor(userID);
+            searchResults.addAll(searchResultsByAuthor);
+        }
 
         request.setAttribute("searchResults", searchResults);
         request.getRequestDispatcher("WEB-INF/search-quiz.jsp").forward(request, response);
