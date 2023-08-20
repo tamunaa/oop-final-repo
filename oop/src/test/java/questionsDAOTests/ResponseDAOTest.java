@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import dataBase.questionsDAOs.ResponseDAO;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,9 +18,9 @@ public class ResponseDAOTest {
 
     @BeforeAll
     static void setupConnection() throws SQLException {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/test_database";
+        String jdbcUrl = "jdbc:mysql://localhost:3306/test_db";
         String user = "root";
-        String password = "";
+        String password = "root:root";
         connection = DriverManager.getConnection(jdbcUrl, user, password);
     }
 
@@ -49,4 +51,47 @@ public class ResponseDAOTest {
        assertEquals("My response to the question.", responseDAO.getResponseByQuestionAndHistory(questionId, historyId));
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3}) // history IDs here
+    void testGetResponseByHistoryId(int historyId) {
+        System.out.println(responseDAO.getResponseByHistory(historyId));
+    }
+
+    @Test
+    void testGetResponseByHistoryId() {
+        int historyId = 1;
+        String expectedResponse = "Paris";
+
+        assertEquals(expectedResponse, responseDAO.getResponseByHistory(historyId).getResponseText());
+        assertEquals(1, responseDAO.getResponseByHistory(historyId).getId());
+        assertEquals(1, responseDAO.getResponseByHistory(historyId).getQuestionId());
+        assertEquals(0, responseDAO.getResponseByHistory(historyId).getGrade());
+        assertFalse(responseDAO.getResponseByHistory(historyId).isGraded());
+    }
+
+    @Test
+    void testScoreAndGetResponse(){
+        int historyId = 1;
+
+        assertEquals("Paris", responseDAO.getResponseByHistory(historyId).getResponseText());
+        assertEquals(1, responseDAO.getResponseByHistory(historyId).getId());
+        assertEquals(1, responseDAO.getResponseByHistory(historyId).getQuestionId());
+        assertEquals(0, responseDAO.getResponseByHistory(historyId).getGrade());
+        assertFalse(responseDAO.getResponseByHistory(historyId).isGraded());
+
+        responseDAO.addScoreAndMarkAsGraded(responseDAO.getResponseByHistory(historyId).getId(), 1);
+        assertNotEquals("Paris", responseDAO.getResponseByHistory(historyId).getResponseText());
+
+        assertEquals("Mars", responseDAO.getResponseByHistory(historyId).getResponseText());
+        assertEquals(2, responseDAO.getResponseByHistory(historyId).getId());
+        assertEquals(2, responseDAO.getResponseByHistory(historyId).getQuestionId());
+        assertEquals(0, responseDAO.getResponseByHistory(historyId).getGrade());
+        assertFalse(responseDAO.getResponseByHistory(historyId).isGraded());
+    }
+
+    @Test
+    void TestNullResponse(){
+        responseDAO.addScoreAndMarkAsGraded(2, 0);
+        assertNull(responseDAO.getResponseByHistory(1));
+    }
 }
