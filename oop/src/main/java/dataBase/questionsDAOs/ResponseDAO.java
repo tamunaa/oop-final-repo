@@ -46,7 +46,11 @@ public class ResponseDAO {
 
                     return new Response(id, questionId, historyId, grade, isGraded, responseText);
                 } else {
-                    return null; // No ungraded response found with the given IDs
+                    // Execute GradeDAO logic when no ungraded responses are found
+                    int score = calculateTotalScoreForHistory(historyId);
+                    GradeDAO gradeDAO = new GradeDAO();
+                    gradeDAO.updateScore(historyId, score);
+                    return null;
                 }
             }
         } catch (SQLException e) {
@@ -54,6 +58,25 @@ public class ResponseDAO {
             return null;
         }
     }
+
+    public int calculateTotalScoreForHistory(int historyId) {
+        String query = "SELECT SUM(grade) AS total_score FROM RESPONSES WHERE History_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, historyId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("total_score");
+                } else {
+                    return 0; // No responses found for the given historyId
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Return -1 in case of an error
+        }
+    }
+
 
     public boolean addScoreAndMarkAsGraded(int responseId, int grade) {
         String query = "UPDATE RESPONSES SET grade = ?, Is_graded = ? WHERE ID = ?";
