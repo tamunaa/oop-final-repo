@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class GradeDAO {
     private Connection connection;
 
-    public void GradeyDAO(Connection connection) {
+    public void GradeDAO(Connection connection) {
         this.connection = connection;
     }
 
