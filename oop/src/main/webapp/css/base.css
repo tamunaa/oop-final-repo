@@ -1,8 +1,3 @@
-html, body {
-    height: 100%; /* Set the height to 100% of the viewport */
-    width: 90%;
-    background-color: rgba(180, 225, 237, 0.12);
-}
 #page{
     background: rgba(255, 247, 230, 0.24);
 }
