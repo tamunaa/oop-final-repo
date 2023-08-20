@@ -28,19 +28,18 @@ public class createQuiz extends HttpServlet {
         int timer = Integer.parseInt(request.getParameter("timer"));
 
         boolean practiceMode = request.getParameter("practice") != null;
-        String questionDisplayMode = request.getParameter("questionDisplay");
+        String questionDisplayMode = request.getParameter("questionDisplay") != null ? request.getParameter("questionDisplay") : "";
         boolean immediateCorrection = request.getParameter("correction") != null;
         String quizDescription = request.getParameter("quizDescription");
         boolean randomOrder = request.getParameter("randomOrder") != null;
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         QuizDAO quizDAO = new DbQuizDAO(dataSource);
 
         Quiz quiz = new Quiz(author, quizName, quizDescription, timer);
         quiz.setPractice(practiceMode);
         quiz.setCorrectImmediately(immediateCorrection);
-        quiz.setOnOnePage(questionDisplayMode.equals("singlePage"));
-        quiz.setRandom(randomOrder);
-        
+        quiz.setOnOnePage(questionDisplayMode.equals("All Questions on a Single Page"));
         int quizId = quizDAO.addQuiz(quiz);
         response.sendRedirect("editQuiz?quizId=" + quizId);
     }
