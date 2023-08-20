@@ -2,11 +2,10 @@ package servlets;
 
 import com.mysql.cj.Session;
 import com.mysql.cj.xdevapi.JsonArray;
-import dataBase.*;
+import dataBase.DbQuizDAO;
+import dataBase.QuizDAO;
 import dataBase.questionsDAOs.QuestionsDAO;
-import objects.History;
 import objects.Quiz;
-import objects.User;
 import objects.questions.Question;
 import objects.questions.QuestionResponse;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -17,48 +16,46 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Timestamp;
-import java.util.Date;
 
 @WebServlet("/quiz")
 public class quiz extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
         dataSource.setUsername("root");
         dataSource.setPassword("rootroot");
 
         int quizId = Integer.parseInt(request.getParameter("quizId"));
         QuizDAO quizDAO = new DbQuizDAO(dataSource);
 
-        UserDAO userDao = new UserDAO(dataSource);
-        HistoryDAO historyDao = new HistoryDAOSQL(dataSource);
+/*        UserDao userDao = new UserDao(dataSource); */
+/*        HistoryDao historyDao = new HistoryDao(dataSource); */
+
 
         Quiz quiz = quizDAO.getQuizByID(quizId);
-        String author = userDao.getUsernameByID(quiz.getAuthor());
+/*        String author = UserDao.getUserByUserId(quiz.getID()).getUsername(); */
+        String author = "luka khukhua";
 
-        List<History> historyList = historyDao.getHistoryByQuizId(quizId);
+/*        List<History> historyList = HistoryDao.getHistoryByQuizId(quiz.getID()); */
         List<String> historyUsernames = new ArrayList<>();
-
-        for (History history : historyList) {
-            String username = userDao.getUsernameByID(history.getUserId());
+/*        for (History history : historyList) {
+            String username = UsersDao.getUserById(history.getUserId()).getUsername;
             historyUsernames.add(username);
         }
+*/
 
         HttpSession session = request.getSession();
         session.setAttribute("quiz", quiz);
-        request.setAttribute("historyList", historyList);
+/*        request.setAttribute("historyList", historyList); */
         request.setAttribute("historyUsernames", historyUsernames);
         request.setAttribute("author", author);
 
 
 
-        request.getRequestDispatcher("quiz.jsp?quizId=" + quizId).forward(request, response);
+        request.getRequestDispatcher("quiz.jsp").forward(request, response);
 
 
     }
