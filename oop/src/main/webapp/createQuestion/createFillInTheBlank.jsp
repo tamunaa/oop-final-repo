@@ -40,13 +40,13 @@
 <body>
 <h1>Create Fill in the Blank</h1>
 
-<form action="addQuestions/addFillInTheBlank?quizId=<%=request.getParameter("quizId")%>" method="POST">
+<form action="addQuestions/addFillInTheBlank?quizId=<%=request.getParameter("quizId")%>" method="POST" onsubmit="return checkBlankSpace();">
   <label for="questionText">Question Text:</label><br>
   <textarea id="questionText" name="questionText" rows="4" cols="50" required></textarea><br><br>
 
   <button type="button" onclick="addBlankSpace()">Add a Blank Space</button>
 
-  <button type="button" onclick="removeBlankSpace()">Remove a Blank Space</button>
+  <button type="button" onclick="removeBlankSpace()">Remove a Blank Spaces</button>
 
   <br><br>
   <label for="answer">Answer:</label><br>
@@ -63,7 +63,7 @@
 
 
   <!-- Buttons -->
-  <button type="submit" onclick="checkBlankSpace()">Add Question</button>
+  <button type="submit">Add Question</button>
   <a href="/editQuiz?quizId=<%=request.getParameter("quizId")%>"><button type="button">Cancel</button></a>
 </form>
 
