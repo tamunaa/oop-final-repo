@@ -63,7 +63,7 @@
             %>
                 <tr>
                     <td><%=date%></td>
-                    <td><a href="profile.jsp?user=<%=historyUsernames.get(i)%>"><%=historyUsernames.get(i)%></td></a>
+                    <td><a href="profile.jsp?user=<%=historyUsernames.get(i)%>"><%=historyUsernames.get(i)%></a></td>
                     <td><%=String.format("%02d:%02d", timeElapsed / 60, timeElapsed % 60)%></td>
                     <td><%=historyList.get(i).getScore()%></td>
                 </tr>
