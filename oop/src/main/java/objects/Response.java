@@ -17,6 +17,30 @@ public class Response {
         this.responseText = responseText;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
+
+    public void setHistoryId(int historyId) {
+        this.historyId = historyId;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    public void setGraded(boolean graded) {
+        isGraded = graded;
+    }
+
+    public void setResponseText(String responseText) {
+        this.responseText = responseText;
+    }
+
     public int getId() {
         return id;
     }
