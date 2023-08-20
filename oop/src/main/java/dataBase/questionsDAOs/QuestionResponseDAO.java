@@ -72,9 +72,6 @@ class QuestionResponseDAO implements QuestionDAOType {
                         case "FillInTheBlank":
                             newQuestion = new FillInTheBlank(questionText, responseAnswer);
                             break;
-                        case "PictureResponse":
-                            newQuestion = new PictureResponse(questionText, responseAnswer);
-                            break;
                     }
                     newQuestion.setQuestionId(questionId);
                     newQuestion.setTimer(timer);

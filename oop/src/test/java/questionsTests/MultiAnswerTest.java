@@ -18,10 +18,9 @@ public class MultiAnswerTest {
     public void setUp() {
         String questionText = "Whats the capitals of France, Germany and Italy?";
         String[] answers = {"Paris", "Berlin", "Rome"};
-        int numFields = answers.length;
 
-        orderedMultiAnswer = new MultiAnswer(questionText, answers, numFields, true);
-        unorderedMultiAnswer = new MultiAnswer(questionText, answers, numFields, false);
+        orderedMultiAnswer = new MultiAnswer(questionText, answers, true);
+        unorderedMultiAnswer = new MultiAnswer(questionText, answers, false);
     }
 
     @Test

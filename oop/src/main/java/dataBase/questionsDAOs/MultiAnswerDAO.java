@@ -102,7 +102,7 @@ class MultiAnswerDAO implements QuestionDAOType {
                         String[] answers = answersList.toArray(new String[0]);
 
                         // Create and return the MULTI_ANSWER object
-                        Question multiAnswer = new MultiAnswer(questionText, answers, numFields, isOrdered);
+                        Question multiAnswer = new MultiAnswer(questionText, answers, isOrdered);
                         multiAnswer.setQuestionId(questionId);
                         multiAnswer.setTimer(timer);
                         return multiAnswer;

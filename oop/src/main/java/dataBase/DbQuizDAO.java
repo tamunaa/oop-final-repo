@@ -82,6 +82,7 @@ public class DbQuizDAO implements QuizDAO{
                         resultSet.getTimestamp("Date_created"), resultSet.getBoolean("Is_random"),
                         resultSet.getBoolean("Display_type"), resultSet.getBoolean("Corrects_immediately"),
                         resultSet.getBoolean("Is_practice"));
+                quiz.setID(resultSet.getInt("ID"));
                 quizzes.add(quiz);
             }
             statement.close();
@@ -105,6 +106,7 @@ public class DbQuizDAO implements QuizDAO{
                         resultSet.getTimestamp("Date_created"), resultSet.getBoolean("Is_random"),
                         resultSet.getBoolean("Display_type"), resultSet.getBoolean("Corrects_immediately"),
                         resultSet.getBoolean("Is_practice"));
+                quiz.setID(resultSet.getInt("ID"));
                 quizzes.add(quiz);
             }
             statement.close();
