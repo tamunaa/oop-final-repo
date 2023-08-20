@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="css/navbar.css">
     <script src="js/navbar.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/profile.css">
+    <script src="js/profile.js"></script>
+    <link rel="stylesheet" href="css/profile.css">
 
     <title>Profile</title>
 </head>
@@ -19,12 +20,17 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-4">
-            <!-- Profile Card -->
             <div class="profile--card">
                 <div class="profile-header">
-                    <h4>John Doe</h4>
+                    <h4 id="username"><%= request.getParameter("username")%></h4>
                     <p>john.doe@example.com</p>
+                    <p id="adminButton" onclick="toggleAdmin()"><i id="star" class="bi bi-star"></i> admin</p>
+
+                    <p id="editUsername" class="edit-icon" onclick="editUsername()">
+                        <i class="bi bi-pencil"></i> Edit Username
+                    </p>
                 </div>
+
                 <div class="profile-info">
                     <p><strong>Registration Date:</strong> 01.09.2003</p>
                 </div>
@@ -35,6 +41,7 @@
                     </button>
                 </div>
             </div>
+
 
             <!-- Friends List -->
             <div class="friends-list" style="height: 300px; overflow-y: auto;">
@@ -57,9 +64,9 @@
                 <div class="profile-card">
                     <h2>Taken Quizzes</h2>
                     <ul>
-                        <li><a href="quizPage.jsp">Quiz 1</a></li>
-                        <li><a href="quizPage.jsp">Quiz 2</a></li>
-                        <li><a href="quizPage.jsp">Quiz 3</a></li>
+                        <li><a href="singlePageQuiz.jsp">Quiz 1</a></li>
+                        <li><a href="singlePageQuiz.jsp">Quiz 2</a></li>
+                        <li><a href="singlePageQuiz.jsp">Quiz 3</a></li>
                     </ul>
                 </div>
             </div>
@@ -69,9 +76,9 @@
                 <div class="profile-card">
                     <h2>Created Quizzes</h2>
                     <ul>
-                        <li><a href="quizPage.jsp">Quiz 1</a></li>
-                        <li><a href="quizPage.jsp">Quiz 2</a></li>
-                        <li><a href="quizPage.jsp">Quiz 3</a></li>
+                        <li><a href="singlePageQuiz.jsp">Quiz 1</a></li>
+                        <li><a href="singlePageQuiz.jsp">Quiz 2</a></li>
+                        <li><a href="singlePageQuiz.jsp">Quiz 3</a></li>
                     </ul>
                 </div>
             </div>
