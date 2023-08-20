@@ -10,3 +10,16 @@ function toggleNotificationPanel() {
     notificationPanel.style.top = `calc(${iconRect.bottom}px + 10px)`;
     notificationPanel.style.left = `calc(${iconRect.left}px - 170px)` // Adjust as needed
 }
+
+
+let isAdmin = true; //bazidan wamova es info
+function toggleAdmin() {
+    isAdmin = !isAdmin;
+    const starIcon = document.getElementById('star');
+
+    if (isAdmin) {
+        starIcon.classList.add('filled');
+    } else {
+        starIcon.classList.remove('filled');
+    }
+}

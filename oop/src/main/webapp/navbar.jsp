@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" type="text/css" href="css/navbar.css">
 
+
 </head>
 <body>
 
@@ -43,6 +44,19 @@
                         <i class="bi bi-clock"></i>
                     </a>
                 </li>
+
+                <%
+                    boolean isAdmin = true; //bazidaaan
+                    if (isAdmin) {
+                %>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="admin area" href="admin.jsp">
+                        <i class="bi bi-gear"></i>
+                    </a>
+                </li>
+                <%
+                    }
+                %>
             </ul>
 
             <form class="d-flex" role="search">
