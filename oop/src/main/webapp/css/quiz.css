@@ -1,11 +1,13 @@
 .quiz-container {
-    width: 60%;
+    font-family: 'Bricolage Grotesque', "Lohit Bengali";
+    width: 80%;
+    height: auto;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #e1e1e1;
     border-radius: 8px;
     background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(56, 35, 35, 0.12);
 }
 
 .quiz-info {
@@ -30,7 +32,7 @@
 
 .quiz-options {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -50,6 +52,7 @@
 }
 
 .take-btn {
+    margin-right: 50px;
     background-color: #007bff;
 }
 

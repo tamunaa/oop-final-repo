@@ -1,0 +1,10 @@
+.Quiz-bar{
+    background-color: rgb(150, 182, 197);
+    width: 90rem;
+    color: #180303;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-evenly;
+}
