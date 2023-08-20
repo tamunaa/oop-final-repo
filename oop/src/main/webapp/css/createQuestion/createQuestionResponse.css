@@ -9,8 +9,9 @@ body {
 
 h1 {
     text-align: center;
-    color: #333;
-    margin: 20px 0;
+    background-color: #007acc;
+    color: #fff;
+    padding: 20px;
 }
 
 form {
