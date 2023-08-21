@@ -55,8 +55,8 @@ input[type="text"], input[type="number"], .answerOptions {
     margin-right: 10px;
 }
 
-.input-group button.add-option {
-    flex: 1;
+.input-group button {
+    flex: 2.25;
     padding: 10px;
     margin-left: 10px;
 }
