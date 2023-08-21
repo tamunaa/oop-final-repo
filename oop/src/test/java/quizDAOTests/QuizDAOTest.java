@@ -9,6 +9,7 @@ import objects.questions.Matching;
 import objects.questions.MultiAnswer;
 import objects.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.junit.jupiter.api.BeforeEach;
 
 
 import java.sql.Connection;
@@ -24,11 +25,12 @@ public class QuizDAOTest extends TestCase {
     private Statement statement;
     private DbQuizDAO quizDAO;
     private BasicDataSource dataSource;
+
     public void beforeEach() {
         dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/test_quiz");
         dataSource.setUsername("root");
-        dataSource.setPassword("");
+        dataSource.setPassword("123456789");
 
         quizDAO = new DbQuizDAO(dataSource);
 
@@ -261,6 +263,28 @@ public class QuizDAOTest extends TestCase {
         beforeEach();
         assertEquals("history", quizDAO.getCategory(44));
         assertEquals("english", quizDAO.getCategory(35));
+    }
+
+    public void testGetQuizzesByTag(){
+        beforeEach();
+        List<Quiz> quizzes = quizDAO.getQuizzesByTag("Simple");
+        assertEquals(2, quizzes.size());
+        assertEquals(35, quizzes.get(0).getID());
+        assertEquals(40, quizzes.get(1).getID());
+    }
+
+    public void testAddTag(){
+        beforeEach();
+        quizDAO.removeTag(40, "English");
+        quizDAO.addTag(40, "English");
+        assertTrue(quizDAO.getTags(40).contains("English"));
+    }
+
+    public void testRemoveTag(){
+        beforeEach();
+        assertTrue(quizDAO.getTags(40).contains("English"));
+        quizDAO.removeTag(40, "English");
+        assertFalse(quizDAO.getTags(40).contains("English"));
     }
 
 }

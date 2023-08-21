@@ -296,4 +296,61 @@ public class DbQuizDAO implements QuizDAO{
         }
         return "";
     }
+
+    @Override
+    public List<Quiz> getQuizzesByTag(String tag) {
+        ArrayList<Quiz> quizzes = new ArrayList<>();
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("select Quiz_ID from TAG where Hashtag = ?");
+            statement.setString(1, tag);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                Quiz quiz = getQuizByID(resultSet.getInt(1));
+                quizzes.add(quiz);
+            }
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return quizzes;
+    }
+
+    @Override
+    public void addTag(int id, String tag) {
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO TAG(Quiz_ID, Hashtag) VALUES (?, ?)");
+            statement.setInt(1, id);
+            statement.setString(2, tag);
+            int rowsChanged = statement.executeUpdate();
+            if(rowsChanged == 0) {
+                statement.close();
+                connection.close();
+                throw new SQLException("Inserting tag into tag table failed");
+            }
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void removeTag(int id, String tag) {
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM TAG WHERE Quiz_ID = ? and Hashtag = ?");
+            statement.setInt(1, id);
+            statement.setString(2, tag);
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //throw new RuntimeException(e);
+        }
+    }
 }
