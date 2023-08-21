@@ -21,5 +21,6 @@ public interface UserDAOInterface {
     boolean removeAdmin(User user);
     int addReview(Review review);
     boolean setRating(int userId, int quizId,double rating);
-
+    List<String> getCategories();
+    boolean addCategory(int id, String category);
 }

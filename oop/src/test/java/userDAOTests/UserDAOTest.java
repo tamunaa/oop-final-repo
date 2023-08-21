@@ -37,7 +37,7 @@ public class UserDAOTest {
         BasicDataSource ds = new BasicDataSource();
         ds.setUrl("jdbc:mysql://localhost:3306/test_user");
         ds.setUsername("root");
-        ds.setPassword("root");
+        ds.setPassword("");
         Connection conn = ds.getConnection();
         PreparedStatement stm = conn.prepareStatement("USE test_user ; ");
         stm.execute();
@@ -57,7 +57,7 @@ public class UserDAOTest {
         dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/test_user");
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("");
         userDAO = new UserDAO(dataSource);
         quizDAO = new DbQuizDAO(dataSource);
         try {
@@ -293,4 +293,38 @@ public class UserDAOTest {
         assertEquals(3.25,quizDAO.getRating(quiz));
     }
 */
+    @Test
+    void addCategory(){
+        User user = new User("imagine", "imagine@test,com", BCrypt.withDefaults().hashToString(10, "image".toCharArray()), true);
+        userDAO.addUser(user);
+        assertTrue(userDAO.addCategory(user.getId(), "Math"));
+        assertTrue(userDAO.addCategory(user.getId(), "History"));
+        assertTrue(userDAO.addCategory(user.getId(), "Science"));
+    }
+
+    @Test
+    void cannotAddCategory(){
+        User user2 = new User("imag", "imag@test,com", BCrypt.withDefaults().hashToString(10, "imag".toCharArray()), false);
+        userDAO.addUser(user2);
+        assertFalse(userDAO.addCategory(user2.getId(), "French"));
+    }
+
+    @Test
+    void getCategories(){
+        User user = new User("cat", "cat@test,com", BCrypt.withDefaults().hashToString(10, "cat".toCharArray()), true);
+        userDAO.addUser(user);
+        int id = user.getId();
+        assertTrue(userDAO.addCategory(id, "Math"));
+        assertTrue(userDAO.addCategory(id, "History"));
+//        assertTrue(userDAO.addCategory(id, "English"));
+//        assertTrue(userDAO.addCategory(id, "Biology"));
+//        assertTrue(userDAO.addCategory(id,  "Science"));
+
+        List<String> categories = userDAO.getCategories();
+        assertEquals(2, categories.size());
+        assertTrue(categories.contains("Math"));
+        assertTrue(categories.contains("History"));
+////        assertTrue(categories.contains("Science"));
+    }
+
 }
