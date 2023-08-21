@@ -1,6 +1,8 @@
 package objects.questions;
 
-public class FillInTheBlank extends QuestionResponse{
+import java.io.Serializable;
+
+public class FillInTheBlank extends QuestionResponse implements Serializable {
     public FillInTheBlank(String questionText, String correctAnswer) {
         super(questionText, correctAnswer);
     }

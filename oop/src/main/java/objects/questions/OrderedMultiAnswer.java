@@ -2,7 +2,7 @@ package objects.questions;
 
 import java.util.HashSet;
 
-public class OrderedMultiAnswer implements MultiAnswerType {
+public class OrderedMultiAnswer implements MultiAnswerType{
     private final String[] correctAnswers;
     private final HashSet<String> correctAnswersSet;
     public OrderedMultiAnswer(String[] answers) {

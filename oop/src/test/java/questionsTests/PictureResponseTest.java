@@ -1,6 +1,6 @@
 package questionsTests;
 
-import objects.questions.PictureRespnose;
+import objects.questions.PictureResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,20 +9,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PictureResponseTest {
 
-    private PictureRespnose pictureResponse;
+    private PictureResponse pictureResponse;
 
     @BeforeEach
     public void setUp() {
-        String questionText = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
+        String questionText = "What's in the picture?";
+        String URL = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
         String correctAnswer = "A bullet";
-        pictureResponse = new PictureRespnose(questionText, correctAnswer);
+        pictureResponse = new PictureResponse(questionText, URL, correctAnswer);
     }
 
     @Test
-    public void testGetQuestion() {
-        String expectedQuestionText = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
+    public void testGetOptions() {
+        String URL = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
+        String actualQuestionText = pictureResponse.getOptions()[0];
+        assertEquals(URL, actualQuestionText);
+    }
+
+    @Test
+    public void testGetQuestionText() {
+        String questionText = "What's in the picture?";
         String actualQuestionText = pictureResponse.getQuestion();
-        assertEquals(expectedQuestionText, actualQuestionText);
+        assertEquals(questionText, actualQuestionText);
     }
 
     @Test
@@ -82,14 +90,10 @@ public class PictureResponseTest {
         assertEquals(false, pictureResponse.isOrdered());
     }
 
-    @Test
-    public void testGetOptions() {
-        assertArrayEquals(null, pictureResponse.getOptions());
-    }
 
     @Test
     public void testGetAnswers() {
-        assertArrayEquals(new String[] {"A bullet"}, pictureResponse.getCorrectAnswers());
+        assertEquals("A bullet", pictureResponse.getCorrectAnswers()[0]);
     }
 
 

@@ -1,6 +1,8 @@
 package objects.questions;
 
-public class MultiAnswer implements Question {
+import java.io.Serializable;
+
+public class MultiAnswer implements Question, Serializable {
     private final String questionText;
     private final String answers[];
     private final int numFields;
@@ -9,9 +11,9 @@ public class MultiAnswer implements Question {
     private int timer = 0;
     private int questionId = -1;
 
-    public 	MultiAnswer(String questionText, String answers[], int numFields, boolean isOrdered) {
+    public 	MultiAnswer(String questionText, String answers[], boolean isOrdered) {
         this.questionText = questionText;
-        this.numFields = numFields;
+        this.numFields = answers.length;
         this.isOrdered = isOrdered;
         this.answers = answers.clone();
         this.questionType = isOrdered ? new OrderedMultiAnswer(answers) : new UnorderedMultiAnswer(answers);

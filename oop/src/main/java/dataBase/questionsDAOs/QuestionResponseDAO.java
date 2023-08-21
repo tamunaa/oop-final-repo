@@ -1,7 +1,7 @@
 package dataBase.questionsDAOs;
 
 import objects.questions.FillInTheBlank;
-import objects.questions.PictureRespnose;
+import objects.questions.PictureResponse;
 import objects.questions.Question;
 import objects.questions.QuestionResponse;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -71,9 +71,6 @@ class QuestionResponseDAO implements QuestionDAOType {
                             break;
                         case "FillInTheBlank":
                             newQuestion = new FillInTheBlank(questionText, responseAnswer);
-                            break;
-                        case "PictureResponse":
-                            newQuestion = new PictureRespnose(questionText, responseAnswer);
                             break;
                     }
                     newQuestion.setQuestionId(questionId);
