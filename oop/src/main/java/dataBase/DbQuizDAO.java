@@ -277,4 +277,9 @@ public class DbQuizDAO implements QuizDAO{
         }
         return quizzes;
     }
+
+    @Override
+    public List<Quiz> getQuizByTag(String searchInput) {
+        return null;
+    }
 }
