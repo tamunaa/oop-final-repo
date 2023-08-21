@@ -10,6 +10,10 @@
 <%@ page import="javax.imageio.stream.ImageInputStream" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.mysql.cj.xdevapi.JsonArray" %>
+<%@ page import="dataBase.UserDAO" %>
+<%@ page import="objects.History" %>
+<%@ page import="dataBase.HistoryDAO" %>
+<%@ page import="objects.User" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -26,10 +30,12 @@
 </head>
 <body>
 
-<%--<%--%>
-<%--    Quiz quiz = (Quiz) session.getAttribute("quiz");--%>
-<%--    String author = (String) request.getAttribute("author");--%>
-<%--%>--%>
+<%
+    String quizName = request.getParameter("searchInput");
+    UserDAO userDAO = ((UserDAO)request.getServletContext().getAttribute("userDAO"));
+    Quiz curQuiz = ((QuizDAO)request.getServletContext().getAttribute("quizDAO")).getQuizByQuizName(quizName).get(0);
+    String author = userDAO.getUsernameByID(curQuiz.getAuthor());
+%>
 
 
 
@@ -37,29 +43,27 @@
 
 <div class="quiz-container">
     <div class="quiz-info">
-<%--        <h1><%=quiz.getQuizName()%></h1>--%>
-<%--        <p>author: <a href="profile.jsp?user=<%=author%>"><%=author%></a></p>--%>
-<%--        <p>Time for Quiz: <%=quiz.getTimer()%> minutes</p>--%>
-<%--        <p>Created Date: <%=new SimpleDateFormat("dd MMMM, yyyy HH:mm").format(quiz.getDateCreated())%></p>--%>
-<%--        <p>Description: <%=quiz.getDescription()%></p>--%>
-            <h1>quiz name</h1>
-            <p>author: luka</p>
-            <p>Time for Quiz: 30 minutes</p>
-            <p>Created Date: 2003.01.01</p>
-            <p>Description: bla</p>
+        <h1><%=curQuiz.getQuizName()%></h1>
+        <p>author: <a href="profile.jsp?self=false&&username=<%=author%>"><%=author%></a></p>
+        <p>Time for Quiz: <%=curQuiz.getTimer()%> minutes</p>
+        <p>Created Date: <%=new SimpleDateFormat("dd MMMM, yyyy HH:mm").format(curQuiz.getDateCreated())%></p>
+        <p>Description: <%=curQuiz.getDescription()%></p>
+
     </div>
 
     <div class="quiz-options">
-<%--        <%--%>
-<%--            if (quiz.isPractice()) {--%>
-<%--                out.println("<a href=\"#\" class=\"practice-btn\">Practice</a>");--%>
-<%--            }--%>
-<%--        %>--%>
-<%--        <a href="question" class="take-btn">Take Quiz</a>--%>
-        <a href="question" class="take-btn">Take Quiz</a>
-
-        <%out.println("<a href=\"#\" class=\"practice-btn option\">Practice</a>");%>
+        <form><a href="question" class="take-btn">Take Quiz</a></form>
+        <%if (true) {%>
+            <form><a class="practice-btn"> practice </a></form>
+        <%}%>
     </div>
+
+
+    <%
+        HistoryDAO historyDAO = (HistoryDAO) request.getServletContext().getAttribute("historyDAO");
+        int curQuizId = curQuiz.getID();
+        List<History> historyList =  historyDAO.getHistoryByQuizId(curQuiz.getID());
+    %>
 
     <div class="quiz-history">
         <h2>Quiz History</h2>
@@ -71,17 +75,19 @@
                 <th>Score</th>
             </tr>
             <%
-                // iterate over quiz history {
+                for (int i = 0; i < historyList.size(); i++) {
+                    History history = historyList.get(i);
+                    String who = userDAO.getUserByUserId(history.getUserId()).getUsername();
+                    String path = "profile.jsp?self=false&&username="+who;
             %>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td><a href="profile.jsp?user=tamunaa"> tamunaa </a></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= history.getDateTaken()%></td>
+                    <td><a href= '<%=path%>'> <%=who%> </a> </td>
+                    <td><%= history.getTimeRelapsed()%></td>
+                    <td><%= history.getScore()%></td>
                 </tr>
             <%
-//                }
+                }
             %>
         </table>
     </div>

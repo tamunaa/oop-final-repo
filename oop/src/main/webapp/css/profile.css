@@ -2,6 +2,7 @@ body {
     font-family: 'Quicksand', sans-serif;
     background-color: #f8f9fa;
 }
+
 .profile-card {
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -64,7 +65,8 @@ body {
 
 /* Add your custom styles here */
 .profile-section {
-    margin-bottom: 20px;
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 .profile-card {
@@ -137,3 +139,45 @@ body {
     color: black;
 }
 
+/* Style for the profile section */
+.profile-section {
+    background-color: #f7f7f7;
+    padding: 20px;
+}
+
+/* Style for the profile card */
+.profile-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the heading */
+.profile-card h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.custom-link-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 15px;
+}
+
+.custom-link-list li {
+    margin: 10px 0;
+}
+
+.custom-link-list a {
+    display: inline-block;
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s, border-bottom-color 0.3s;
+}
+
+.custom-link-list a:hover {
+    color: #f00;
+    border-bottom-color: #f00;
+}

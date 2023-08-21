@@ -16,6 +16,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         UserDAO userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
 
+        System.out.println("username "+ username + "password " + password);
+
         if(!userDAO.isValidUser(username, password)) {
             request.setAttribute("incorrect", true);
             request.setAttribute("mess", "Username Or Password Is Not Correct");

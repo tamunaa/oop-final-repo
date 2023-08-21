@@ -12,14 +12,20 @@ function toggleNotificationPanel() {
 }
 
 
-let isAdmin = true; //bazidan wamova es info
-function toggleAdmin() {
-    isAdmin = !isAdmin;
-    const starIcon = document.getElementById('star');
+function logOut(){
+    $.ajax({
+        url: "/LogOutServlet",
+        type: "POST",
+        data: {},
 
-    if (isAdmin) {
-        starIcon.classList.add('filled');
-    } else {
-        starIcon.classList.remove('filled');
-    }
+        success: function (response) {
+            console.log('success');
+            window.location.href = "index.jsp";
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Request Error:", error);
+            console.error("Status:", status);
+            console.error("XHR Object:", xhr);
+        }
+    });
 }

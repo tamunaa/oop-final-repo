@@ -1,3 +1,4 @@
+<%@ page import="objects.User" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +26,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Profile" href="profile.jsp">
+                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Profile" href="profile.jsp?self=true">
                         <i class="bi bi-person"></i>
                     </a>
                 </li>
@@ -45,18 +46,28 @@
                     </a>
                 </li>
 
-                <%
-                    boolean isAdmin = true; //bazidaaan
-                    if (isAdmin) {
-                %>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="admin area" href="admin.jsp">
-                        <i class="bi bi-gear"></i>
+                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Quiz" href="createQuiz.jsp">
+                        <i class="bi bi-folder-plus"></i>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Search Quiz" href="serach.jsp">
+                        <i class="bi bi-search-heart"></i>
+                    </a>
+                </li>
+
                 <%
-                    }
-                %>
+                    boolean isAdmin = ((User)session.getAttribute("currUser")).isAdmin();
+                    if (isAdmin){%>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="admin area" href="admin.jsp">
+                                <i class="bi bi-gear"></i>
+                            </a>
+                        </li>
+                    <%}%>
+
             </ul>
 
             <form class="d-flex" role="search">
@@ -76,7 +87,7 @@
                     </a>
                 </li>
                 <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Log Out">
-                    <a class="log-out" href="index.jsp">
+                    <a class="log-out"  onclick="logOut()">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 </li>

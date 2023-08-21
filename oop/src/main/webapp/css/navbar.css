@@ -105,12 +105,12 @@ body {
     background-color: #f2f2f2;
 }
 
-#star {
+.star {
     /* Add your regular star icon styles here */
     color: white;
 }
 
-#star.filled {
+.star.filled {
     /* Add your filled star icon styles here */
     color: yellow;
 }

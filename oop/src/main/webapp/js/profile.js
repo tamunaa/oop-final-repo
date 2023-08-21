@@ -32,27 +32,33 @@ function editUsername() {
     newUsernameInput.focus();
 }
 
+
 function saveUsername() {
     const newUsernameInput = document.getElementById('newUsername');
     const newUsername = newUsernameInput.value;
-
-    console.log('new user namee ', newUsername)
-
-    // Update the username
     const usernameElement = document.getElementById('username');
     usernameElement.textContent = newUsername;
     lastUserName = newUsername;
-
-    // TODO: Implement logic to save the new username to the server (e.g., via AJAX)
-
-    // Revert the username element back to normal
+    saveDataBase();
+    function saveDataBase() {
+        $.ajax({
+            url: "/ChangeUsernameServlet",
+            type: "POST",
+            data: {newUsername: newUsername},
+            success: function (response) {
+                console.log('success');
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Request Error:", error); // Log the detailed error message
+                console.error("Status:", status); // Log the HTTP status
+                console.error("XHR Object:", xhr); // Log the full XHR object
+            }
+        });
+    }
     const adminButton = document.getElementById('adminButton');
     const starIcon = document.getElementById('star');
     adminButton.style.display = 'block';
     starIcon.classList.add('bi-star-fill');
-
-    // Clear the edit window
-    // cancelEdit();
 }
 
 function cancelEdit() {
