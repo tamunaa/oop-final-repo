@@ -46,10 +46,6 @@ public class ResponseDAO {
 
                     return new Response(id, questionId, historyId, grade, isGraded, responseText);
                 } else {
-                    // Execute GradeDAO logic when no ungraded responses are found
-                    int score = calculateTotalScoreForHistory(historyId);
-                    GradeDAO gradeDAO = new GradeDAO(connection);
-                    gradeDAO.updateScore(historyId, score);
                     return null;
                 }
             }
