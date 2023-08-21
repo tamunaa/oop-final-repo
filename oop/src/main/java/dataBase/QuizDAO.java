@@ -20,4 +20,7 @@ public interface QuizDAO {
     public Double getRating(int id);
     public List<Quiz> getTopRatedQuizzes(int top);
     public String getCategory(int id);
+    public List<Quiz> getQuizzesByTag(String tag);
+    public void addTag(int id, String tag);
+    public void removeTag(int id, String tag);
 }
