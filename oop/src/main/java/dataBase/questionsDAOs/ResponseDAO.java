@@ -1,11 +1,15 @@
 package dataBase.questionsDAOs;
 
+import com.mysql.cj.conf.ConnectionUrlParser;
 import objects.Response;
+import objects.questions.Question;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResponseDAO {
     private Connection connection;
@@ -54,6 +58,41 @@ public class ResponseDAO {
             return null;
         }
     }
+
+    public List<List<String>> getQuestionResponsePairsByHistory(int historyId) {
+        List<List<String>> result = new ArrayList<>();
+        String query = "SELECT R.ID, Q.question_text, R.Response " +
+                "FROM RESPONSES R " +
+                "JOIN QUESTIONS Q ON R.Question_ID = Q.question_id " +
+                "WHERE R.History_ID = ? AND R.Is_graded = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, historyId);
+            statement.setBoolean(2, false);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String questionText = resultSet.getString("question_text");
+                    String responseText = resultSet.getString("Response");
+                    String responseId = resultSet.getString("ID");
+
+                    // Retrieve other attributes of Response object from resultSet
+                    // and set them to the response object
+
+                    List<String> oneEntry = new ArrayList<>();
+                    oneEntry.add(questionText);
+                    oneEntry.add(responseText);
+                    oneEntry.add(responseId);
+                    result.add(oneEntry);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+
 
     public int calculateTotalScoreForHistory(int historyId) {
         String query = "SELECT SUM(grade) AS total_score FROM RESPONSES WHERE History_ID = ?";

@@ -1,8 +1,10 @@
 package servlets;
 
 
+import com.mysql.cj.conf.ConnectionUrlParser;
 import dataBase.UserDAO;
 import dataBase.questionsDAOs.GradeDAO;
+import dataBase.questionsDAOs.ResponseDAO;
 import objects.questions.GradedQuestion;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +18,14 @@ import java.util.List;
 public class GradingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Retrieve the list of questions from the database
+        ResponseDAO responseDAO = (ResponseDAO) getServletContext().getAttribute("responseDAO");
+        List<List<String>> questionResponses = responseDAO.getQuestionResponsePairsByHistory(Integer.parseInt(request.getParameter("historyId")));
+
+        // Set the list of questions as an attribute in the request
+        request.setAttribute("questions", questionResponses);
+
+        // Forward to the grading.jsp page
         request.getRequestDispatcher("grading.jsp").forward(request, response);
     }
 
