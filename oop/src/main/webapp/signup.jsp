@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/authentication.css">
     <script src="js/authentication.js"></script>
 
-    <title>Sign In</title>
+    <title>Sign Up</title>
 
 </head>
 <body>
@@ -16,10 +16,15 @@
     <div class="signin-header">
         <h2>Join to Quiz app</h2>
     </div>
-    <form class="signin-form" action="java/servlets/signUp" method="POST">
+    <form class="signin-form" action="RegisterServlet" method="POST">
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        </div>
+
+        <div class="form-group">
+            <label for="username">Email</label>
+            <input type="text" id="email" name="email" placeholder="Enter your mail" required>
         </div>
 
         <div class="form-group">
