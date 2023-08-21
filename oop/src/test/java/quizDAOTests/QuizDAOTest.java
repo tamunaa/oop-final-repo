@@ -28,7 +28,7 @@ public class QuizDAOTest extends TestCase {
         dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/test_quiz");
         dataSource.setUsername("root");
-        dataSource.setPassword("123456789");
+        dataSource.setPassword("");
 
         quizDAO = new DbQuizDAO(dataSource);
 
@@ -165,7 +165,7 @@ public class QuizDAOTest extends TestCase {
         answers = new String[]{"Paris", "Berlin", "Rome"};
         int numFields = answers.length;
 
-        question = new MultiAnswer(questionText, answers, numFields, true);
+        question = new MultiAnswer(questionText, answers, true);
         question.setTimer(17);
         questionId = questionsDAO.addQuestion(question, 41);
 
@@ -174,7 +174,7 @@ public class QuizDAOTest extends TestCase {
         HashSet<String> answersSet = new HashSet<>();
         numFields = answers.length;
 
-        question = new MultiAnswer(questionText, answers, numFields, false);
+        question = new MultiAnswer(questionText, answers, false);
         question.setTimer(15);
 
         questionId = questionsDAO.addQuestion(question, 35);

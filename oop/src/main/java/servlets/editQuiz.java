@@ -25,7 +25,7 @@ public class editQuiz extends HttpServlet {
         QuizDAO quizDAO = new DbQuizDAO(dataSource);
 
         int quizId = Integer.parseInt(request.getParameter("quizId"));
-        List<Question> questions = quizDAO.getQuestions(quizDAO.getQuizByID(quizId));
+        List<Question> questions = quizDAO.getQuestions(quizId);
         request.setAttribute("questions", questions);
 
         request.getRequestDispatcher("editQuiz.jsp?quizId=" + quizId).forward(request, response);

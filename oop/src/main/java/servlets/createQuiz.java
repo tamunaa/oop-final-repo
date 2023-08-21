@@ -32,10 +32,11 @@ public class createQuiz extends HttpServlet {
         boolean immediateCorrection = request.getParameter("correction") != null;
         String quizDescription = request.getParameter("quizDescription");
         boolean randomOrder = request.getParameter("randomOrder") != null;
+        String category = request.getParameter("category");
 
         QuizDAO quizDAO = new DbQuizDAO(dataSource);
 
-        Quiz quiz = new Quiz(author, quizName, quizDescription, timer);
+        Quiz quiz = new Quiz(author, quizName, quizDescription, timer,category);
         quiz.setPractice(practiceMode);
         quiz.setCorrectImmediately(immediateCorrection);
         quiz.setOnOnePage(questionDisplayMode.equals("singlePage"));
