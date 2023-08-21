@@ -13,10 +13,11 @@ public interface QuizDAO {
     public List<Quiz> getQuizByQuizName(String name);
     public Quiz getQuizByID(int id);
     public List<Quiz> getPopularQuizzes(int top);
-    public List<Question> getQuestions(Quiz quiz);
+    public List<Question> getQuestions(int id);
     public List<Quiz> recentlyCreatedQuizzes(int num);
-    public List<String> getTags(Quiz quiz);
-    public List<Review> getReviews(Quiz quiz);
-    public Double getRating(Quiz quiz);
+    public List<String> getTags(int id);
+    public List<Review> getReviews(int id);
+    public Double getRating(int id);
     public List<Quiz> getTopRatedQuizzes(int top);
+    public String getCategory(int id);
 }

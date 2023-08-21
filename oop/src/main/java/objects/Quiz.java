@@ -8,6 +8,7 @@ public class Quiz {
     private String quizName;
     private String description;
     private int timer;
+    private String category;
     private Timestamp dateCreated;
     private boolean isRandom;
     private boolean onOnePage;
@@ -15,12 +16,14 @@ public class Quiz {
     private boolean isPractice;
     private int ID = -1;
 
-    public Quiz(int author, String quizName, String description, int timer, Timestamp created,
+
+    public Quiz(int author, String quizName, String description, int timer, String category, Timestamp created,
                 boolean isRandom, boolean onOnePage,boolean correctImmediately, boolean isPractice){
         Author = author;
         this.quizName = quizName;
         this.description = description;
         this.timer = timer;
+        this.category = category;
         this.dateCreated = created;
         this.isRandom = isRandom;
         this.onOnePage = onOnePage;
@@ -28,8 +31,8 @@ public class Quiz {
         this.isPractice = isPractice;
     }
 
-    public Quiz(int author, String quizName, String description, int timer){
-        this(author, quizName, description, timer, new Timestamp(new java.util.Date().getTime()), false, false, false, false);
+    public Quiz(int author, String quizName, String description, int timer, String category){
+        this(author, quizName, description, timer, category, new Timestamp(new java.util.Date().getTime()), false, false, false, false);
     }
 
     public void setDateCreated(Timestamp dateCreated) {
@@ -92,7 +95,15 @@ public class Quiz {
         return ID;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

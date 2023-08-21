@@ -21,16 +21,17 @@ public class DbQuizDAO implements QuizDAO{
         int quiz_id = -1;
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO QUIZZES(Author, Quiz_name, Descr, Timer, Date_created, Is_random, Display_type, Corrects_immediately, Is_practice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO QUIZZES(Author, Quiz_name, Descr, Timer, Category, Date_created, Is_random, Display_type, Corrects_immediately, Is_practice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, quiz.getAuthor());
             statement.setString(2, quiz.getQuizName());
             statement.setString(3, quiz.getDescription());
             statement.setInt(4, quiz.getTimer());
-            statement.setTimestamp(5, quiz.getDateCreated());
-            statement.setBoolean(6, quiz.isRandom());
-            statement.setBoolean(7, quiz.isOnOnePage());
-            statement.setBoolean(8, quiz.correctImmediately());
-            statement.setBoolean(9, quiz.isPractice());
+            statement.setString(5, quiz.getCategory());
+            statement.setTimestamp(6, quiz.getDateCreated());
+            statement.setBoolean(7, quiz.isRandom());
+            statement.setBoolean(8, quiz.isOnOnePage());
+            statement.setBoolean(9, quiz.correctImmediately());
+            statement.setBoolean(10, quiz.isPractice());
             int rowsChanged = statement.executeUpdate();
             if(rowsChanged == 0){
                 statement.close();
@@ -78,7 +79,7 @@ public class DbQuizDAO implements QuizDAO{
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 Quiz quiz = new Quiz(resultSet.getInt("Author"), resultSet.getString("Quiz_name"),
-                        resultSet.getString("Descr"), resultSet.getInt("Timer"),
+                        resultSet.getString("Descr"), resultSet.getInt("Timer"), resultSet.getString("Category"),
                         resultSet.getTimestamp("Date_created"), resultSet.getBoolean("Is_random"),
                         resultSet.getBoolean("Display_type"), resultSet.getBoolean("Corrects_immediately"),
                         resultSet.getBoolean("Is_practice"));
@@ -88,6 +89,7 @@ public class DbQuizDAO implements QuizDAO{
             statement.close();
             connection.close();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return quizzes;
@@ -102,7 +104,7 @@ public class DbQuizDAO implements QuizDAO{
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 Quiz quiz = new Quiz(resultSet.getInt("Author"), resultSet.getString("Quiz_name"),
-                        resultSet.getString("Descr"), resultSet.getInt("Timer"),
+                        resultSet.getString("Descr"), resultSet.getInt("Timer"), resultSet.getString("Category"),
                         resultSet.getTimestamp("Date_created"), resultSet.getBoolean("Is_random"),
                         resultSet.getBoolean("Display_type"), resultSet.getBoolean("Corrects_immediately"),
                         resultSet.getBoolean("Is_practice"));
@@ -126,7 +128,7 @@ public class DbQuizDAO implements QuizDAO{
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 quiz = new Quiz(resultSet.getInt("Author"), resultSet.getString("Quiz_name"),
-                        resultSet.getString("Descr"), resultSet.getInt("Timer"),
+                        resultSet.getString("Descr"), resultSet.getInt("Timer"), resultSet.getString("Category"),
                         resultSet.getTimestamp("Date_created"), resultSet.getBoolean("Is_random"),
                         resultSet.getBoolean("Display_type"), resultSet.getBoolean("Corrects_immediately"),
                         resultSet.getBoolean("Is_practice"));
@@ -159,12 +161,12 @@ public class DbQuizDAO implements QuizDAO{
         return quizzes;
     }
 
-    public List<Question> getQuestions(Quiz quiz){
+    public List<Question> getQuestions(int id){
         ArrayList<Question> questions = new ArrayList<>();
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select question_id from QUESTIONS where quiz_id = ?");
-            statement.setInt(1, quiz.getID());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 QuestionsDAO quesDAO = new QuestionsDAO(dataSource);
@@ -189,7 +191,7 @@ public class DbQuizDAO implements QuizDAO{
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 Quiz quiz = new Quiz(resultSet.getInt("Author"), resultSet.getString("Quiz_name"),
-                        resultSet.getString("Descr"), resultSet.getInt("Timer"),
+                        resultSet.getString("Descr"), resultSet.getInt("Timer"), resultSet.getString("Category"),
                         resultSet.getTimestamp("Date_created"), resultSet.getBoolean("Is_random"),
                         resultSet.getBoolean("Display_type"), resultSet.getBoolean("Corrects_immediately"),
                         resultSet.getBoolean("Is_practice"));
@@ -204,12 +206,12 @@ public class DbQuizDAO implements QuizDAO{
         return quizzes;
     }
 
-    public List<String> getTags(Quiz quiz){
+    public List<String> getTags(int id){
         ArrayList<String> tags = new ArrayList<>();
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select Hashtag from TAG where Quiz_ID = ?");
-            statement.setInt(1, quiz.getID());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 tags.add(resultSet.getString("Hashtag"));
@@ -222,12 +224,12 @@ public class DbQuizDAO implements QuizDAO{
         return tags;
     }
 
-    public List<Review> getReviews(Quiz quiz){
+    public List<Review> getReviews(int id){
         ArrayList<Review> reviews = new ArrayList<>();
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select * from REVIEW where Quiz_ID = ?");
-            statement.setInt(1, quiz.getID());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 Review review = new Review(resultSet.getInt("User_ID"), resultSet.getInt("Quiz_ID"),
@@ -242,11 +244,11 @@ public class DbQuizDAO implements QuizDAO{
         return reviews;
     }
 
-    public Double getRating(Quiz quiz){
+    public Double getRating(int id){
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement( "select avg(Rating) from RATING where Quiz_ID = ?");
-            statement.setInt(1, quiz.getID());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
                 return resultSet.getDouble(1);
@@ -276,5 +278,22 @@ public class DbQuizDAO implements QuizDAO{
             throw new RuntimeException(e);
         }
         return quizzes;
+    }
+
+    public String getCategory(int id){
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement( "select Category from QUIZZES where ID = ?");
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()){
+                return resultSet.getString(1);
+            }
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return "";
     }
 }

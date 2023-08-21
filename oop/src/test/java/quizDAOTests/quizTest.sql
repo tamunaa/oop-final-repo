@@ -19,6 +19,9 @@ VALUES ("user1", "u1@test.com", "password", true);
 INSERT INTO USERS(Username, Email, Password_hash,Is_administrator)
 VALUES ("user2", "u2@test.com", "password2", false);
 
+INSERT INTO USERS(Username, Email, Password_hash,Is_administrator)
+VALUES ("user3", "u3@test.com", "password3", false);
+
 DROP TABLE IF EXISTS QUIZZES;
 
 CREATE TABLE QUIZZES(
@@ -35,6 +38,10 @@ CREATE TABLE QUIZZES(
                         FOREIGN KEY (Author) REFERENCES USERS(ID) ON DELETE CASCADE,
                         PRIMARY KEY (ID)
 );
+
+ALTER TABLE QUIZZES ADD Category VARCHAR(50) NOT NULL;
+
+alter table QUIZZES modify column Category VARCHAR(50) NOT NULL after Timer;
 
 DROP TABLE IF EXISTS QUESTIONS;
 
@@ -108,31 +115,31 @@ CREATE TABLE HISTORY(
 );
 
 INSERT INTO HISTORY(Quiz_ID, User_ID, score,Time_relapsed)
-VALUES (20, 1, 10, 15);
+VALUES (30, 1, 10, 15);
 
 INSERT INTO HISTORY(Quiz_ID, User_ID, score,Time_relapsed)
-VALUES (20, 1, 15, 15);
+VALUES (30, 1, 15, 15);
 
 INSERT INTO HISTORY(Quiz_ID, User_ID, score,Time_relapsed)
-VALUES (20, 1, 20, 20);
+VALUES (30, 1, 20, 20);
 
 INSERT INTO HISTORY(Quiz_ID, User_ID, score,Time_relapsed)
-VALUES (20, 1, 15, 30);
+VALUES (30, 1, 15, 30);
 
 INSERT INTO HISTORY(Quiz_ID, User_ID, score,Time_relapsed)
-VALUES (18, 1, 10, 15);
+VALUES (35, 1, 10, 15);
 
 INSERT INTO HISTORY(Quiz_ID, User_ID, score,Time_relapsed)
-VALUES (19, 2, 10, 10);
+VALUES (35, 2, 10, 10);
 
 INSERT INTO HISTORY(Quiz_ID, User_ID, score,Time_relapsed)
-VALUES (19, 1, 12, 10);
+VALUES (35, 1, 12, 10);
 
 INSERT INTO HISTORY(Quiz_ID, User_ID, score,Time_relapsed)
-VALUES (18, 1, 10, 15);
+VALUES (40, 1, 10, 15);
 
 INSERT INTO HISTORY(Quiz_ID, User_ID, score,Time_relapsed)
-VALUES (18, 1, 10, 15);
+VALUES (40, 1, 10, 15);
 
 DROP TABLE IF EXISTS RATING;
 
