@@ -20,7 +20,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("password");
         dataSource.setMaxTotal(-1);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -34,9 +34,14 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         UserDAO userDAO = new UserDAO(dataSource);
         FriendsDAO friendsDAO = new FriendsDAO(dataSource);
         MessageDAO messageDAO = new MessageDAO(dataSource);
+        HistoryDAO historyDAO = new HistoryDAOSQL(dataSource);
+        QuizDAO quizDAO = new DbQuizDAO(dataSource);
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
         context.setAttribute("messageDAO", messageDAO);
+        context.setAttribute("historyDAO", historyDAO);
+        context.setAttribute("quizDAO", quizDAO);
+
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);
