@@ -1,3 +1,4 @@
+import dataBase.questionsDAOs.ResponseDAO;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletContextEvent;
@@ -20,7 +21,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("root:root");
         dataSource.setMaxTotal(-1);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -34,9 +35,16 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         UserDAO userDAO = new UserDAO(dataSource);
         FriendsDAO friendsDAO = new FriendsDAO(dataSource);
         MessageDAO messageDAO = new MessageDAO(dataSource);
+        ResponseDAO responseDAO = null;
+        try {
+            responseDAO = new ResponseDAO(dataSource);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
         context.setAttribute("messageDAO", messageDAO);
+        context.setAttribute("responseDAO", responseDAO);
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);
