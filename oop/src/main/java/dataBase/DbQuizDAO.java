@@ -161,12 +161,12 @@ public class DbQuizDAO implements QuizDAO{
         return quizzes;
     }
 
-    public List<Question> getQuestions(Quiz quiz){
+    public List<Question> getQuestions(int id){
         ArrayList<Question> questions = new ArrayList<>();
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select question_id from QUESTIONS where quiz_id = ?");
-            statement.setInt(1, quiz.getID());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 QuestionsDAO quesDAO = new QuestionsDAO(dataSource);
@@ -206,12 +206,12 @@ public class DbQuizDAO implements QuizDAO{
         return quizzes;
     }
 
-    public List<String> getTags(Quiz quiz){
+    public List<String> getTags(int id){
         ArrayList<String> tags = new ArrayList<>();
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select Hashtag from TAG where Quiz_ID = ?");
-            statement.setInt(1, quiz.getID());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 tags.add(resultSet.getString("Hashtag"));
@@ -224,12 +224,12 @@ public class DbQuizDAO implements QuizDAO{
         return tags;
     }
 
-    public List<Review> getReviews(Quiz quiz){
+    public List<Review> getReviews(int id){
         ArrayList<Review> reviews = new ArrayList<>();
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select * from REVIEW where Quiz_ID = ?");
-            statement.setInt(1, quiz.getID());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 Review review = new Review(resultSet.getInt("User_ID"), resultSet.getInt("Quiz_ID"),
@@ -244,11 +244,11 @@ public class DbQuizDAO implements QuizDAO{
         return reviews;
     }
 
-    public Double getRating(Quiz quiz){
+    public Double getRating(int id){
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement( "select avg(Rating) from RATING where Quiz_ID = ?");
-            statement.setInt(1, quiz.getID());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
                 return resultSet.getDouble(1);
@@ -280,11 +280,11 @@ public class DbQuizDAO implements QuizDAO{
         return quizzes;
     }
 
-    public String getCategory(Quiz quiz){
+    public String getCategory(int id){
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement( "select Category from QUIZZES where ID = ?");
-            statement.setInt(1, quiz.getID());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
                 return resultSet.getString(1);

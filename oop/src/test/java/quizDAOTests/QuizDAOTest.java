@@ -183,10 +183,8 @@ public class QuizDAOTest extends TestCase {
     public void testGetQuestions() throws SQLException {
         beforeEach();
 //        addQuestions();
-        Quiz quiz = new Quiz(2,"qvizi","sashualo quiz",40, "geography");
-//        quiz.setDateCreated(Timestamp.valueOf("2023-08-11 19:55:41"));
-        quiz.setID(41);
-        List<Question> questions = quizDAO.getQuestions(quiz);
+//        quiz with id 41 -> 41,2,qvizi,sashualo quiz,40,geography,2023-08-18 19:17:42,0,0,0,0
+        List<Question> questions = quizDAO.getQuestions(41);
         assertEquals(2, questions.size());
         assertEquals("Match the capitals with their respective countries.", questions.get(0).getQuestion());
         assertEquals("Whats the capitals of France, Germany and Italy?", questions.get(1).getQuestion());
@@ -214,9 +212,7 @@ public class QuizDAOTest extends TestCase {
     public void testGetTags() throws SQLException {
         beforeEach();
 //        addTags();
-        Quiz quiz = new Quiz(3,"qviziii","sashualo quiz",40, "biology");
-        quiz.setID(43);
-        ArrayList<String> tags = (ArrayList<String>) quizDAO.getTags(quiz);
+        ArrayList<String> tags = (ArrayList<String>) quizDAO.getTags(43);
         assertEquals(1, tags.size());
         assertEquals("Medium", tags.get(0));
     }
@@ -230,10 +226,7 @@ public class QuizDAOTest extends TestCase {
     public void testGetReviews() throws SQLException {
         beforeEach();
 //        addReviews();
-        Quiz quiz = new Quiz(2,"qvizi2","martivi quiz",30, "english");
-//        quiz.setDateCreated(Timestamp.valueOf("2023-08-11 19:51:35"));
-        quiz.setID(35);
-        List<Review> reviews = quizDAO.getReviews(quiz);
+        List<Review> reviews = quizDAO.getReviews(35);
         assertEquals(2, reviews.size());
         assertEquals(1, reviews.get(0).getUser_id());
         assertEquals(35, reviews.get(0).getQuiz_id());
@@ -253,9 +246,7 @@ public class QuizDAOTest extends TestCase {
     public void testGetRating() throws SQLException {
         beforeEach();
 //        addRating();
-        Quiz quiz = new Quiz(3,"qvizi3","sashualo quiz",40, "history");
-        quiz.setID(44);
-        assertEquals(9.15, quizDAO.getRating(quiz));
+        assertEquals(9.15, quizDAO.getRating(44));
     }
 
     public void testGetTopRatedQuizzes(){
@@ -268,13 +259,8 @@ public class QuizDAOTest extends TestCase {
 
     public void testGetCategory(){
         beforeEach();
-        Quiz quiz = new Quiz(3,"qvizi3","sashualo quiz",40, "history");
-        quiz.setID(44);
-        assertEquals("history", quizDAO.getCategory(quiz));
-
-        quiz = new Quiz(2,"qvizi2","martivi quiz",30, "english");
-        quiz.setID(35);
-        assertEquals("english", quizDAO.getCategory(quiz));
+        assertEquals("history", quizDAO.getCategory(44));
+        assertEquals("english", quizDAO.getCategory(35));
     }
 
 }
