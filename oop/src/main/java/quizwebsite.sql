@@ -148,7 +148,7 @@ CREATE TABLE CHALLENGES(
                             Quiz_ID int NOT NULL,
                             Date_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
                             PRIMARY KEY(ID),
-                            CONSTRAINT un unique (Challenger_ID, Challenged_ID),
+                            CONSTRAINT un unique (Challenger_ID, Challenged_ID, Quiz_ID),
                             FOREIGN KEY (Challenger_ID) REFERENCES USERS(ID) ON DELETE CASCADE,
                             FOREIGN KEY (Challenged_ID) REFERENCES USERS(ID) ON DELETE CASCADE
 
