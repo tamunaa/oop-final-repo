@@ -333,6 +333,41 @@ public class UserDAO implements UserDAOInterface{
         return false;
     }
 
+    @Override
+    public List<String> getCategories() {
+        ArrayList<String> categories = new ArrayList<>();
+        try{
+            Connection conn = ds.getConnection();
+            PreparedStatement stm = conn.prepareStatement("SELECT Category FROM CATEGORY");
+            ResultSet rs =  stm.executeQuery();
+            while (rs.next()){
+                categories.add(rs.getString(1));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
+    @Override
+    public boolean addCategory(int id, String category) {
+        try{
+            Connection conn = ds.getConnection();
+            if(getUserByUserId(id).isAdmin()) {
+                PreparedStatement stm = conn.prepareStatement("INSERT INTO CATEGORY(User_ID, Category) VALUES (?,?);");
+                stm.setInt(1, id);
+                stm.setString(2, category);
+                int added = stm.executeUpdate();
+                if (added == 1) return true;
+            }else{
+                return false;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     private boolean isRated(int userId, int quizId) {
         try{
@@ -345,6 +380,6 @@ public class UserDAO implements UserDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
-return false;
+        return false;
     }
 }
