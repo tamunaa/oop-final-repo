@@ -8,22 +8,24 @@ import dataBase.*;
 import objects.User;
 
 
-@WebServlet(name = "ChangePasswordServlet", value = "/ChangePasswordServlet")
+@WebServlet(name = "ChangeUsernameServlet", value = "/ChangeUsernameServlet")
 public class ChangeUsernameServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userEmail = (String) request.getSession().getAttribute("email");
-        String username = request.getParameter("username");
+        User currUser = (User) request.getSession().getAttribute("currUser");
+        String userEmail = currUser.getEmail();
+        String username = request.getParameter("newUsername");
+
         if(userEmail == null || username == null){
             try{
                 request.getRequestDispatcher("invalidUser.jsp").forward(request, response);
             } catch (ServletException | IOException e) {
                 e.printStackTrace();
             }
+            return;
         }
         UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
-        User currUser = userDAO.getUserByEmail(userEmail);
         boolean res = userDAO.changeUsername(currUser, username);
         if(res){
             response.sendRedirect("success.jsp");
