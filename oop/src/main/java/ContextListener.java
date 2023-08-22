@@ -1,3 +1,4 @@
+import dataBase.questionsDAOs.GradeDAO;
 import dataBase.questionsDAOs.ResponseDAO;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -35,7 +36,13 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         UserDAO userDAO = new UserDAO(dataSource);
         FriendsDAO friendsDAO = new FriendsDAO(dataSource);
         MessageDAO messageDAO = new MessageDAO(dataSource);
-        ResponseDAO responseDAO = null;
+        ResponseDAO responseDAO;
+        GradeDAO gradeDAO;
+        try {
+            gradeDAO = new GradeDAO(dataSource);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         try {
             responseDAO = new ResponseDAO(dataSource);
         } catch (SQLException e) {
