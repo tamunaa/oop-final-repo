@@ -1,7 +1,6 @@
 package servlets.addQuestions;
 import dataBase.DbQuizDAO;
 import dataBase.QuizDAO;
-import dataBase.questionsDAOs.QuestionsDAO;
 import objects.questions.MultiAnswer;
 import objects.questions.MultipleChoice;
 import objects.questions.Question;
@@ -14,15 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.util.Arrays;
+import java.sql.SQLException;
+import dataBase.questionsDAOs.*;
 
 @WebServlet("/addQuestions/addMultiAnswer")
 public class addMultiAnswer extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        QuestionsDAO questionsDAO = (QuestionsDAO) request.getServletContext().getAttribute("QuestionsDAO");
-
+        QuestionsDAO questionsDAO = (QuestionsDAO) request.getServletContext().getAttribute("questionsDAO");
 
         int quizId = Integer.parseInt(request.getParameter("quizId"));
         String questionText = request.getParameter("questionText");
@@ -42,7 +41,6 @@ public class addMultiAnswer extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         response.sendRedirect("/editQuiz?quizId=" + quizId);
     }
 }

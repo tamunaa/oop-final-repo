@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import objects.*;
 import dataBase.*;
+import dataBase.questionsDAOs.*;
 @WebListener
 public class ContextListener implements ServletContextListener, HttpSessionListener  {
     private Connection conn;
@@ -37,6 +38,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         HistoryDAO historyDAO = new HistoryDAOSQL(dataSource);
         DbQuizDAO quizDAO = new DbQuizDAO(dataSource);
         AchievementDAO achievementDAO = new DbAchievementDAO(dataSource);
+        QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
 
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
@@ -44,6 +46,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         context.setAttribute("historyDAO", historyDAO);
         context.setAttribute("quizDAO", quizDAO);
         context.setAttribute("achievementDAO", achievementDAO);
+        context.setAttribute("questionsDAO", questionsDAO);
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);
@@ -57,6 +60,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         sce.getServletContext().removeAttribute("messageDAO");
         sce.getServletContext().removeAttribute("historyDAO");
         sce.getServletContext().removeAttribute("friendshipService");
+        sce.getServletContext().removeAttribute("questionsDAO");
     }
 
     @Override
