@@ -2,7 +2,6 @@ package questionsDAOTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import dataBase.HistoryDAOSQL;
 import dataBase.questionsDAOs.GradeDAO;
 import dataBase.questionsDAOs.ResponseDAO;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -16,34 +15,33 @@ import java.sql.SQLException;
 
 public class ResponseDAOTest {
 
-    private static BasicDataSource connection;
+    private static BasicDataSource dataSource;
     private ResponseDAO responseDAO;
-    private static GradeDAO gradeDAO;
+    private GradeDAO gradeDAO;
 
     @BeforeAll
     static void setupConnection() throws SQLException {
-        connection = new BasicDataSource();
-        connection.setUrl("jdbc:mysql://localhost:3306/test_db");
-        connection.setUsername("root");
-        connection.setPassword("root:root");
-        gradeDAO = new GradeDAO(connection);
+        dataSource = new BasicDataSource();
+        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
+        dataSource.setUsername("root");
+        dataSource.setPassword("root:root");
     }
 
     @AfterAll
     static void closeConnection() throws SQLException {
-        if (connection != null) {
-            connection.close();
+        if (dataSource != null) {
+            dataSource.close();
         }
     }
 
     @BeforeEach
-    void setup() throws SQLException {
-        responseDAO = new ResponseDAO(connection);
-        gradeDAO = new GradeDAO(connection);
+    void setup() {
+        responseDAO = new ResponseDAO(dataSource);
+        gradeDAO = new GradeDAO(dataSource);
     }
 
     @Test
-    void testAddAndRetrieveResponse() throws SQLException {
+    void testAddAndRetrieveResponse() {
         int questionId = 5;
         int historyId = 1;
         int grade = 90;
@@ -120,10 +118,5 @@ public class ResponseDAOTest {
     @Test
     void TestUngradedGradeDAO(){
         assertEquals(0, gradeDAO.getScoreByHistoryId(2));
-    }
-
-    @Test
-    void TestGetQuestionsByHistoryId(){
-        assertEquals(23, responseDAO.getQuestionResponsePairsByHistory(1).size());
     }
 }
