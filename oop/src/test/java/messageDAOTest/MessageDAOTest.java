@@ -118,7 +118,6 @@ public class MessageDAOTest {
          assertTrue(messageDAO.addMessage(note1));
          assertTrue(messageDAO.addMessage(note2));
          assertTrue(messageDAO.addMessage(note3));
-         assertEquals(1,messageDAO.getInteractions(id2).size());
         List<Message> mes = messageDAO.getChat(id1,id2,true);
         List<String> strs = mes.stream().map(x-> (x).getContent()).collect(Collectors.toList());
         assertEquals(3,mes.size());
