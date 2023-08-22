@@ -1,5 +1,3 @@
-import dataBase.questionsDAOs.GradeDAO;
-import dataBase.questionsDAOs.ResponseDAO;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletContextEvent;
@@ -13,6 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import objects.*;
 import dataBase.*;
+import dataBase.questionsDAOs.*;
 @WebListener
 public class ContextListener implements ServletContextListener, HttpSessionListener  {
     private Connection conn;
@@ -22,7 +21,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("password");
         dataSource.setMaxTotal(-1);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -36,23 +35,24 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         UserDAO userDAO = new UserDAO(dataSource);
         FriendsDAO friendsDAO = new FriendsDAO(dataSource);
         MessageDAO messageDAO = new MessageDAO(dataSource);
-        ResponseDAO responseDAO;
-        GradeDAO gradeDAO;
-        try {
-            gradeDAO = new GradeDAO(dataSource);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            responseDAO = new ResponseDAO(dataSource);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        HistoryDAO historyDAO = new HistoryDAOSQL(dataSource);
+        DbQuizDAO quizDAO = new DbQuizDAO(dataSource);
+        AchievementDAO achievementDAO = new DbAchievementDAO(dataSource);
+        QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
+        AnnouncementDAO announcementDAO = new AnnouncementDAOSQL(dataSource);
+        GradeDAO gradeDAO = new GradeDAO(dataSource);
+        ResponseDAO responseDAO = new ResponseDAO(dataSource);
+
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
         context.setAttribute("messageDAO", messageDAO);
-        context.setAttribute("responseDAO", responseDAO);
+        context.setAttribute("historyDAO", historyDAO);
+        context.setAttribute("quizDAO", quizDAO);
+        context.setAttribute("achievementDAO", achievementDAO);
+        context.setAttribute("questionsDAO", questionsDAO);
+        context.setAttribute("announcementDAO", announcementDAO);
         context.setAttribute("gradeDAO", gradeDAO);
+        context.setAttribute("responseDAO", responseDAO);
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);
@@ -64,7 +64,12 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         sce.getServletContext().removeAttribute("userDAO");
         sce.getServletContext().removeAttribute("friendsDAO");
         sce.getServletContext().removeAttribute("messageDAO");
+        sce.getServletContext().removeAttribute("historyDAO");
         sce.getServletContext().removeAttribute("friendshipService");
+        sce.getServletContext().removeAttribute("questionsDAO");
+        sce.getServletContext().removeAttribute("announcementDAO");
+        sce.getServletContext().removeAttribute("gradeDAO");
+        sce.getServletContext().removeAttribute("responseDAO");
     }
 
     @Override
