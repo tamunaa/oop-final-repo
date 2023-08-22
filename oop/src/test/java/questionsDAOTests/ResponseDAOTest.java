@@ -23,9 +23,9 @@ public class ResponseDAOTest {
     @BeforeAll
     static void setupConnection() throws SQLException {
         connection = new BasicDataSource();
-        connection.setUrl("jdbc:mysql://localhost:3306/test_history");
+        connection.setUrl("jdbc:mysql://localhost:3306/test_db");
         connection.setUsername("root");
-        connection.setPassword("");
+        connection.setPassword("root:root");
         gradeDAO = new GradeDAO(connection);
     }
 
@@ -120,5 +120,10 @@ public class ResponseDAOTest {
     @Test
     void TestUngradedGradeDAO(){
         assertEquals(0, gradeDAO.getScoreByHistoryId(2));
+    }
+
+    @Test
+    void TestGetQuestionsByHistoryId(){
+        assertEquals(23, responseDAO.getQuestionResponsePairsByHistory(1).size());
     }
 }

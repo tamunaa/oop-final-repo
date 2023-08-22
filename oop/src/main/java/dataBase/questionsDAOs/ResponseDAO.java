@@ -77,6 +77,7 @@ public class ResponseDAO {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     String questionText = resultSet.getString("question_text");
+                    System.out.println(questionText);
                     String responseText = resultSet.getString("Response");
                     String responseId = resultSet.getString("ID");
 

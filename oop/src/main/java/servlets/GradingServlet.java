@@ -94,7 +94,15 @@ public class GradingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Retrieve the list of questions from the database
         ResponseDAO responseDAO = (ResponseDAO) getServletContext().getAttribute("responseDAO");
-        List<List<String>> questionResponses = responseDAO.getQuestionResponsePairsByHistory(Integer.parseInt(request.getParameter("historyId")));
+        List<List<String>> questionResponses = responseDAO.getQuestionResponsePairsByHistory(1);
+
+        System.out.println(questionResponses.size());
+        System.out.println(questionResponses.size());
+        System.out.println(questionResponses.size());
+        System.out.println(questionResponses.size());
+        System.out.println(questionResponses.size());
+
+        //Integer.parseInt(request.getParameter("historyId"))
 
         // Set the list of questions as an attribute in the request
         //request.setAttribute("questions", questionResponses);

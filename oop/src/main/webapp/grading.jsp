@@ -1,10 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %> <!-- Add this import -->
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+
+<%!
+    // Helper method to create an entry
+    List<String> createEntry(String responseId, String questionText, String responseText) {
+        List<String> entry = new ArrayList<String>();
+        entry.add(responseId);
+        entry.add(questionText);
+        entry.add(responseText);
+        return entry;
+    }
+%>
 
 <!DOCTYPE html>
 <html>
 <%
-    List<List<String>> questionResponse = (List<List<String>>) request.getSession().getAttribute("questions");
+    // Retrieve the questionResponse list from session or create it if not present
+    List<List<String>> questionResponse = (ArrayList<List<String>>) request.getSession().getAttribute("questions");
 
 %>
 <head>
@@ -51,23 +64,27 @@
 <jsp:include page="notificationbar.jsp" />
 
     <h1>Grade Questions</h1>
-    <table border="1">
+<table border="1">
+    <tr>
+        <th>Question</th>
+        <th>Response</th>
+        <th>Score</th>
+    </tr>
+    <%
+        for (List<String> entry : questionResponse) {
+    %>
         <tr>
-            <th>Question</th>
-            <th>Response</th>
-            <th>Score</th>
+            <td><%= entry.get(1) %></td> <!-- Question Text -->
+            <td><%= entry.get(2) %></td> <!-- Response Text -->
+            <td> <!-- Score Input -->
+                <input type="number" id="score_<%= entry.get(0) %>" min="0" max="10" required
+                       oninput="validateScore(this)">
+            </td>
         </tr>
-        <c:forEach var="questionResponse" items="${questions}">
-            <tr>
-                <td>${questionResponse[0]}</td> <!-- Question Text -->
-                <td>${questionResponse[1]}</td> <!-- Response Text -->
-                <td> <!-- Score Input -->
-                    <input type="number" id="score_${questionResponse[2]}" min="0" max="10" required
-                           oninput="validateScore(this)">
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
+    <%
+        }
+    %>
+</table>
 
 <form action="finishGrading" method="post" onsubmit="assignZeroScores()">
     <input type="hidden" name="historyId" value="${requestScope.historyId}">
