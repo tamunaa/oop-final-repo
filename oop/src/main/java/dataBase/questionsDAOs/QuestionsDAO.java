@@ -17,7 +17,7 @@ public class QuestionsDAO {
     public QuestionsDAO(BasicDataSource basicDataSource) {
         this.basicDataSource = basicDataSource;
     }
-    public void resetQuestionDAOTypeByQuestionType(String questionType) {
+    public void resetQuestionDAOTypeByQuestionType(String questionType) throws SQLException {
         switch (questionType) {
             case "QuestionResponse", "FillInTheBlank":
                 questionDAOType = new QuestionResponseDAO(basicDataSource);
@@ -33,6 +33,9 @@ public class QuestionsDAO {
                 break;
             case "PictureResponse":
                 questionDAOType = new PictureResponseDAO(basicDataSource);
+                break;
+            case "Graded":
+                questionDAOType = new GradedQuestionDAO(basicDataSource);
                 break;
         }
     }
@@ -55,7 +58,7 @@ public class QuestionsDAO {
                 throw new RuntimeException(e);
             }
         }
-        public int addQuestion (Question question, int quizId){
+        public int addQuestion (Question question, int quizId) throws SQLException {
             resetQuestionDAOTypeByQuestionType(question.getQuestionType());
             return questionDAOType.addQuestion(question, quizId);
         }
