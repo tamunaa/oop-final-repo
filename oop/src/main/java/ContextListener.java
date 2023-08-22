@@ -64,6 +64,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         sce.getServletContext().removeAttribute("friendshipService");
         sce.getServletContext().removeAttribute("questionsDAO");
         sce.getServletContext().removeAttribute("announcementDAO");
+
     }
 
     @Override
