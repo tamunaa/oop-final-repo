@@ -1,20 +1,24 @@
 package dataBase.questionsDAOs;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GradeDAO {
-    private Connection connection;
+    private BasicDataSource connection;
+    private Connection con;
 
-    public GradeDAO(Connection connection) {
+    public GradeDAO(BasicDataSource connection) throws SQLException {
         this.connection = connection;
+        this.con = connection.getConnection();
     }
 
     public boolean updateScore(int historyId) {
         String query = "UPDATE HISTORY SET score = (SELECT SUM(grade) FROM RESPONSES WHERE History_ID = ?) WHERE ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = con.prepareStatement(query)) {
             statement.setInt(1, historyId);
             statement.setInt(2, historyId);
 
@@ -28,7 +32,7 @@ public class GradeDAO {
 
     public int getScoreByHistoryId(int historyId) {
         String query = "SELECT score FROM HISTORY WHERE ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = con.prepareStatement(query)) {
             statement.setInt(1, historyId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -46,7 +50,7 @@ public class GradeDAO {
 
     public boolean gradeSingleResponse(int questionId, int score) {
         String query = "UPDATE RESPONSES SET grade = ? WHERE Question_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = con.prepareStatement(query)) {
             statement.setInt(1, score);
             statement.setInt(2, questionId);
 
@@ -59,7 +63,7 @@ public class GradeDAO {
     }
     public int calculateTotalScoreForHistory(int historyId) {
         String query = "SELECT SUM(grade) AS total_score FROM RESPONSES WHERE History_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = con.prepareStatement(query)) {
             statement.setInt(1, historyId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -78,7 +82,7 @@ public class GradeDAO {
 
     public boolean addScoreAndMarkAsGraded(int responseId, int grade) {
         String query = "UPDATE RESPONSES SET grade = ?, Is_graded = ? WHERE ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = con.prepareStatement(query)) {
             statement.setInt(1, grade);
             statement.setBoolean(2, true);
             statement.setInt(3, responseId);

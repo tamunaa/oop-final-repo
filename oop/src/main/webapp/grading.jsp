@@ -5,6 +5,7 @@
 <html>
 <%
     List<List<String>> questionResponse = (List<List<String>>) request.getSession().getAttribute("questions");
+
 %>
 <head>
     <meta charset="UTF-8">
@@ -34,6 +35,15 @@
             form.submit();
         }
     </script>
+    <script>
+        function validateScore(input) {
+            if (input.value < 0) {
+                input.value = 0;
+            } else if (input.value > 10) {
+                input.value = 10;
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -43,7 +53,7 @@
     <h1>Grade Questions</h1>
     <table border="1">
         <tr>
-            <th>Question Text</th>
+            <th>Question</th>
             <th>Response</th>
             <th>Score</th>
         </tr>
@@ -52,15 +62,27 @@
                 <td>${questionResponse[0]}</td> <!-- Question Text -->
                 <td>${questionResponse[1]}</td> <!-- Response Text -->
                 <td> <!-- Score Input -->
-                    <input type="number" id="score_${questionResponse[2]}" min="0" max="100" required>
+                    <input type="number" id="score_${questionResponse[2]}" min="0" max="10" required
+                           oninput="validateScore(this)">
                 </td>
             </tr>
         </c:forEach>
     </table>
 
-    <form action="finishGrading" method="post">
-        <input type="hidden" name="historyId" value="${requestScope.historyId}">
-        <input type="submit" value="Finish Grading">
-    </form>
+<form action="finishGrading" method="post" onsubmit="assignZeroScores()">
+    <input type="hidden" name="historyId" value="${requestScope.historyId}">
+    <input type="submit" value="Finish Grading">
+</form>
+
+<script>
+    function assignZeroScores() {
+        var scoreInputs = document.querySelectorAll('input[type="number"]');
+        for (var i = 0; i < scoreInputs.length; i++) {
+            if (scoreInputs[i].value === '') {
+                scoreInputs[i].value = '0';
+            }
+        }
+    }
+</script>
 </body>
 </html>

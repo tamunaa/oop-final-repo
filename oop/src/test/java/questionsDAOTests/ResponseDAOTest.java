@@ -2,8 +2,10 @@ package questionsDAOTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import dataBase.HistoryDAOSQL;
 import dataBase.questionsDAOs.GradeDAO;
 import dataBase.questionsDAOs.ResponseDAO;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -14,16 +16,17 @@ import java.sql.SQLException;
 
 public class ResponseDAOTest {
 
-    private static Connection connection;
+    private static BasicDataSource connection;
     private ResponseDAO responseDAO;
-    private GradeDAO gradeDAO;
+    private static GradeDAO gradeDAO;
 
     @BeforeAll
     static void setupConnection() throws SQLException {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/test_db";
-        String user = "root";
-        String password = "root:root";
-        connection = DriverManager.getConnection(jdbcUrl, user, password);
+        connection = new BasicDataSource();
+        connection.setUrl("jdbc:mysql://localhost:3306/test_history");
+        connection.setUsername("root");
+        connection.setPassword("");
+        gradeDAO = new GradeDAO(connection);
     }
 
     @AfterAll
@@ -34,13 +37,13 @@ public class ResponseDAOTest {
     }
 
     @BeforeEach
-    void setup() {
+    void setup() throws SQLException {
         responseDAO = new ResponseDAO(connection);
         gradeDAO = new GradeDAO(connection);
     }
 
     @Test
-    void testAddAndRetrieveResponse() {
+    void testAddAndRetrieveResponse() throws SQLException {
         int questionId = 5;
         int historyId = 1;
         int grade = 90;

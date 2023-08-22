@@ -6,6 +6,8 @@
 <%
     List<List<String>> questionResponse = (List<List<String>>) request.getSession().getAttribute("questions");
 %>
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,7 +55,7 @@
         </tr>
         <c:forEach var="questionResponse" items="${questions}">
             <tr>
-                <td>asdfghjklasdfghjklsdfghjklsdfghjk      kdsnfkjv ca,m s fljc j scjo acljnasdjandjlcnadlc?</td> <!-- Question Text -->
+                <td>${questionResponse[0]}</td> <!-- Question Text -->
                 <td><input type="text" name="response_${questionResponse[2]}" required></td> <!-- Response Input -->
             </tr>
         </c:forEach>
