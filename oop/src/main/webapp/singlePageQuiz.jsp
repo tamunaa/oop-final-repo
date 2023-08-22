@@ -8,22 +8,23 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-    <%--    <%--%>
-    <%--        String cssFolderPath = "questions/css/"; // Path to your CSS folder--%>
-    <%--        String[] cssFiles = new java.io.File(application.getRealPath(cssFolderPath)).list();--%>
-    <%--        if (cssFiles != null) {--%>
-    <%--            for (String cssFile : cssFiles) {--%>
-    <%--                if (cssFile.endsWith(".css")) {--%>
-    <%--    %>--%>
-    <%--    <link rel="stylesheet" type="text/css" href="<%= cssFolderPath + cssFile %>">--%>
-    <%--    <%--%>
-    <%--                }--%>
-    <%--            }--%>
-    <%--        }--%>
-    <%--    %>--%>
+        <%
+            String cssFolderPath = "questions/css/"; // Path to your CSS folder
+            String[] cssFiles = new java.io.File(application.getRealPath(cssFolderPath)).list();
+            if (cssFiles != null) {
+                for (String cssFile : cssFiles) {
+                    if (cssFile.endsWith(".css")) {
+        %>
+        <link rel="stylesheet" type="text/css" href="<%= cssFolderPath + cssFile %>">
+        <%
+                    }
+                }
+            }
+        %>
 
     <link rel="stylesheet" type="text/css" href="questions/css/base.css">
     <link rel="stylesheet" type="text/css" href="questions/css/Matching.css">
+    <link rel="stylesheet" type="text/css" href="questions/css/Multi.css">
 
     <title>quiz</title>
 </head>
@@ -41,21 +42,33 @@
 <%--    <jsp:include page="questions/QuizBar.jsp"/>--%>
 
 <div class="question-page">
-<%--    <%--%>
-<%--        int i = 0;--%>
-<%--        while (i < questions.length){--%>
-<%--            Question current = questions[i];--%>
-<%--            session.setAttribute("current", current);--%>
-<%--            String type = current.getQuestionType();--%>
-<%--            String path = "questions/"+type+".jsp";--%>
-<%--    %>--%>
-<%--    <div class="question-card">--%>
-<%--        <jsp:include page="<%= path %>" />--%>
-<%--    </div>--%>
-<%--    <%--%>
-<%--            i++;--%>
-<%--        }--%>
-<%--    %>--%>
+    <div>
+        <%
+            for (int i = 0; i < questions.length; i++) {
+                %>
+        <input type="text" id="answer<%=i%>">
+        <%
+
+            }
+        %>
+    </div>
+    <%
+        int i = 0;
+        while (i < questions.length) {
+            Question current = questions[i];
+            request.setAttribute("index", i);
+            request.setAttribute("current", current);
+            String type = current.getQuestionType();
+            String path = "questions/"+type+".jsp";
+    %>
+    <div class="question-card">
+                <jsp:include page="<%= path %>" />
+
+    </div>
+    <%
+            i++;
+        }
+    %>
     <button class="finish">submit</button>
 </div>
 </body>

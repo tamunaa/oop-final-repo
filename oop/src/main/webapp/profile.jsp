@@ -218,7 +218,7 @@
                     <ul class="custom-link-list">
                         <%for(int i = 0; i < createdQuizzes.size(); i++){
                             Quiz curQuiz = createdQuizzes.get(i);
-                            String quizPagePath = "quizpage.jsp?searchInput="+curQuiz.getQuizName();
+                            String quizPagePath = "quizPage.jsp?searchInput="+curQuiz.getQuizName();
                         %>
                         <li><a href="<%=quizPagePath%>"> <%=curQuiz.getQuizName()%> </a></li>
                         <%}%>
