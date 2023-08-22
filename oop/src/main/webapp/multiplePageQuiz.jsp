@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="objects.questions.Question" %>
+
 <html>
 <head>
     <title>Title</title>
@@ -20,7 +22,9 @@
     </div>
 </div>
 <button class="finish" id="load-button">Next</button>
-
+<%--<%--%>
+<%--Question[] questions = (Question[]) request.getSession().getAttribute("questions");--%>
+<%--%>--%>
 <script>
     $(document).ready(function() {
         const dynamicContainer = $("#dynamic-container");
@@ -36,7 +40,8 @@
                 $.ajax({
                     url: path,
                     type: "POST",
-                    data: { index: index },
+
+                    data: { index: index},
                     success: function(data) {
                         dynamicContainer.html(data);
                         dynamicContainer.fadeIn(300);

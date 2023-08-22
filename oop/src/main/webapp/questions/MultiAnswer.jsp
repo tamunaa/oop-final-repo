@@ -1,16 +1,21 @@
 <%@ page import="objects.questions.Question" %>
-
+<%
+    Question question = (Question)request.getAttribute("current");
+%>
 <form class="form-container">
-<%--    <h1>Multi Answer</h1>--%>
+    <h3>Multi Answer</h3>
     <div class="question">
-<%--        <h2> <%= ((Question)session.getAttribute("current")).getQuestion()%> </h2>--%>
-        <h2>questionnn</h2>
+        <h2> <%=question.getQuestion()%> </h2>
     </div>
 
     <div class="user-answer">
         <label>Your Answer:</label>
-        <label>
+        <%
+            for (int i = 0; i < question.getNumFields(); i++) {
+                %>
             <input type="text" name="userAnswer" required>
-        </label>
+        <%
+            }
+        %>
     </div>
 </form>

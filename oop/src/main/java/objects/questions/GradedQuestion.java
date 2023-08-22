@@ -1,6 +1,8 @@
 package objects.questions;
 
-public class GradedQuestion implements Question{
+import java.io.Serializable;
+
+public class GradedQuestion implements Question, Serializable {
     private final String questionText;
     private int timer = 0;
     private int questionId = -1;
