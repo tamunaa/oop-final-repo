@@ -31,6 +31,7 @@ public class MessageDAOTest {
     private BasicDataSource dataSource;
     private User user1;
     private User user2;
+    private User user3;
     private Message note1;
     private Message note2;
     private Message note3;
@@ -38,24 +39,25 @@ public class MessageDAOTest {
     private Message ch;
     private static int id1;
     private static int id2;
+    private static int id3;
 
 
-    @BeforeAll
-    protected static void emptyTables() throws SQLException {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setUrl("jdbc:mysql://localhost:3306/test_message");
-        ds.setUsername("root");
-        ds.setPassword("root");
-        Connection conn = ds.getConnection();
-        PreparedStatement stm = conn.prepareStatement("USE test_message ; ");
-        stm.execute();
-        stm = conn.prepareStatement("DELETE FROM USERS ;");
-        stm.executeUpdate();
-        stm = conn.prepareStatement("DELETE FROM MESSAGE ;");
-        stm.executeUpdate();
-        stm.close();
-        conn.close();
-    }
+       @BeforeAll
+       protected static void emptyTables() throws SQLException {
+           BasicDataSource ds = new BasicDataSource();
+           ds.setUrl("jdbc:mysql://localhost:3306/test_message");
+           ds.setUsername("root");
+           ds.setPassword("root");
+           Connection conn = ds.getConnection();
+           PreparedStatement stm = conn.prepareStatement("USE test_message ; ");
+         stm.execute();
+           stm = conn.prepareStatement("DELETE FROM USERS ;");
+           stm.executeUpdate();
+           stm = conn.prepareStatement("DELETE FROM MESSAGE ;");
+           stm.executeUpdate();
+           stm.close();
+           conn.close();
+       }
     @BeforeEach
     public void setUp() {
         dataSource = new BasicDataSource();
@@ -85,24 +87,18 @@ public class MessageDAOTest {
             e.printStackTrace();
         }
     }
-/*
-    @Test
+
+ /*  @Test
+   @Order(1)
     void boo() {
-        user1 = new User("girl","girl@gmail.com", "password");
-        user2 = new User("guy", "guy@gmail.com", "pass");
-        id1 = userDAO.addUser(user1);
-        id2 = userDAO.addUser(user2);
-        List<Message> l = messageDAO.getChat(id1,id2,true);
-        assertTrue(l.isEmpty());
-        note1 = new NoteMessage(id1,id2,"hey baby,how are you feeling");
-        messageDAO.addMessage(note1);
-        List<Message> ls = messageDAO.getChat(id1,id2,true);
-        assertEquals(1,ls.size());
-        assertTrue(messageDAO.deleteMessage(note1.getId()));
-        List<Message> ls2 = messageDAO.getChat(id1,id2,true);
-        assertTrue(ls2.isEmpty());
-    }
- */
+        assertEquals(2,messageDAO.getUsersRecentIncomingNotifications(4).size());
+       assertEquals(2,(messageDAO.getChat(2,1,true)).size());
+       assertEquals(2,messageDAO.getChat(1,2,true).size());
+       assertEquals(3,(messageDAO.getInteractions(1)).size());
+       assertEquals(2,(messageDAO.getInteractions(2)).size());
+
+   } */
+
     @Test
     @Order(1)
     void createChatAddAndRemoveTest(){
@@ -118,7 +114,6 @@ public class MessageDAOTest {
          assertTrue(messageDAO.addMessage(note1));
          assertTrue(messageDAO.addMessage(note2));
          assertTrue(messageDAO.addMessage(note3));
-         assertEquals(1,messageDAO.getInteractions(id2).size());
         List<Message> mes = messageDAO.getChat(id1,id2,true);
         List<String> strs = mes.stream().map(x-> (x).getContent()).collect(Collectors.toList());
         assertEquals(3,mes.size());
@@ -174,5 +169,4 @@ public class MessageDAOTest {
         assertEquals(0,notifs.size());
 
     }
-
 }
