@@ -4,10 +4,12 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import objects.*;
 import dataBase.*;
 @WebListener
 public class ContextListener implements ServletContextListener, HttpSessionListener  {
@@ -18,7 +20,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
         dataSource.setUsername("root");
-        dataSource.setPassword("password");
+        dataSource.setPassword("123456789");
         dataSource.setMaxTotal(-1);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -33,13 +35,15 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         FriendsDAO friendsDAO = new FriendsDAO(dataSource);
         MessageDAO messageDAO = new MessageDAO(dataSource);
         HistoryDAO historyDAO = new HistoryDAOSQL(dataSource);
-        QuizDAO quizDAO = new DbQuizDAO(dataSource);
+        DbQuizDAO quizDAO = new DbQuizDAO(dataSource);
+        AchievementDAO achievementDAO = new DbAchievementDAO(dataSource);
+
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
         context.setAttribute("messageDAO", messageDAO);
         context.setAttribute("historyDAO", historyDAO);
         context.setAttribute("quizDAO", quizDAO);
-
+        context.setAttribute("achievementDAO", achievementDAO);
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);
@@ -51,6 +55,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         sce.getServletContext().removeAttribute("userDAO");
         sce.getServletContext().removeAttribute("friendsDAO");
         sce.getServletContext().removeAttribute("messageDAO");
+        sce.getServletContext().removeAttribute("historyDAO");
         sce.getServletContext().removeAttribute("friendshipService");
     }
 
