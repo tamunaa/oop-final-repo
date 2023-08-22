@@ -23,4 +23,5 @@ public interface QuizDAO {
     public List<Quiz> getQuizzesByTag(String tag);
     public void addTag(int id, String tag);
     public void removeTag(int id, String tag);
+    List<Quiz> getAllQuizzes();
 }
