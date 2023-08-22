@@ -11,6 +11,7 @@ import objects.questions.QuestionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.sql.SQLOutput;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +32,7 @@ public class QuestionResponseDAOTest {
     }
 
     @Test
-    public void testAddAndGetQuestionResponseType() {
+    public void testAddAndGetQuestionResponseType() throws SQLException {
         String questionText = "What is the capital of France?";
         String responseAnswer = "Paris";
         Question question = new QuestionResponse(questionText, responseAnswer);
@@ -51,7 +52,7 @@ public class QuestionResponseDAOTest {
     }
 
     @Test
-    public void testRemoveQuestionResponseQuestion() {
+    public void testRemoveQuestionResponseQuestion() throws SQLException {
         String questionText = "What is the capital of Germany?";
         String responseAnswer = "Berlin";
         Question question = new QuestionResponse(questionText, responseAnswer);
@@ -65,7 +66,7 @@ public class QuestionResponseDAOTest {
 
 
     @Test
-    public void testAddAndGetFillInTheBlankType() {
+    public void testAddAndGetFillInTheBlankType() throws SQLException {
         String questionText = "The capital of Georgia is _.";
         String correctAnswer = "Tbilisi";
         Question question = new FillInTheBlank(questionText, correctAnswer);
@@ -86,7 +87,7 @@ public class QuestionResponseDAOTest {
     }
 
     @Test
-    public void testRemoveFillInTheBlankQuestion() {
+    public void testRemoveFillInTheBlankQuestion() throws SQLException {
         String questionText = "The capital of Georgia is _.";
         String correctAnswer = "Tbilisi";
         Question question = new FillInTheBlank(questionText, correctAnswer);
@@ -101,7 +102,7 @@ public class QuestionResponseDAOTest {
 
 
     @Test
-    public void testAddAndGetPictureResponseType() {
+    public void testAddAndGetPictureResponseType() throws SQLException {
         String questionText = "What's in the picture?";
         String URL = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
         String correctAnswer = "A bullet";
@@ -122,7 +123,7 @@ public class QuestionResponseDAOTest {
     }
 
     @Test
-    public void testRemovePictureResponseQuestion() {
+    public void testRemovePictureResponseQuestion() throws SQLException {
         String questionText = "What's in the picture?";
         String URL = "https://rameurl.com/images/questions/random-picture-of-a-bullet.png";
         String correctAnswer = "A bullet";
