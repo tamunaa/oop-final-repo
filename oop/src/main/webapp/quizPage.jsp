@@ -34,8 +34,10 @@
     String quizName = request.getParameter("searchInput");
     UserDAO userDAO = ((UserDAO)request.getServletContext().getAttribute("userDAO"));
     QuizDAO quizDAO = ((QuizDAO)request.getServletContext().getAttribute("quizDAO"));
-    Quiz curQuiz = quizDAO.getQuizByQuizName(quizName).get(0);
+//    Quiz curQuiz = quizDAO.getQuizByQuizName(quizName).get(0);
+    Quiz curQuiz = (Quiz) request.getSession().getAttribute("currQuiz");
     String author = userDAO.getUsernameByID(curQuiz.getAuthor());
+    User currUser = (User) request.getSession().getAttribute("currUser");
 %>
 
 
@@ -56,6 +58,9 @@
         <form><a href="question" class="take-btn">Take Quiz</a></form>
         <%if (true) {%>
         <form><a class="practice-btn"> practice </a></form>
+        <%}%>
+        <%if (currUser.getId() == curQuiz.getAuthor()){%>
+            <form><a href = "editQuiz?quizId=<%=curQuiz.getID()%>" class="edit-btn"> Edit Quiz </a></form>
         <%}%>
     </div>
 

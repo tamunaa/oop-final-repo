@@ -1,3 +1,4 @@
+import dataBase.questionsDAOs.QuestionsDAO;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletContextEvent;
@@ -40,6 +41,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         AchievementDAO achievementDAO = new DbAchievementDAO(dataSource);
         QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
         AnnouncementDAO announcementDAO = new AnnouncementDAOSQL(dataSource);
+        ResponseDAO responseDAO = new ResponseDAO(dataSource);
 
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
@@ -49,6 +51,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         context.setAttribute("achievementDAO", achievementDAO);
         context.setAttribute("questionsDAO", questionsDAO);
         context.setAttribute("announcementDAO", announcementDAO);
+        context.setAttribute("responseDAO", responseDAO);
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);
