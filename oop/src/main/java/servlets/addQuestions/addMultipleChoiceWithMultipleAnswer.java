@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 @WebServlet("/addQuestions/addMultipleChoiceWithMultipleAnswer")
@@ -42,7 +43,11 @@ public class addMultipleChoiceWithMultipleAnswer extends HttpServlet {
 
         question.setTimer(timer);
         QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
-        questionsDAO.addQuestion(question, quizId);
+        try {
+            questionsDAO.addQuestion(question, quizId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         response.sendRedirect("/editQuiz?quizId=" + quizId);
     }

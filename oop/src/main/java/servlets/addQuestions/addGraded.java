@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/addQuestions/addGraded")
 public class addGraded extends HttpServlet {
@@ -28,7 +29,11 @@ public class addGraded extends HttpServlet {
 
         Question question = new GradedQuestion(questionText);
         question.setTimer(timer);
-        questionsDAO.addQuestion(question, quizId);
+        try {
+            questionsDAO.addQuestion(question, quizId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         response.sendRedirect("/editQuiz?quizId=" + quizId);
     }
