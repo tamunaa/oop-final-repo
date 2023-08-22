@@ -52,3 +52,9 @@ header{
 .go-back:hover{
     color: #4b4b96;
 }
+
+.trash{
+    display: flex;
+    border: none;
+    background: none;
+}

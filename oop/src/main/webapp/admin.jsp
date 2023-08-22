@@ -1,6 +1,8 @@
 <%@ page import="objects.User" %>
 <%@ page import="java.util.List" %>
 <%@ page import="dataBase.UserDAO" %>
+<%@ page import="dataBase.QuizDAO" %>
+<%@ page import="objects.Quiz" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +28,8 @@
 
     <%
         List<User> userList = ((UserDAO)request.getServletContext().getAttribute("userDAO")).getAllUsers();
-//        List<User> quizList = ((UserDAO)request.getServletContext().getAttribute("quizDAO")).getAllUsers();
+        List<Quiz> quizList = ((QuizDAO)request.getServletContext().getAttribute("quizDAO")).getPopularQuizzes(10);
+        out.println(quizList.size());
 
     %>
 
@@ -37,12 +40,21 @@
             <%
                 for(int i = 0; i < userList.size(); i++){
                     String curUserName =userList.get(i).getUsername();
+                    String pathToUser = "profile.jsp?self=false&&username="+curUserName;
             %>
             <tr>
                 <td>
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="me-3"><%=curUserName%></span>
-                        <form action="" method=""><i class="fas fa-trash-alt"></i></form>
+                        <a class="me-3" href= "<%=pathToUser%>" ><%=curUserName%></a>
+                        <form action="AdminServlet" method="GET">
+                            <label for="deleteUser">
+                                <input type="hidden" id="deleteUser" name="deleteUser" value="<%=curUserName%>">
+                            </label>
+
+                            <button class="trash">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
                     </div>
                 </td>
             </tr>
@@ -60,21 +72,24 @@
     <div>
         <table class="quizzes-table">
             <tbody>
-            <%--            <%--%>
-            <%--                for(int i = 0; i < quizList.size(); i++){--%>
-            <%--                    String curQuizName =quizList.get(i).getUsername();--%>
-            <%--            %>--%>
-            <%--            <tr>--%>
-            <%--                <td>--%>
-            <%--                    <div class="d-flex justify-content-between align-items-center">--%>
-            <%--                        <span class="me-3"><%=curQuizName%></span>--%>
-            <%--                        <form action="" method=""><i class="fas fa-trash-alt"></i></form>--%>
-            <%--                    </div>--%>
-            <%--                </td>--%>
-            <%--            </tr>--%>
-            <%--            <%--%>
-            <%--                }--%>
-            <%--            %>--%>
+                        <%
+                            for(int i = 0; i < quizList.size(); i++){
+                                String curQuizName =quizList.get(i).getQuizName();
+                                String pathToQuiz = "quizPage.jsp?searchInput="+curQuizName;
+                        %>
+                        <tr>
+                            <td>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a class="me-3" href="<%=pathToQuiz%>"><%=curQuizName%></a>
+                                    <form action="" method="">
+                                        <button class="trash"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <%
+                            }
+                        %>
             </tbody>
         </table>
     </div>
@@ -83,13 +98,13 @@
 
 <section class="admin-section p-4">
     <h2 class="mb-4">Make Announcements</h2>
-    <form id="announcement-form">
-        <label for="announcement-text">Announcement:</label>
-        <textarea id="announcement-text" class="form-control mb-3" required></textarea>
+    <form id="announcement-form" action="AdminServlet" method="POST">
+        <label for="announcementTitle">Title:</label>
+        <input id="announcementTitle" name="announcementTitle" class="form-control mb-1" required>
 
-        <form action="" method="">
-            <button type="submit" class="btn btn-primary">Make Announcement</button>
-        </form>
+        <label for="announcementText">Announcement:</label>
+        <textarea id="announcementText" name="announcementText"  class="form-control mb-3" required></textarea>
+        <button type="submit" class="btn btn-primary">Make Announcement</button>
     </form>
 </section>
 

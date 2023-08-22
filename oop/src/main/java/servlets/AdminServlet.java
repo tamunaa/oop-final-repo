@@ -21,7 +21,8 @@ public class AdminServlet extends HttpServlet {
         }
         UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
         if (request.getParameter("deleteUser") != null) {
-            int userId = Integer.parseInt((String) request.getParameter("deleteUser"));
+            String deleteUserName = (String) request.getParameter("deleteUser");
+            int userId = userDAO.getIDByUsername(deleteUserName);
             userDAO.removeUser(userId);
         }
         request.getRequestDispatcher("admin.jsp").forward(request, response);
@@ -29,17 +30,17 @@ public class AdminServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!((User) request.getSession().getAttribute("currUser")).isAdmin()) {
-            response.sendRedirect("homepage.jsp");
+            response.sendRedirect("profile.jsp?self=true");
             return;
         }
         AnnouncementDAOSQL announcementDAO = (AnnouncementDAOSQL) request.getServletContext().getAttribute("announcementDAO");
+
         if (request.getParameter("announcementTitle") != null) {
             String announcementTitle = request.getParameter("announcementTitle");
             String announcementText = request.getParameter("announcementText");
-            announcementDAO.insertAnnouncement(new Announcement((Integer)(request.getSession().getAttribute("userID")), new Timestamp(new java.util.Date().getTime()), announcementTitle, announcementText));
+            announcementDAO.insertAnnouncement(new Announcement((((User) request.getSession().getAttribute("currUser")).getId()), new Timestamp(new java.util.Date().getTime()), announcementTitle, announcementText));
         }
         request.getRequestDispatcher("admin.jsp").forward(request, response);
-
     }
 }
 
