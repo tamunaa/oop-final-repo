@@ -1,3 +1,6 @@
+<%@ page import="objects.Quiz" %>
+<%@ page import="objects.User" %>
+<%@ page import="dataBase.UserDAO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +27,12 @@
         <div>
 
             <div class="quiz-card">
-                <p> <a href="quizpage.jsp"> Quiz 1 </a> </p>
+<%--                <%User user = new User("John Doe", "j@test.com", "pass");--%>
+<%--                UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");--%>
+<%--                userDAO.addUser(user);%>--%>
+<%--                <%Quiz quiz1 = new Quiz(user.getId(), "Quiz 1", "Test your knowledge on history.",10, "history"); %>--%>
+<%--                <%request.getSession().setAttribute("currQuiz", quiz1);%>--%>
+                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
                 <p>Author:  <a href="profile.jsp">John Doe</a> </p>
                 <p>Description: Test your knowledge on history.</p>
                 <p><i class="bi bi-clock"></i> 10 minutes</p>
@@ -34,43 +42,7 @@
                 <p>Is Practice: <i class="bi bi-x-lg"></i></p>
             </div>
             <div class="quiz-card">
-                <p> <a href="quizpage.jsp"> Quiz 1 </a> </p>
-                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
-                <p>Description: Test your knowledge on history.</p>
-                <p><i class="bi bi-clock"></i> 10 minutes</p>
-                <p>Is Random: <i class="bi bi-x-lg"></i></p>
-                <p>Display Type: Multiple Choice</p>
-                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
-                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
-
-                <div class="tags">
-                    <span class="tag">History</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                </div>
-            </div>
-
-            <div class="quiz-card">
-                <p> <a href="quizpage.jsp"> Quiz 1 </a> </p>
-                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
-                <p>Description: Test your knowledge on history.</p>
-                <p><i class="bi bi-clock"></i> 10 minutes</p>
-                <p>Is Random: <i class="bi bi-x-lg"></i></p>
-                <p>Display Type: Multiple Choice</p>
-                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
-                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
-                <div class="tags">
-                    <span class="tag">History</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-
-
-                </div>
-            </div>
-            <div class="quiz-card">
-                <p> <a href="quizpage.jsp"> Quiz 1 </a> </p>
+                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
                 <p>Author:  <a href="profile.jsp">John Doe</a> </p>
                 <p>Description: Test your knowledge on history.</p>
                 <p><i class="bi bi-clock"></i> 10 minutes</p>
@@ -87,7 +59,43 @@
             </div>
 
             <div class="quiz-card">
-                <p> <a href="quizpage.jsp"> Quiz 1 </a> </p>
+                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
+                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
+                <p>Description: Test your knowledge on history.</p>
+                <p><i class="bi bi-clock"></i> 10 minutes</p>
+                <p>Is Random: <i class="bi bi-x-lg"></i></p>
+                <p>Display Type: Multiple Choice</p>
+                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
+                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+                <div class="tags">
+                    <span class="tag">History</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+
+
+                </div>
+            </div>
+            <div class="quiz-card">
+                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
+                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
+                <p>Description: Test your knowledge on history.</p>
+                <p><i class="bi bi-clock"></i> 10 minutes</p>
+                <p>Is Random: <i class="bi bi-x-lg"></i></p>
+                <p>Display Type: Multiple Choice</p>
+                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
+                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+
+                <div class="tags">
+                    <span class="tag">History</span>
+                    <span class="tag">Multiple Choice</span>
+                    <span class="tag">Multiple Choice</span>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
                 <p>Author:  <a href="profile.jsp">John Doe</a> </p>
                 <p>Description: Test your knowledge on history.</p>
                 <p><i class="bi bi-clock"></i> 10 minutes</p>
@@ -103,7 +111,7 @@
             </div>
 
             <div class="quiz-card">
-                <p> <a href="quizpage.jsp"> Quiz 1 </a> </p>
+                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
                 <p>Author:  <a href="profile.jsp">John Doe</a> </p>
                 <p>Description: Test your knowledge on history.</p>
                 <p><i class="bi bi-clock"></i> 10 minutes</p>
@@ -120,7 +128,7 @@
             </div>
 
             <div class="quiz-card">
-                <p> <a href="quizpage.jsp"> Quiz 1 </a> </p>
+                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
                 <p>Author:  <a href="profile.jsp">John Doe</a> </p>
                 <p>Description: Test your knowledge on history.</p>
                 <p><i class="bi bi-clock"></i> 10 minutes</p>
