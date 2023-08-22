@@ -13,4 +13,5 @@ public interface MessageDAOInterface {
     Message getMessage(int id);
     List<Message> getChat(int sender_id, int reciever_id, boolean asc);
     List<Message> getUsersRecentIncomingNotifications(int userId);
+    List<Integer> getInteractions(int user_id);
 }
