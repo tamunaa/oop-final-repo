@@ -27,18 +27,20 @@ public class NotificationServlet extends HttpServlet {
         if (type.equals("CHALLENGE") && content == null) return;
         if (type.equals("CHALLENGE") && content.isEmpty()) return;
 
-            UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
-            User recipientUser = userDAO.getUserByUsername(recipient);
-            if (recipientUser == null || recipientUser.getId() == user.getId()) {
-                return;
-            }
-            MessageDAO messageDAO = (MessageDAO) request.getServletContext().getAttribute("messageDAO");
-            Message newNotification = null;
-            if(type.equals("CHALLENGE")) {
-                newNotification = new ChallengeMessage(user.getId(),recipientUser.getId(),content);
-            }
-            messageDAO.addMessage(newNotification);
+        UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
+        User recipientUser = userDAO.getUserByUsername(recipient);
+        if (recipientUser == null || recipientUser.getId() == user.getId()) {
+            return;
+        }
+        MessageDAO messageDAO = (MessageDAO) request.getServletContext().getAttribute("messageDAO");
+        Message newNotification = null;
+        if(type.equals("CHALLENGE")) {
+            newNotification = new ChallengeMessage(user.getId(),recipientUser.getId(),content);
+        }else if(type.equals("REQUEST")) {
+            newNotification = new RequestMessage(user.getId(),recipientUser.getId());
+        }
 
+        messageDAO.addMessage(newNotification);
 
         response.sendRedirect("homepage.jsp");
     }

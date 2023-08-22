@@ -65,8 +65,11 @@
 
             </ul>
 
-            <form class="d-flex" role="search">
-                <input class="form-control me-2 custom-input" type="search" placeholder="Search" aria-label="Search">
+            <form class="d-flex" role="search" action="SearchServlet" method="GET">
+                <input name= "searchInput" class="form-control me-2 custom-input" type="search" placeholder="Search" aria-label="Search">
+                <input name="self" value="false" type="hidden">
+                <input name="type" value="userSearch" type="hidden">
+
                 <button class="btn btn-outline-secondary custom-btn" type="submit">Search</button>
             </form>
 

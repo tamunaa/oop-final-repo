@@ -48,11 +48,11 @@ public class MessageDAO implements MessageDAOInterface{
     @Override
     public boolean deleteMessage(int id){
         try{
-    Connection conn = ds.getConnection();
-    PreparedStatement stm = conn.prepareStatement("DELETE FROM MESSAGE WHERE ID = ? ;");
-    stm.setInt(1,id);
-    int changed = stm.executeUpdate();
-    if(changed == 1) return true;
+            Connection conn = ds.getConnection();
+            PreparedStatement stm = conn.prepareStatement("DELETE FROM MESSAGE WHERE ID = ? ;");
+            stm.setInt(1,id);
+            int changed = stm.executeUpdate();
+            if(changed == 1) return true;
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -123,7 +123,7 @@ public class MessageDAO implements MessageDAOInterface{
             }
         }catch (SQLException e){
             e.printStackTrace();
-            }
+        }
         return null;
     }
 
@@ -154,7 +154,7 @@ public class MessageDAO implements MessageDAOInterface{
         return result;
     }
 
-        @Override
+    @Override
     public List<Message> getUsersRecentIncomingNotifications(int user_id){
         List<Message> result = new ArrayList<>();
         try {

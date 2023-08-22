@@ -1,3 +1,8 @@
+<%@ page import="dataBase.UserDAO" %>
+<%@ page import="dataBase.AnnouncementDAO" %>
+<%@ page import="objects.Announcement" %>
+<%@ page import="java.util.List" %>
+<%@ page import="objects.User" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,18 +23,31 @@
 <jsp:include page="navbar.jsp" />
 <jsp:include page="notificationbar.jsp" />
 
+<%
+    UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
+
+    AnnouncementDAO announcementDAO = (AnnouncementDAO) request.getServletContext().getAttribute("announcementDAO");
+
+    List<Announcement> announcements =  announcementDAO.getAllAnnouncements();
+%>
+
 <div class="feed">
-    <div class="announcement">
-        <h3>Announcement A</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        <p class="timestamp">Posted on: August 11, 2023</p>
-    </div>
-    <div class="announcement">
-        <h3>Announcement B</h3>
-        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p class="timestamp">Posted on: August 12, 2023</p>
-    </div>
-    <!-- Add more announcements as needed -->
+    <%
+        for(int i = 0; i < announcements.size(); i++){
+        Announcement announcement = announcements.get(i);
+        User creator = userDAO.getUserByUserId(announcement.getCreatorId());
+        String name = creator.getUsername();
+        String path = "profile.jsp?self=false&&username="+name;
+    %>
+        <div class="announcement">
+            <h3> <%= announcement.getTitle() %></h3>
+            <p><%=announcement.getText()%></p>
+            <p> created by: <a href="<%=path%>"> <%=name%> </a></p>
+            <p class="timestamp">Posted on: August 11, 2023</p>
+        </div>
+    <%
+    }
+    %>
 </div>
 <footer>
     <!-- Your footer content here -->
