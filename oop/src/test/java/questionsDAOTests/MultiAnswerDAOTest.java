@@ -6,6 +6,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +26,7 @@ public class MultiAnswerDAOTest {
     }
 
     @Test
-    public void testAddAndGetOrderedMultiAnswerType() {
+    public void testAddAndGetOrderedMultiAnswerType() throws SQLException {
         String questionText = "Whats the capitals of France, Germany and Italy?";
         String[] answers = {"Paris", "Berlin", "Rome"};
 
@@ -46,7 +47,7 @@ public class MultiAnswerDAOTest {
     }
 
     @Test
-    public void testRemoveOrderedMultiQuestion() {
+    public void testRemoveOrderedMultiQuestion() throws SQLException {
         String questionText = "Whats the capitals of France, Germany and Italy?";
         String[] answers = {"Paris", "Berlin", "Rome"};
 
@@ -59,7 +60,7 @@ public class MultiAnswerDAOTest {
     }
 
     @Test
-    public void testAddAndGetUnorderedMultiAnswerType() {
+    public void testAddAndGetUnorderedMultiAnswerType() throws SQLException {
         String questionText = "Whats the capitals of France, Germany and Italy?";
         String[] answers = {"Paris", "Berlin", "Rome"};
         HashSet<String> answersSet = new HashSet<>();
@@ -83,7 +84,7 @@ public class MultiAnswerDAOTest {
 
 
     @Test
-    public void testRemoveUnorderedMultiQuestion() {
+    public void testRemoveUnorderedMultiQuestion() throws SQLException {
         String questionText = "Whats the capitals of France, Germany and Italy?";
         String[] answers = {"Paris", "Berlin", "Rome"};
 

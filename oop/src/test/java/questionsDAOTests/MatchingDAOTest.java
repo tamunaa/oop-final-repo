@@ -7,6 +7,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MatchingDAOTest {
@@ -24,7 +26,7 @@ public class MatchingDAOTest {
     }
 
     @Test
-    public void testAddAndGetMatchingType() {
+    public void testAddAndGetMatchingType() throws SQLException {
         String questionText = "Match the capitals with their respective countries.";
         String[] questions = {"France", "Germany", "Italy"};
         String[] answers = {"Paris", "Berlin", "Rome"};
@@ -47,7 +49,7 @@ public class MatchingDAOTest {
     }
 
     @Test
-    public void testRemoveOrderedMultiQuestion() {
+    public void testRemoveOrderedMultiQuestion() throws SQLException {
         String questionText = "Match the capitals with their respective countries.";
         String[] questions = {"France", "Germany", "Italy"};
         String[] answers = {"Paris", "Berlin", "Rome"};
