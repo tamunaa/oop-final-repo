@@ -172,4 +172,30 @@ public class MessageDAO implements MessageDAOInterface{
         return result;
     }
 
+    @Override
+    public List<Integer> getInteractions(int user_id) {
+        List<Integer> result = new ArrayList<>();
+        try {
+            Connection conn = ds.getConnection();
+            PreparedStatement stm = conn.prepareStatement("SELECT Sender_ID FROM MESSAGE WHERE Reciever_ID = ? AND Message_type = 'NOTE';");
+            stm.setInt(1,user_id);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                if(!result.contains(rs.getInt(1))) result.add(rs.getInt(1));
+            }
+
+            PreparedStatement stm2 = conn.prepareStatement("SELECT Reciever_ID FROM MESSAGE WHERE Sender_ID = ? AND Message_type = 'NOTE';");
+            stm2.setInt(1,user_id);
+            ResultSet rs2 = stm.executeQuery();
+            while(rs2.next()){
+                if(!result.contains(rs2.getInt(1))) result.add(rs2.getInt(1));
+
+            }
+            return result;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
