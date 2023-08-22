@@ -104,8 +104,8 @@ CREATE TABLE FRIENDS(
                         User_ID int NOT NULL,
                         Friend_ID int NOT NULL,
                         PRIMARY KEY(ID),
-
                         CONSTRAINT un unique (User_ID, Friend_ID),
+                        CHECK (User_ID != Friend_ID),
                         FOREIGN KEY (User_ID) REFERENCES USERS(ID) ON DELETE CASCADE,
                         FOREIGN KEY (Friend_ID) REFERENCES USERS(ID) ON DELETE CASCADE
 );
@@ -118,6 +118,7 @@ CREATE TABLE FRIEND_REQS(
                         Sender_ID int NOT NULL,
                         PRIMARY KEY(ID),
                         CONSTRAINT un unique (Reciever_ID, Sender_ID),
+                        CHECK (Reciever_ID != Sender_ID),
                         FOREIGN KEY (Sender_ID) REFERENCES USERS(ID) ON DELETE CASCADE,
                         FOREIGN KEY (Reciever_ID) REFERENCES USERS(ID) ON DELETE CASCADE
 
