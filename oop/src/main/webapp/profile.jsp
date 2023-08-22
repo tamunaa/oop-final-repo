@@ -85,9 +85,58 @@
                     %>
 
                     <%if(isSelf){%>
-                    <p id="editUsername" class="edit-icon" onclick="editUsername()">
-                        <i class="bi bi-pencil"></i> Edit Username
-                    </p>
+                    <div>
+                        <button type="button" id="toggle-username-section" class="change-button">
+                            <i class="bi bi-pencil"></i> Change UserName</button>
+                        <button type="button" id="toggle-password-section" class="change-button">
+                            <i class="bi bi-pencil"></i> Change Password</button>
+                    </div>
+
+                    <div id="change-username-section">
+                        <form action="ChangeUsernameServlet" method="post">
+                            <label for="password">New Username:</label>
+                            <input type="text" id="newUsername" name="newUsername" class="form-control" required>
+                            <br>
+                            <button type="submit" class="btn btn-primary btn-sm">Change</button>
+                        </form>
+                    </div>
+
+                    <div id="change-password-section">
+                        <form action="ChangePasswordServlet" method="post">
+                            <label for="password">New Password:</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                            <br>
+                            <button type="submit" class="btn btn-primary btn-sm">Change</button>
+                        </form>
+                    </div>
+
+                    <script>
+                        const passwordSection = document.getElementById('change-password-section');
+                        const toggleButton = document.getElementById('toggle-password-section');
+
+                        const userNameSection = document.getElementById('change-username-section');
+                        const userNameButton = document.getElementById('toggle-username-section');
+
+                        passwordSection.style.display = 'none';
+
+                        toggleButton.addEventListener('click', function() {
+                            if (passwordSection.style.display === 'none') {
+                                passwordSection.style.display = 'block';
+                            } else {
+                                passwordSection.style.display = 'none';
+                            }
+                        });
+
+                        userNameSection.style.display = 'none';
+                        userNameButton.addEventListener('click', function() {
+                            if (userNameSection.style.display === 'none') {
+                                userNameSection.style.display = 'block';
+                            } else {
+                                userNameSection.style.display = 'none';
+                            }
+                        });
+                    </script>
+
                     <%}%>
                 </div>
 

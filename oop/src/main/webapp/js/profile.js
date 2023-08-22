@@ -65,3 +65,4 @@ function cancelEdit() {
     const usernameElement = document.getElementById('username');
     usernameElement.innerHTML = lastUserName; // Restore the original username
 }
+

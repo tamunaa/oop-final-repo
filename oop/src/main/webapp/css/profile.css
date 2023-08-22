@@ -181,3 +181,12 @@ body {
     color: #f00;
     border-bottom-color: #f00;
 }
+
+.change-button{
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+
+}
