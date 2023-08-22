@@ -8,6 +8,7 @@
     notifications[0] = false;
     notifications[1] = true;
 
+
 %>
 
 <div class="notification-wrapper">

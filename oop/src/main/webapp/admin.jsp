@@ -28,9 +28,7 @@
 
     <%
         List<User> userList = ((UserDAO)request.getServletContext().getAttribute("userDAO")).getAllUsers();
-        List<Quiz> quizList = ((QuizDAO)request.getServletContext().getAttribute("quizDAO")).getPopularQuizzes(10);
-        out.println(quizList.size());
-
+        List<Quiz> quizList = ((QuizDAO)request.getServletContext().getAttribute("quizDAO")).getAllQuizzes();
     %>
 
     <h2>Manage Users</h2>

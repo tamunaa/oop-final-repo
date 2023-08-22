@@ -18,19 +18,23 @@ public class SearchServlet extends HttpServlet {
         UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
         String searchInput = request.getParameter("searchInput");
         String type = request.getParameter("type");
+
+        System.out.println("serach " + searchInput);
+        System.out.println("type "+ type);
+
         if (type.equals("quizName")) {
             List<Quiz> quizzes = quizDAO.getQuizByQuizName(searchInput);
-            request.setAttribute("searchResult", quizzes);
-            request.getRequestDispatcher("/quizSearch.jsp").forward(request, response);
+            request.getRequestDispatcher("/quizpage.jsp").forward(request, response);
 
         } else if (type.equals("quizTag")){
             List<Quiz> quizzes = quizDAO.getQuizzesByTag(searchInput);
             request.setAttribute("searchResult", quizzes);
             request.getRequestDispatcher("/quizSearch.jsp").forward(request, response);
         } else {
-                User user = userDAO.getUserByUsername(searchInput);
-                request.setAttribute("searchedUser", user);
-                request.getRequestDispatcher("/userSearch.jsp").forward(request, response);
+            User user = userDAO.getUserByUsername(searchInput);
+            request.setAttribute("searchedUser", user);
+            String path = "profile.jsp?self=false&&username="+searchInput;
+            request.getRequestDispatcher(path).forward(request, response);
         }
     }
 
