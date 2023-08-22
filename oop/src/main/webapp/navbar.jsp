@@ -52,11 +52,6 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Search Quiz" href="serach.jsp">
-                        <i class="bi bi-search-heart"></i>
-                    </a>
-                </li>
 
                 <%
                     boolean isAdmin = ((User)session.getAttribute("currUser")).isAdmin();
