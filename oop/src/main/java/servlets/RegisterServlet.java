@@ -27,32 +27,36 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("register.jsp").forward(request, response);
+        request.getRequestDispatcher("signup.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDao");
+        UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
+        UserDAO userDAO2 = (UserDAO) request.getSession().getAttribute("userDAO");
+
+        System.out.println(userDAO2);
+
         String email = request.getParameter("email");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-            User user = userDAO.getUserByUsername(username);
-            if (user != null) {
-                request.getSession().setAttribute("currUser", user);
-                request.setAttribute("text", "User already exists, try different username.");
-                request.getRequestDispatcher("register.jsp").forward(request, response);
-            } else {
-                BCrypt.Hasher hasher = BCrypt.withDefaults();
-                char[] chars = new char[password.length()];
-                for(int i = 0; i < password.length(); i++ ){
-                    chars[i] = password.charAt(i);
-                }
-                String passHash = hasher.hashToString(10,chars);
-                User newUser = new User(username,email,passHash,false);
-                userDAO.addUser(newUser);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+        User user = userDAO.getUserByUsername(username);
+        if (user != null) {
+            //.........................mesigi unda gamovitanot ro daregistrirebulia........
+            request.getSession().setAttribute("currUser", user);
+            request.setAttribute("text", "User already exists, try different username.");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } else {
+            BCrypt.Hasher hasher = BCrypt.withDefaults();
+            char[] chars = new char[password.length()];
+            for(int i = 0; i < password.length(); i++ ){
+                chars[i] = password.charAt(i);
             }
+            String passHash = hasher.hashToString(10,chars);
+            User newUser = new User(username,email,passHash,false);
+            userDAO.addUser(newUser);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
-
+    }
 }
