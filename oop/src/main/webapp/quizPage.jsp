@@ -60,7 +60,7 @@
         <form><a class="practice-btn"> practice </a></form>
         <%}%>
         <%if (currUser.getId() == curQuiz.getAuthor()){%>
-            <form><a href = "editQuiz?quizId="<%=curQuiz.getID()%> class="edit-btn"> Edit Quiz </a></form>
+            <form><a href = "editQuiz?quizId=<%=curQuiz.getID()%>" class="edit-btn"> Edit Quiz </a></form>
         <%}%>
     </div>
 
