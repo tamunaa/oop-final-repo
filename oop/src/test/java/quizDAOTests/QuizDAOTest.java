@@ -287,4 +287,10 @@ public class QuizDAOTest extends TestCase {
         assertFalse(quizDAO.getTags(40).contains("English"));
     }
 
+    public void testGetAllQuizzes(){
+        beforeEach();
+        List<Quiz> quizzes = quizDAO.getAllQuizzes();
+        assertEquals(18, quizzes.size());
+    }
+
 }
