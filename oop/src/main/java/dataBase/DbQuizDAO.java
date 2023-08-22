@@ -353,4 +353,28 @@ public class DbQuizDAO implements QuizDAO{
             //throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<Quiz> getAllQuizzes() {
+        ArrayList<Quiz> quizzes = new ArrayList<>();
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("select * from QUIZZES order by Date_created desc");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                Quiz quiz = new Quiz(resultSet.getInt("Author"), resultSet.getString("Quiz_name"),
+                        resultSet.getString("Descr"), resultSet.getInt("Timer"), resultSet.getString("Category"),
+                        resultSet.getTimestamp("Date_created"), resultSet.getBoolean("Is_random"),
+                        resultSet.getBoolean("Display_type"), resultSet.getBoolean("Corrects_immediately"),
+                        resultSet.getBoolean("Is_practice"));
+                quiz.setID(resultSet.getInt("ID"));
+                quizzes.add(quiz);
+            }
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return quizzes;
+    }
 }
