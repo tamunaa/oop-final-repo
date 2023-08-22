@@ -3,13 +3,13 @@ const chatContainer = document.getElementById('chat-container');
 const chatMessages = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
-console.log(messageInput)
 
 const userChats = {
     'User 1': ["user1"],
     'User 2': ["user2"],
     'User 3': ["user3"]
 };
+// out.print(userChats);
 
 function updateChat(user) {
     chatMessages.innerHTML = '';

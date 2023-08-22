@@ -48,11 +48,11 @@ public class MessageDAO implements MessageDAOInterface{
     @Override
     public boolean deleteMessage(int id){
         try{
-    Connection conn = ds.getConnection();
-    PreparedStatement stm = conn.prepareStatement("DELETE FROM MESSAGE WHERE ID = ? ;");
-    stm.setInt(1,id);
-    int changed = stm.executeUpdate();
-    if(changed == 1) return true;
+            Connection conn = ds.getConnection();
+            PreparedStatement stm = conn.prepareStatement("DELETE FROM MESSAGE WHERE ID = ? ;");
+            stm.setInt(1,id);
+            int changed = stm.executeUpdate();
+            if(changed == 1) return true;
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -123,7 +123,7 @@ public class MessageDAO implements MessageDAOInterface{
             }
         }catch (SQLException e){
             e.printStackTrace();
-            }
+        }
         return null;
     }
 
@@ -154,7 +154,7 @@ public class MessageDAO implements MessageDAOInterface{
         return result;
     }
 
-        @Override
+    @Override
     public List<Message> getUsersRecentIncomingNotifications(int user_id){
         List<Message> result = new ArrayList<>();
         try {
@@ -174,22 +174,44 @@ public class MessageDAO implements MessageDAOInterface{
 
     @Override
     public List<Integer> getInteractions(int user_id) {
+        List<Integer> res1 = getRecievers(user_id);
+        List<Integer> res2 = getSenders(user_id);
+        for (int i = 0; i < res2.size(); i++){
+            int curr = res2.get(i);
+            if(!res1.contains(curr)) res1.add(curr);
+        }
+        return res1;
+    }
+
+    private List<Integer> getRecievers(int sender_id) {
         List<Integer> result = new ArrayList<>();
         try {
             Connection conn = ds.getConnection();
-            PreparedStatement stm = conn.prepareStatement("SELECT Sender_ID FROM MESSAGE WHERE Reciever_ID = ? AND Message_type = 'NOTE';");
-            stm.setInt(1,user_id);
+            PreparedStatement stm = conn.prepareStatement("SELECT Reciever_ID FROM MESSAGE WHERE Sender_ID = ? AND Message_type = ?;");
+            stm.setInt(1,sender_id);
+            stm.setString(2,"NOTE");
             ResultSet rs = stm.executeQuery();
             while(rs.next()){
-                if(!result.contains(rs.getInt(1))) result.add(rs.getInt(1));
+                int added = rs.getInt(1);
+                if(!result.contains(added)) result.add(added);
             }
-
-            PreparedStatement stm2 = conn.prepareStatement("SELECT Reciever_ID FROM MESSAGE WHERE Sender_ID = ? AND Message_type = 'NOTE';");
-            stm2.setInt(1,user_id);
-            ResultSet rs2 = stm.executeQuery();
-            while(rs2.next()){
-                if(!result.contains(rs2.getInt(1))) result.add(rs2.getInt(1));
-
+            return result;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+    private List<Integer> getSenders(int reciever_id) {
+        List<Integer> result = new ArrayList<>();
+        try {
+            Connection conn = ds.getConnection();
+            PreparedStatement stm = conn.prepareStatement("SELECT Sender_ID FROM MESSAGE WHERE Reciever_ID = ? AND Message_type = ?;");
+            stm.setInt(1,reciever_id);
+            stm.setString(2,"NOTE");
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                int added = rs.getInt(1);
+                if(!result.contains(added)) result.add(added);
             }
             return result;
         }catch (SQLException e){
