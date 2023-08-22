@@ -1,6 +1,7 @@
-<%@ page import="objects.Quiz" %>
-<%@ page import="objects.User" %>
 <%@ page import="dataBase.UserDAO" %>
+<%@ page import="dataBase.QuizDAO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="objects.Quiz" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,128 +21,75 @@
 <jsp:include page="navbar.jsp" />
 <jsp:include page="notificationbar.jsp" />
 
+<%--recent quizshia serchi chasamatebeli--%>
+<%--<li class="nav-item">--%>
+<%--    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Search Quiz" href="serach.jsp">--%>
+<%--        <i class="bi bi-search-heart"></i>--%>
+<%--    </a>--%>
+<%--</li>--%>
+
+<%
+    UserDAO userDAO = ((UserDAO)request.getServletContext().getAttribute("userDAO"));
+    QuizDAO quizDAO = ((QuizDAO)request.getServletContext().getAttribute("quizDAO"));
+
+    List<Quiz> quizzList = quizDAO.getPopularQuizzes(20);
+%>
+
 <div id="wrapper" class="wrapper">
     <div id="page" class="page">
         <h1 class="text-center">List of Popular Quizzes</h1>
 
         <div>
+            <%
+                for (Quiz quiz : quizzList) {
+                    String quizName = quiz.getQuizName();
+                    String author = userDAO.getUserByUserId(quiz.getAuthor()).getUsername();
+                    String pathToProfile = "profile.jsp?self=false&&username="+author;
+                    String pathToQuizPage = "quizPage.jsp?searchInput="+quizName;
+                    String description = quiz.getDescription();
+                    int timer = quiz.getTimer();
 
+
+                    boolean isRandom = quiz.isRandom();
+                    boolean isPractice = quiz.isPractice();
+                    boolean isOnePage = quiz.isOnOnePage();
+                    boolean correctImmediately = quiz.correctImmediately();
+                    String category = quiz.getCategory();
+            %>
             <div class="quiz-card">
-<%--                <%User user = new User("John Doe", "j@test.com", "pass");--%>
-<%--                UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");--%>
-<%--                userDAO.addUser(user);%>--%>
-<%--                <%Quiz quiz1 = new Quiz(user.getId(), "Quiz 1", "Test your knowledge on history.",10, "history"); %>--%>
-<%--                <%request.getSession().setAttribute("currQuiz", quiz1);%>--%>
-                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
-                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
-                <p>Description: Test your knowledge on history.</p>
-                <p><i class="bi bi-clock"></i> 10 minutes</p>
-                <p>Is Random: <i class="bi bi-x-lg"></i></p>
-                <p>Display Type: Multiple Choice</p>
-                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
-                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
+                <p> <a href= "<%=pathToQuizPage%>" > <%=quizName%> </a> </p>
+                <p>Author:  <a href="<%=pathToProfile%>"> <%=author%></a> </p>
+                <p><%=description%></p>
+
+                <p> category: <%=category%> </p>
+
+                <p><i class="bi bi-clock"></i> <%=timer%></p>
+                <p>Is Random:
+                    <%if (isRandom){%>
+                    <i class="bi bi-plus-lg"></i>
+                    <%}else{%>
+                    <i class="bi bi-x-lg"></i>
+                    <%}%>
+                </p>
+
+
+                <p>Corrects Immediately:
+                    <%if (correctImmediately){%>
+                    <i class="bi bi-plus-lg"></i>
+                    <%}else{%>
+                    <i class="bi bi-x-lg"></i>
+                    <%}%>
+                </p>
+
+                <p>Is Practice:
+                    <%if (isPractice){%>
+                    <i class="bi bi-plus-lg"></i>
+                    <%}else{%>
+                    <i class="bi bi-x-lg"></i>
+                    <%}%>
+                </p>
             </div>
-            <div class="quiz-card">
-                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
-                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
-                <p>Description: Test your knowledge on history.</p>
-                <p><i class="bi bi-clock"></i> 10 minutes</p>
-                <p>Is Random: <i class="bi bi-x-lg"></i></p>
-                <p>Display Type: Multiple Choice</p>
-                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
-                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
-
-                <div class="tags">
-                    <span class="tag">History</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                </div>
-            </div>
-
-            <div class="quiz-card">
-                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
-                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
-                <p>Description: Test your knowledge on history.</p>
-                <p><i class="bi bi-clock"></i> 10 minutes</p>
-                <p>Is Random: <i class="bi bi-x-lg"></i></p>
-                <p>Display Type: Multiple Choice</p>
-                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
-                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
-                <div class="tags">
-                    <span class="tag">History</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-
-
-                </div>
-            </div>
-            <div class="quiz-card">
-                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
-                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
-                <p>Description: Test your knowledge on history.</p>
-                <p><i class="bi bi-clock"></i> 10 minutes</p>
-                <p>Is Random: <i class="bi bi-x-lg"></i></p>
-                <p>Display Type: Multiple Choice</p>
-                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
-                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
-
-                <div class="tags">
-                    <span class="tag">History</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                </div>
-            </div>
-
-            <div class="quiz-card">
-                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
-                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
-                <p>Description: Test your knowledge on history.</p>
-                <p><i class="bi bi-clock"></i> 10 minutes</p>
-                <p>Is Random: <i class="bi bi-x-lg"></i></p>
-                <p>Display Type: Multiple Choice</p>
-                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
-                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
-                <div class="tags">
-                    <span class="tag">History</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                </div>
-            </div>
-
-            <div class="quiz-card">
-                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
-                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
-                <p>Description: Test your knowledge on history.</p>
-                <p><i class="bi bi-clock"></i> 10 minutes</p>
-                <p>Is Random: <i class="bi bi-x-lg"></i></p>
-                <p>Display Type: Multiple Choice</p>
-                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
-                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
-
-                <div class="tags">
-                    <span class="tag">History</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                </div>
-            </div>
-
-            <div class="quiz-card">
-                <p> <a href="quizPage.jsp"> Quiz 1 </a> </p>
-                <p>Author:  <a href="profile.jsp">John Doe</a> </p>
-                <p>Description: Test your knowledge on history.</p>
-                <p><i class="bi bi-clock"></i> 10 minutes</p>
-                <p>Is Random: <i class="bi bi-x-lg"></i></p>
-                <p>Display Type: Multiple Choice</p>
-                <p>Corrects Immediately:<i class="bi bi-plus-lg"></i></p>
-                <p>Is Practice: <i class="bi bi-x-lg"></i></p>
-                <div class="tags">
-                    <span class="tag">History</span>
-                    <span class="tag">Multiple Choice</span>
-                    <span class="tag">Multiple Choice</span>
-                </div>
-            </div>
+            <%}%>
 
         </div>
     </div>

@@ -1,11 +1,9 @@
 <%@ page import="objects.User" %>
 <%@ page import="java.util.List" %>
-<%@ page import="dataBase.FriendsDAO" %>
-<%@ page import="dataBase.UserDAO" %>
 <%@ page import="objects.Quiz" %>
-<%@ page import="dataBase.QuizDAO" %>
-<%@ page import="dataBase.HistoryDAO" %>
 <%@ page import="objects.History" %>
+<%@ page import="dataBase.*" %>
+<%@ page import="objects.Achievement" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -218,7 +216,7 @@
                     <ul class="custom-link-list">
                         <%for(int i = 0; i < createdQuizzes.size(); i++){
                             Quiz curQuiz = createdQuizzes.get(i);
-                            String quizPagePath = "quizpage.jsp?searchInput="+curQuiz.getQuizName();
+                            String quizPagePath = "quizPage.jsp?searchInput="+curQuiz.getQuizName();
                         %>
                         <li><a href="<%=quizPagePath%>"> <%=curQuiz.getQuizName()%> </a></li>
                         <%}%>
@@ -227,12 +225,24 @@
             </div>
 
             <!-- Achievements -->
+            <%
+                AchievementDAO achievementDAO = (AchievementDAO) request.getServletContext().getAttribute("achievementDAO");
+                List<Achievement> achievements = achievementDAO.getUserAchievements(currUser.getId());
+            %>
+
             <div class="profile-section">
                 <div class="profile-card">
                     <h2>Achievements</h2>
                     <ul class="custom-link-list">
-                        <li>Achievement 1</li>
-                        <li>Achievement 2</li>
+
+                    <%for (int i = 0; i < 1; i++){
+//                        Achievement curAchievement = achievements.get(i);
+                    %>
+                        <li><img src="photos/amature.jpg"  width="100px" alt="amateur"> </img> </li>
+<%--                        <li><%=curAchievement.getPictureUrl()%></li>--%>
+                    <%
+                    }
+                    %>
                     </ul>
                 </div>
             </div>

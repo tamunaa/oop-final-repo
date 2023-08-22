@@ -19,12 +19,21 @@ public class MessengerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse  response) throws ServletException, IOException {
         MessageDAO messageDAO= (MessageDAO) request.getServletContext().getAttribute("messageDAO");
-        Message message = new NoteMessage(Integer.parseInt(request.getParameter("senderID")), Integer.parseInt(request.getParameter("recieverID")),
-                request.getParameter("messageText"), new Timestamp(System.currentTimeMillis()));
+        UserDAO userDAO= (UserDAO) request.getServletContext().getAttribute("userDAO");
 
-            messageDAO.addMessage(message);
+        User sender = (User) request.getSession().getAttribute("currUser");
+        int senderID = sender.getId();
 
-        response.sendRedirect(request.getContextPath() + "/MessengerServlet?senderID=" + request.getParameter("recieverID"));
+        String receiver = request.getParameter("selectedUser");
+        int receiverID = userDAO.getIDByUsername(receiver);
+
+        String text = request.getParameter("messageText");
+        System.out.println(senderID + " " + receiverID + " " + text);
+
+
+
+        Message message = new NoteMessage(senderID, receiverID, text, new Timestamp(System.currentTimeMillis()));
+        messageDAO.addMessage(message);
     }
 
     @Override
@@ -36,8 +45,8 @@ public class MessengerServlet extends HttpServlet {
         }
         int senderID = Integer.parseInt(request.getParameter("senderID"));
         User user = null;
-            user = userDAO.getUserByUserId(senderID);
-            request.setAttribute("user", user);
-            request.getRequestDispatcher("messenger.jsp").forward(request,response);
+        user = userDAO.getUserByUserId(senderID);
+        request.setAttribute("user", user);
+        request.getRequestDispatcher("messenger.jsp").forward(request,response);
     }
 }
