@@ -43,7 +43,7 @@ public class MessageDAOTest {
     @BeforeAll
     protected static void emptyTables() throws SQLException {
         BasicDataSource ds = new BasicDataSource();
-        ds.setUrl("jdbc:mysql://localhost:3306/test_user");
+        ds.setUrl("jdbc:mysql://localhost:3306/test_message");
         ds.setUsername("root");
         ds.setPassword("root");
         Connection conn = ds.getConnection();
@@ -125,6 +125,7 @@ public class MessageDAOTest {
         assertTrue(strs.contains("hey baby,how are you feeling"));
         assertTrue(strs.contains("nothing much, dear"));
         assertTrue(strs.contains("nothing much here either..."));
+
     }
     @Test
     @Order(2)
