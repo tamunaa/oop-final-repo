@@ -17,12 +17,8 @@ import java.util.List;
 @WebServlet("/editQuiz")
 public class editQuiz extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
-        dataSource.setUsername("root");
-        dataSource.setPassword("rootroot");
+        QuizDAO quizDAO = (DbQuizDAO) request.getServletContext().getAttribute("quizDAO");
 
-        QuizDAO quizDAO = new DbQuizDAO(dataSource);
 
         int quizId = Integer.parseInt(request.getParameter("quizId"));
         List<Question> questions = quizDAO.getQuestions(quizId);

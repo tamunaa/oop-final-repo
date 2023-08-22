@@ -3,6 +3,7 @@ package servlets;
 import dataBase.DbQuizDAO;
 import dataBase.QuizDAO;
 import objects.Quiz;
+import objects.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletException;
@@ -17,13 +18,9 @@ import java.sql.Timestamp;
 @WebServlet("/createQuiz")
 public class createQuiz extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
-        dataSource.setUsername("root");
-        dataSource.setPassword("rootroot");
+        QuizDAO quizDAO = (DbQuizDAO) request.getServletContext().getAttribute("quizDAO");
 
-        int author = 7;
-//        int author = (Integer) request.getSession().getAttribute("userId");
+        int author = ((User) request.getSession().getAttribute("currUser")).getId();
         String quizName = request.getParameter("quizName");
         int timer = Integer.parseInt(request.getParameter("timer"));
 
@@ -32,9 +29,8 @@ public class createQuiz extends HttpServlet {
         boolean immediateCorrection = request.getParameter("correction") != null;
         String quizDescription = request.getParameter("quizDescription");
         boolean randomOrder = request.getParameter("randomOrder") != null;
-        String category = request.getParameter("category");
-
-        QuizDAO quizDAO = new DbQuizDAO(dataSource);
+//        String category = request.getParameter("category");
+        String category = "MAGARI;";
 
         Quiz quiz = new Quiz(author, quizName, quizDescription, timer,category);
         quiz.setPractice(practiceMode);

@@ -2,7 +2,6 @@ package servlets.addQuestions;
 
 import dataBase.DbQuizDAO;
 import dataBase.QuizDAO;
-import dataBase.questionsDAOs.QuestionsDAO;
 import objects.questions.GradedQuestion;
 import objects.questions.Question;
 import objects.questions.QuestionResponse;
@@ -14,11 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
+import dataBase.questionsDAOs.*;
 
 @WebServlet("/addQuestions/addGraded")
 public class addGraded extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        QuestionsDAO questionsDAO = (QuestionsDAO) request.getServletContext().getAttribute("QuestionsDAO");
+        QuestionsDAO questionsDAO = (QuestionsDAO) request.getServletContext().getAttribute("questionsDAO");
 
         int quizId = Integer.parseInt(request.getParameter("quizId"));
         String questionText = request.getParameter("questionText");
@@ -28,8 +29,11 @@ public class addGraded extends HttpServlet {
 
         Question question = new GradedQuestion(questionText);
         question.setTimer(timer);
-        questionsDAO.addQuestion(question, quizId);
-
+        try {
+            questionsDAO.addQuestion(question, quizId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         response.sendRedirect("/editQuiz?quizId=" + quizId);
     }
 }
