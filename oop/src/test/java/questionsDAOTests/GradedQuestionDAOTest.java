@@ -3,8 +3,10 @@ package questionsDAOTests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import dataBase.questionsDAOs.GradedQuestionDAO;
+import dataBase.questionsDAOs.QuestionsDAO;
 import objects.questions.GradedQuestion;
 import objects.questions.Question;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -13,15 +15,16 @@ import java.sql.SQLException;
 
 public class GradedQuestionDAOTest {
 
-    private static Connection connection;
-    private GradedQuestionDAO gradedQuestionDAO;
+    private static BasicDataSource connection;
+    private static GradedQuestionDAO gradedQuestionDAO;
 
     @BeforeAll
     static void setupConnection() throws SQLException {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/test_database";
-        String user = "root";
-        String password = "";
-        connection = DriverManager.getConnection(jdbcUrl, user, password);
+        connection = new BasicDataSource();
+        connection.setUrl("jdbc:mysql://localhost:3306/test_database");
+        connection.setUsername("root");
+        connection.setPassword("");
+        gradedQuestionDAO = new GradedQuestionDAO(connection);
     }
 
     @AfterAll
@@ -32,7 +35,7 @@ public class GradedQuestionDAOTest {
     }
 
     @BeforeEach
-    void setup() {
+    void setup() throws SQLException {
         gradedQuestionDAO = new GradedQuestionDAO(connection);
     }
 

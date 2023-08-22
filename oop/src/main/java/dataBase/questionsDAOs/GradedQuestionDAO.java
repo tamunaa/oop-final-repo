@@ -2,6 +2,7 @@ package dataBase.questionsDAOs;
 
 import objects.questions.GradedQuestion;
 import objects.questions.Question;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,10 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GradedQuestionDAO implements QuestionDAOType {
-    private Connection connection;
+    private BasicDataSource connection;
+    private Connection conn;
 
-    public GradedQuestionDAO(Connection connection) {
+    public GradedQuestionDAO(BasicDataSource connection) throws SQLException {
         this.connection = connection;
+        this.conn = connection.getConnection();
     }
 
     @Override
@@ -20,7 +23,7 @@ public class GradedQuestionDAO implements QuestionDAOType {
         if (question instanceof GradedQuestion) {
             GradedQuestion gradedQuestion = (GradedQuestion) question;
             String query = "INSERT INTO QUESTIONS (quiz_id, question_text, question_type, timer) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement statement = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
                 statement.setInt(1, quizId);
                 statement.setString(2, gradedQuestion.getQuestion());
                 statement.setString(3, gradedQuestion.getQuestionType());
@@ -52,7 +55,7 @@ public class GradedQuestionDAO implements QuestionDAOType {
     @Override
     public Question getQuestionByQuestionId(int questionId) {
         String query = "SELECT question_text, question_type, timer FROM QUESTIONS WHERE question_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setInt(1, questionId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
