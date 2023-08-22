@@ -22,7 +22,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
         dataSource.setUsername("root");
-        dataSource.setPassword("root:root");
+        dataSource.setPassword("root");
         dataSource.setMaxTotal(-1);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
