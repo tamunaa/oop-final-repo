@@ -34,11 +34,14 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         MessageDAO messageDAO = new MessageDAO(dataSource);
         HistoryDAO historyDAO = new HistoryDAOSQL(dataSource);
         QuizDAO quizDAO = new DbQuizDAO(dataSource);
+        AnnouncementDAO announcementDAO = new AnnouncementDAOSQL(dataSource);
+
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
         context.setAttribute("messageDAO", messageDAO);
         context.setAttribute("historyDAO", historyDAO);
         context.setAttribute("quizDAO", quizDAO);
+        context.setAttribute("announcementDAO", announcementDAO);
 
 
         FriendshipService service = new FriendshipService();
