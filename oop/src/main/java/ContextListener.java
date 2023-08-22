@@ -20,7 +20,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("123456789");
         dataSource.setMaxTotal(-1);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -34,9 +34,15 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         UserDAO userDAO = new UserDAO(dataSource);
         FriendsDAO friendsDAO = new FriendsDAO(dataSource);
         MessageDAO messageDAO = new MessageDAO(dataSource);
+        HistoryDAOSQL historyDAO = new HistoryDAOSQL(dataSource);
+        DbQuizDAO quizDAO = new DbQuizDAO(dataSource);
+        DbAchievementDAO achievementDAO = new DbAchievementDAO(dataSource);
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
         context.setAttribute("messageDAO", messageDAO);
+        context.setAttribute("historyDAO", historyDAO);
+        context.setAttribute("quizDAO", quizDAO);
+        context.setAttribute("achievementDAO", achievementDAO);
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);
@@ -48,12 +54,13 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         sce.getServletContext().removeAttribute("userDAO");
         sce.getServletContext().removeAttribute("friendsDAO");
         sce.getServletContext().removeAttribute("messageDAO");
+        sce.getServletContext().removeAttribute("historyDAO");
         sce.getServletContext().removeAttribute("friendshipService");
     }
 
     @Override
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-        httpSessionEvent.getSession().setAttribute("currUser", null);
+        httpSessionEvent.getSession().setAttribute("$", null);
     }
 
     @Override
