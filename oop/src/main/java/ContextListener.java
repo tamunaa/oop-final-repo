@@ -52,6 +52,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         context.setAttribute("friendsDAO", friendsDAO);
         context.setAttribute("messageDAO", messageDAO);
         context.setAttribute("responseDAO", responseDAO);
+        context.setAttribute("gradeDAO", gradeDAO);
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);
