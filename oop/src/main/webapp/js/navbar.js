@@ -10,3 +10,22 @@ function toggleNotificationPanel() {
     notificationPanel.style.top = `calc(${iconRect.bottom}px + 10px)`;
     notificationPanel.style.left = `calc(${iconRect.left}px - 170px)` // Adjust as needed
 }
+
+
+function logOut(){
+    $.ajax({
+        url: "/LogOutServlet",
+        type: "POST",
+        data: {},
+
+        success: function (response) {
+            console.log('success');
+            window.location.href = "index.jsp";
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Request Error:", error);
+            console.error("Status:", status);
+            console.error("XHR Object:", xhr);
+        }
+    });
+}

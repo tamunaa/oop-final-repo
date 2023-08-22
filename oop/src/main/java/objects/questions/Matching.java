@@ -62,11 +62,11 @@ public class Matching implements Question, Serializable {
         return source.clone();
     }
 
+    /**
+     * NEEDS TO BE SHUFFLED AFTER
+     */
     @Override
-    //marjvena mxare
     public String[] getCorrectAnswers() {
-        List<String> stringList = new ArrayList<String>(Arrays.asList(target));
-        Collections.shuffle(stringList);
         return target.clone();
     }
 

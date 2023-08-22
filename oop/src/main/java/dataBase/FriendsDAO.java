@@ -87,9 +87,14 @@ public class FriendsDAO implements FriendsDAOInterface{
             stm.setInt(1, user.getId());
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
+
                 User newUser = new User(rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5), rs.getTimestamp(6));
                 newUser.setId(rs.getInt(1));
-                res.add(newUser);
+                boolean yes = true;
+                for(User us : res) {
+                    if (us.getId() == newUser.getId()) yes = false;
+                }
+                if(yes) res.add(newUser);
             }
 
             String query2 = "SELECT U.ID, U.Username, U.Email, U.Password_hash, U.Is_administrator, U.Date_added  FROM USERS U JOIN FRIENDS F ON U.ID = F.User_ID WHERE F.Friend_ID = ? ;";
@@ -99,7 +104,11 @@ public class FriendsDAO implements FriendsDAOInterface{
             while (rs2.next()) {
                 User newUser = new User(rs2.getString(2), rs2.getString(3), rs2.getString(4), rs2.getBoolean(5), rs2.getTimestamp(6));
                 newUser.setId(rs2.getInt(1));
-                res.add(newUser);
+                boolean yes = true;
+                for(User us : res) {
+                    if (us.getId() == newUser.getId()) yes = false;
+                }
+                if(yes) res.add(newUser);
             }
         }catch (SQLException e){
             e.printStackTrace();

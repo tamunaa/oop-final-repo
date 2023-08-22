@@ -13,10 +13,13 @@ import java.io.IOException;
 public class RemoveFriendServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("shemodiis");
         ServletContext sce = request.getServletContext();
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) sce.getAttribute("userDAO");
-        String username = request.getParameter("username");
+        String username = (String) request.getSession().getAttribute("username");
+
+        System.out.println("username " + username);
 
         FriendshipService friendshipService = (FriendshipService) sce.getAttribute("friendshipService");
         User currentUser = (User) session.getAttribute("currUser");

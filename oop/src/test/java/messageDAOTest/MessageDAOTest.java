@@ -118,7 +118,8 @@ public class MessageDAOTest {
          assertTrue(messageDAO.addMessage(note1));
          assertTrue(messageDAO.addMessage(note2));
          assertTrue(messageDAO.addMessage(note3));
-         List<Message> mes = messageDAO.getChat(id1,id2,true);
+         assertEquals(1,messageDAO.getInteractions(id2).size());
+        List<Message> mes = messageDAO.getChat(id1,id2,true);
         List<String> strs = mes.stream().map(x-> (x).getContent()).collect(Collectors.toList());
         assertEquals(3,mes.size());
         assertTrue(strs.contains("hey baby,how are you feeling"));
@@ -128,6 +129,7 @@ public class MessageDAOTest {
     @Test
     @Order(2)
     void deleteConvoTest(){
+        assertEquals(1,messageDAO.getInteractions(id1).size());
         assertEquals(3,messageDAO.deleteAllMessages(id1,id2));
         assertTrue(id1 != id2);
         List<Message> mes = messageDAO.getChat(id1,id2,true);

@@ -34,9 +34,10 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         UserDAO userDAO = new UserDAO(dataSource);
         FriendsDAO friendsDAO = new FriendsDAO(dataSource);
         MessageDAO messageDAO = new MessageDAO(dataSource);
-        HistoryDAOSQL historyDAO = new HistoryDAOSQL(dataSource);
+        HistoryDAO historyDAO = new HistoryDAOSQL(dataSource);
         DbQuizDAO quizDAO = new DbQuizDAO(dataSource);
-        DbAchievementDAO achievementDAO = new DbAchievementDAO(dataSource);
+        AchievementDAO achievementDAO = new DbAchievementDAO(dataSource);
+
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
         context.setAttribute("messageDAO", messageDAO);
@@ -60,7 +61,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
 
     @Override
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-        httpSessionEvent.getSession().setAttribute("$", null);
+        httpSessionEvent.getSession().setAttribute("currUser", null);
     }
 
     @Override

@@ -16,6 +16,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         UserDAO userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
 
+        System.out.println("username "+ username + "password " + password);
+
         if(!userDAO.isValidUser(username, password)) {
             request.setAttribute("incorrect", true);
             request.setAttribute("mess", "Username Or Password Is Not Correct");
@@ -23,13 +25,15 @@ public class LoginServlet extends HttpServlet {
             return;
         }
         User user = userDAO.getUserByUsername(username);
+
+        String profileUrl = "profile.jsp?self=true";
         request.getSession().setAttribute("currUser", user);
-        response.sendRedirect("homepage.jsp");
+        response.sendRedirect(profileUrl);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("index.jsp");
     }
 }
 

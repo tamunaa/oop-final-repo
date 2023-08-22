@@ -17,11 +17,12 @@ public class SendFriendRequestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletContext sc = request.getServletContext();
-        String username = request.getParameter("username");
+        String username = (String) request.getSession().getAttribute("username");
         UserDAO userDAO = (UserDAO) sc.getAttribute("userDAO");
         MessageDAO messageDAO = (MessageDAO) sc.getAttribute("messageDAO");
         FriendshipService friendshipService = (FriendshipService) sc.getAttribute("friendshipService");
-        User currentUser = (User) request.getSession().getAttribute("userDAO");
+        User currentUser = (User) request.getSession().getAttribute("currUser");
+
         if(currentUser == null){
             request.setAttribute("mess", "the user doesnt exist");
             try{
@@ -30,7 +31,8 @@ public class SendFriendRequestServlet extends HttpServlet {
                 e.printStackTrace();
             }
             return;
-    }
+        }
+
         FriendsDAO friendsDAO = (FriendsDAO) sc.getAttribute("friendsDAO");
         FriendshipService.RequestResult result = friendshipService.sendRequest(currentUser, username, friendsDAO,userDAO);
         String message = null;
@@ -49,6 +51,7 @@ public class SendFriendRequestServlet extends HttpServlet {
         }else if(result == REQUEST_SAME_USER){
             message = "You can't become friends with yourself! Please enter a different username";
         }
+        System.out.println(message);
         request.getSession().setAttribute("error", message);
         response.sendRedirect("addFriend.jsp");
     }

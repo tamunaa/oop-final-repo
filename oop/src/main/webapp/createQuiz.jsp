@@ -1,37 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="css/quiz.css">
+    <script src="js/navbar.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/createQuiz.css"></head>
+
+
     <title>Create Quiz</title>
-    <link rel="stylesheet" type="text/css" href="css/createQuiz.css"></head>
 <body>
-<h1>Create a New Quiz</h1>
-<form action="createQuiz" method="post">
+<jsp:include page="navbar.jsp" />
 
-    <label for="quizName">Quiz Name:</label>
-    <input type="text" id="quizName" name="quizName" required><br>
+<h1 class="text-center" >Create a New Quiz</h1>
 
-    <label for="timer">Quiz Timer (in minutes):</label>
-    <input type="number" id="timer" name="timer" min="0" value="0"><br>
+<form action="createQuiz" method="post" class="create-quiz-form">
+    <div>
+        <label for="quizName">Quiz Name:</label>
+        <input type="text" id="quizName" name="quizName" required>
+    </div>
 
-    <label for="practice">Practice Mode:</label>
-    <input type="checkbox" id="practice" name="practice"><br>
+    <div>
+        <label for="timer">Quiz Timer (in minutes):</label>
+        <input type="number" id="timer" name="timer" min="0" value="0">
+    </div>
 
-    <label for="questionDisplay">Question Display Mode:</label>
-    <select id="questionDisplay" name="questionDisplay">
-        <option value="singlePage">All Questions on a Single Page</option>
-        <option value="onePerPage">One Question Per Page</option>
-    </select><br>
+    <div class="radio">
+        <label for="practice">Practice Mode:</label>
+        <input type="checkbox" id="practice" name="practice">
+    </div>
 
-    <label for="correction">Immediate Correction:</label>
-    <input type="checkbox" id="correction" name="correction"><br>
+    <div class="radio">
+        <label for="questionDisplay">Question Display Mode:</label>
+        <select id="questionDisplay" name="questionDisplay" style="margin: 3px; padding: 2px">
+            <option value="singlePage">All Questions on a Single Page</option>
+            <option value="onePerPage">One Question Per Page</option>
+        </select>
+    </div>
 
-    <label for="randomOrder">Random Question Order:</label>
-    <input type="checkbox" id="randomOrder" name="randomOrder"><br>
+    <div class="radio">
+        <label for="correction">Immediate Correction:</label>
+        <input type="checkbox" id="correction" name="correction">
+    </div>
 
-    <label for="quizDescription">Quiz Description:</label>
-    <textarea id="quizDescription" name="quizDescription" rows="4" cols="50"></textarea><br><br>
+    <div class="radio">
+        <div><label for="randomOrder">Random Question Order:</label></div>
+        <div><input type="checkbox" id="randomOrder" name="randomOrder"></div>
+    </div>
 
-    <input type="submit" value="Create Quiz">
+    <div style="display: flex">
+        <label for="quizDescription">Quiz Description:</label>
+        <textarea id="quizDescription" name="quizDescription" rows="4" cols="50"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Quiz</button>
 </form>
 </body>
 </html>
