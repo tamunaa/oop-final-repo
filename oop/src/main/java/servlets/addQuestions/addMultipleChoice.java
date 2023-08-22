@@ -2,7 +2,6 @@ package servlets.addQuestions;
 
 import dataBase.DbQuizDAO;
 import dataBase.QuizDAO;
-import dataBase.questionsDAOs.QuestionsDAO;
 import objects.questions.MultipleChoice;
 import objects.questions.Question;
 import objects.questions.QuestionResponse;
@@ -15,16 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.sql.SQLException;
+import dataBase.questionsDAOs.*;
 
 @WebServlet("/addQuestions/addMultipleChoice")
 public class addMultipleChoice extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
-        dataSource.setUsername("root");
-        dataSource.setPassword("rootroot");
-
-        QuizDAO quizDAO = new DbQuizDAO(dataSource);
+        QuestionsDAO questionsDAO = (QuestionsDAO) request.getServletContext().getAttribute("questionsDAO");
 
         int quizId = Integer.parseInt(request.getParameter("quizId"));
         String questionText = request.getParameter("questionText");
@@ -35,12 +31,13 @@ public class addMultipleChoice extends HttpServlet {
         String timerStr = request.getParameter("timer");
         int timer = timerStr.equals("") ? 0 : Integer.parseInt(timerStr);
 
-
         Question question = new MultipleChoice(questionText, options, answer);
         question.setTimer(timer);
-        QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
-        questionsDAO.addQuestion(question, quizId);
-
+        try {
+            questionsDAO.addQuestion(question, quizId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         response.sendRedirect("/editQuiz?quizId=" + quizId);
     }
 }

@@ -2,7 +2,6 @@ package servlets.addQuestions;
 
 import dataBase.DbQuizDAO;
 import dataBase.QuizDAO;
-import dataBase.questionsDAOs.QuestionsDAO;
 import objects.questions.Matching;
 import objects.questions.MultipleChoice;
 import objects.questions.Question;
@@ -16,16 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.sql.SQLException;
+import dataBase.questionsDAOs.*;
 
 @WebServlet("/addQuestions/addMatching")
 public class addMatching extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
-        dataSource.setUsername("root");
-        dataSource.setPassword("rootroot");
+        QuestionsDAO questionsDAO = (QuestionsDAO) request.getServletContext().getAttribute("questionsDAO");
 
-        QuizDAO quizDAO = new DbQuizDAO(dataSource);
 
         int quizId = Integer.parseInt(request.getParameter("quizId"));
         String questionText = request.getParameter("questionText");
@@ -39,9 +36,11 @@ public class addMatching extends HttpServlet {
 
         Question question = new Matching(questionText, left, right);
         question.setTimer(timer);
-        QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
-        questionsDAO.addQuestion(question, quizId);
-
+        try {
+            questionsDAO.addQuestion(question, quizId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         response.sendRedirect("/editQuiz?quizId=" + quizId);
     }
 }
