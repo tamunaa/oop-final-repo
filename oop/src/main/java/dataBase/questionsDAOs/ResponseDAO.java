@@ -1,31 +1,24 @@
 package dataBase.questionsDAOs;
 
-import com.mysql.cj.conf.ConnectionUrlParser;
 import objects.Response;
-import objects.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ResponseDAO {
-    private BasicDataSource connection;
-    private Connection con;
+    private BasicDataSource dataSource;
 
-    public ResponseDAO(BasicDataSource connection) throws SQLException {
-
-        this.connection = connection;
-        this.con = connection.getConnection();
+    public ResponseDAO(BasicDataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-    public void addResponse(int questionId, int historyId, int grade, boolean isGraded, String response) throws SQLException {
+    public void addResponse(int questionId, int historyId, int grade, boolean isGraded, String response) {
         String query = "INSERT INTO RESPONSES (Question_ID, History_ID, grade, Is_graded, Response) VALUES (?, ?, ?, ?, ?)";
-
-        try (PreparedStatement statement = con.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, questionId);
             statement.setInt(2, historyId);
             statement.setInt(3, grade);
@@ -41,7 +34,8 @@ public class ResponseDAO {
     //get responses which are not graded yet
     public Response getResponseByHistory(int historyId) {
         String query = "SELECT * FROM RESPONSES WHERE History_ID = ? AND Is_graded = ? LIMIT 1";
-        try (PreparedStatement statement = con.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, historyId);
             statement.setBoolean(2, false);
 
@@ -55,6 +49,10 @@ public class ResponseDAO {
 
                     return new Response(id, questionId, historyId, grade, isGraded, responseText);
                 } else {
+                    // Execute GradeDAO logic when no ungraded responses are found
+                    int score = calculateTotalScoreForHistory(historyId);
+                    GradeDAO gradeDAO = new GradeDAO(connection);
+                    gradeDAO.updateScore(historyId, score);
                     return null;
                 }
             }
@@ -64,45 +62,10 @@ public class ResponseDAO {
         }
     }
 
-    public List<List<String>> getQuestionResponsePairsByHistory(int historyId) {
-        List<List<String>> result = new ArrayList<>();
-        String query = "SELECT R.ID, Q.question_text, R.Response " +
-                "FROM RESPONSES R " +
-                "JOIN QUESTIONS Q ON R.Question_ID = Q.question_id " +
-                "WHERE R.History_ID = ? AND R.Is_graded = ?";
-        try (PreparedStatement statement = con.prepareStatement(query)) {
-            statement.setInt(1, historyId);
-            statement.setBoolean(2, false);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    String questionText = resultSet.getString("question_text");
-                    System.out.println(questionText);
-                    String responseText = resultSet.getString("Response");
-                    String responseId = resultSet.getString("ID");
-
-                    // Retrieve other attributes of Response object from resultSet
-                    // and set them to the response object
-
-                    List<String> oneEntry = new ArrayList<>();
-                    oneEntry.add(questionText);
-                    oneEntry.add(responseText);
-                    oneEntry.add(responseId);
-                    result.add(oneEntry);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-
-
-
     public int calculateTotalScoreForHistory(int historyId) {
         String query = "SELECT SUM(grade) AS total_score FROM RESPONSES WHERE History_ID = ?";
-        try (PreparedStatement statement = con.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, historyId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -121,7 +84,8 @@ public class ResponseDAO {
 
     public boolean addScoreAndMarkAsGraded(int responseId, int grade) {
         String query = "UPDATE RESPONSES SET grade = ?, Is_graded = ? WHERE ID = ?";
-        try (PreparedStatement statement = con.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, grade);
             statement.setBoolean(2, true);
             statement.setInt(3, responseId);
@@ -139,7 +103,8 @@ public class ResponseDAO {
     //for tests
     public String getResponseByQuestionAndHistory(int questionId, int historyId) {
         String query = "SELECT * FROM RESPONSES WHERE Question_ID = ? AND History_ID = ?";
-        try (PreparedStatement statement = con.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, questionId);
             statement.setInt(2, historyId);
 
