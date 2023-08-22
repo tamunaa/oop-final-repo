@@ -1,6 +1,7 @@
 package servlets;
 
 import dataBase.AnnouncementDAOSQL;
+import dataBase.QuizDAO;
 import dataBase.UserDAO;
 import objects.Announcement;
 import objects.User;
@@ -20,11 +21,16 @@ public class AdminServlet extends HttpServlet {
             return;
         }
         UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
+        QuizDAO quizDAO = (QuizDAO) request.getServletContext().getAttribute("quizDAO");
         if (request.getParameter("deleteUser") != null) {
             int userId = Integer.parseInt((String) request.getParameter("deleteUser"));
             userDAO.removeUser(userId);
+        } else if (request.getParameter("deleteQuiz") != null) {
+            int quizId = Integer.parseInt((String) request.getParameter("deleteUser"));
+            quizDAO.removeQuiz(Integer.parseInt((String) request.getParameter("deleteUser")));
+            response.sendRedirect("quizzes.jsp"); //ან ისევ ფეიჯზე
         }
-        request.getRequestDispatcher("admin.jsp").forward(request, response);
+        request.getRequestDispatcher("admin.jsp").forward(request, response); //თუ ეს ცალკე არაა მაშინ profile.jsp
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,7 +44,7 @@ public class AdminServlet extends HttpServlet {
             String announcementText = request.getParameter("announcementText");
             announcementDAO.insertAnnouncement(new Announcement((Integer)(request.getSession().getAttribute("userID")), new Timestamp(new java.util.Date().getTime()), announcementTitle, announcementText));
         }
-        request.getRequestDispatcher("admin.jsp").forward(request, response);
+        request.getRequestDispatcher("admin.jsp").forward(request, response); //თუ ცალკე არაა profile.jsp
 
     }
 }
