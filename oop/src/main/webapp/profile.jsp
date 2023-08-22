@@ -199,7 +199,7 @@
                         <%for (int i = 0; i < takenQuizzes.size(); i++){
                             History curQuizHistory = takenQuizzes.get(i);
                             String quizName = quizDAO.getQuizByID(curQuizHistory.getQuizId()).getQuizName();
-                            String pathForQuizPage = "quizpage.jsp?serchInput="+quizName;
+                            String pathForQuizPage = "quizPage.jsp?searchInput="+quizName;
                         %>
                         <li><a href="<%=pathForQuizPage%>"> <%=quizName%></a></li>
                         <%}%>

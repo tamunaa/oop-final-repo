@@ -39,6 +39,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         DbQuizDAO quizDAO = new DbQuizDAO(dataSource);
         AchievementDAO achievementDAO = new DbAchievementDAO(dataSource);
         QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
+        AnnouncementDAO announcementDAO = new AnnouncementDAOSQL(dataSource);
 
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
@@ -47,6 +48,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         context.setAttribute("quizDAO", quizDAO);
         context.setAttribute("achievementDAO", achievementDAO);
         context.setAttribute("questionsDAO", questionsDAO);
+        context.setAttribute("announcementDAO", announcementDAO);
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);
@@ -61,6 +63,8 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         sce.getServletContext().removeAttribute("historyDAO");
         sce.getServletContext().removeAttribute("friendshipService");
         sce.getServletContext().removeAttribute("questionsDAO");
+        sce.getServletContext().removeAttribute("announcementDAO");
+
     }
 
     @Override

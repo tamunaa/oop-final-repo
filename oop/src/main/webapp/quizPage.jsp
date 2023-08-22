@@ -33,7 +33,8 @@
 <%
     String quizName = request.getParameter("searchInput");
     UserDAO userDAO = ((UserDAO)request.getServletContext().getAttribute("userDAO"));
-    Quiz curQuiz = ((QuizDAO)request.getServletContext().getAttribute("quizDAO")).getQuizByQuizName(quizName).get(0);
+    QuizDAO quizDAO = ((QuizDAO)request.getServletContext().getAttribute("quizDAO"));
+    Quiz curQuiz = quizDAO.getQuizByQuizName(quizName).get(0);
     String author = userDAO.getUsernameByID(curQuiz.getAuthor());
 %>
 

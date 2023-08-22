@@ -41,21 +41,21 @@
 <%--    <jsp:include page="questions/QuizBar.jsp"/>--%>
 
 <div class="question-page">
-    <%
-        int i = 0;
-        while (i < questions.length){
-            Question current = questions[i];
-            session.setAttribute("current", current);
-            String type = current.getQuestionType();
-            String path = "questions/"+type+".jsp";
-    %>
-    <div class="question-card">
-        <jsp:include page="<%= path %>" />
-    </div>
-    <%
-            i++;
-        }
-    %>
+<%--    <%--%>
+<%--        int i = 0;--%>
+<%--        while (i < questions.length){--%>
+<%--            Question current = questions[i];--%>
+<%--            session.setAttribute("current", current);--%>
+<%--            String type = current.getQuestionType();--%>
+<%--            String path = "questions/"+type+".jsp";--%>
+<%--    %>--%>
+<%--    <div class="question-card">--%>
+<%--        <jsp:include page="<%= path %>" />--%>
+<%--    </div>--%>
+<%--    <%--%>
+<%--            i++;--%>
+<%--        }--%>
+<%--    %>--%>
     <button class="finish">submit</button>
 </div>
 </body>
