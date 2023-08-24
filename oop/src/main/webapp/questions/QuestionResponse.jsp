@@ -4,7 +4,7 @@
     String indexStr = request.getAttribute("index").toString();
     int index = Integer.parseInt(indexStr);
 %>
-<form class="form-container" method="post" id="QuestionResponse">
+<form class="form-container">
 
     <h3>Question Response</h3>
     <div class="question">
@@ -13,18 +13,6 @@
 
     <div class="user-answer">
         <label>Your Answer:</label>
-        <label>
-            <input type="text" name="userAnswer" required>
-            <button type="button" onclick="getQuestionResponseAnswers(this)">Submit</button>
-        </label>
+        <input type="text" name="question<%=index%>" oninput="saveAnswersForOneInputQuestions(<%=index%>)">
     </div>
 </form>
-
-<script>
-    function getQuestionResponseAnswers(button) {
-        let inputField = button.previousElementSibling;
-        let value = inputField.value;
-        let answers = document.getElementById("answer<%=index%>");
-        answers.value = value;
-    }
-</script>

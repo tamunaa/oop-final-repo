@@ -1,6 +1,9 @@
 <%@ page import="objects.questions.Question" %>
 <%
     Question question = (Question)request.getAttribute("current");
+    String indexStr = request.getAttribute("index").toString();
+    int numFields = question.getNumFields();
+    int index = Integer.parseInt(indexStr);
 %>
 <form class="form-container">
     <h3>Multi Answer</h3>
@@ -11,9 +14,9 @@
     <div class="user-answer">
         <label>Your Answer:</label>
         <%
-            for (int i = 0; i < question.getNumFields(); i++) {
-                %>
-            <input type="text" name="userAnswer" required>
+            for (int i = 0; i < numFields; i++) {
+        %>
+            <input type="text" id="question<%=index%><%=i%>" oninput="saveMultiAnswerAnswers(<%=index%>, <%=numFields%>)">
         <%
             }
         %>
