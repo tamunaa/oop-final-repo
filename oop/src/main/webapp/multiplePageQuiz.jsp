@@ -23,19 +23,19 @@
         <h1 style="font-size: 50px">Good Luck</h1>
     </div>
 </div>
-<form action="goToEnd" method="POST" onsubmit="return checkIfFinished();">
+<form action="quizSummary?quizId=<%=request.getParameter("quizId")%>" method="POST" onsubmit="return checkIfFinished();">
+    <div>
+        <%
+            for (int i = 0; i < questions.length; i++) {
+        %>
+            <input type="text" name="answers" id="answer<%=i%>" hidden="hidden">
+        <%
+            }
+        %>
+    </div>
     <button type="submit" class="finish" id="load-button" onclick="nextAction()">Next</button>
 </form>
 
-<div>
-    <%
-        for (int i = 0; i < questions.length; i++) {
-    %>
-        <input type="text" name="answer<%=i%>" id="answer<%=i%>" hidden="hidden">
-    <%
-        }
-    %>
-</div>
 
 <script>
     let currentIndex = 0;
@@ -95,7 +95,6 @@
             answers.value = value;
         }
     }
-    getMatchingAnswers();
 
     function saveMultipleChoiceWithMultipleAnswerAnswers(index) {
         let checkBoxButtons = document.querySelectorAll("input[type=\"checkbox\"][name=\"question" + index + "\"]");

@@ -33,36 +33,39 @@
 </head>
 <body>
 
-<div class="question-page">
-    <div>
+    <form action="quizSummary?quizId=<%=request.getParameter("quizId")%>" method="POST">
+    <div class="question-page">
+        <div>
+            <%
+                for (int i = 0; i < questions.length; i++) {
+            %>
+                <input type="text" name="answers" id="answer<%=i%>" hidden="hidden">
+            <%
+                }
+            %>
+        </div>
         <%
-            for (int i = 0; i < questions.length; i++) {
+            int i = 0;
+            while (i < questions.length) {
+                Question current = questions[i];
+                request.setAttribute("index", i);
+                request.setAttribute("current", current);
+                String type = current.getQuestionType();
+                String path = "questions/"+type+".jsp";
         %>
-            <input type="text" name="answer<%=i%>" id="answer<%=i%>" hidden="hidden">
+            <div class="question-card">
+                <jsp:include page="<%= path %>" />
+
+            </div>
         <%
+            i++;
             }
         %>
-    </div>
-    <%
-        int i = 0;
-        while (i < questions.length) {
-            Question current = questions[i];
-            request.setAttribute("index", i);
-            request.setAttribute("current", current);
-            String type = current.getQuestionType();
-            String path = "questions/"+type+".jsp";
-    %>
-        <div class="question-card">
-            <jsp:include page="<%= path %>" />
-
-        </div>
-    <%
-        i++;
-        }
-    %>
-    <button class="finish">submit</button>
+            <button class="finish">submit</button>
+    </form>
 </div>
-<script>
+<%--    <script src="questions/js/Matching.js"></script>--%>
+    <script>
     function saveAnswersForOneInputQuestions(index) {
         let inputField = document.getElementsByName("question" + index);
         let value = inputField[0].value;
@@ -82,7 +85,6 @@
             answers.value = value;
         }
     }
-    getMatchingAnswers();
 
     function saveMultipleChoiceWithMultipleAnswerAnswers(index) {
         let checkBoxButtons = document.querySelectorAll("input[type=\"checkbox\"][name=\"question" + index + "\"]");
