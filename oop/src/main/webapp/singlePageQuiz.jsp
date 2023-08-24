@@ -1,5 +1,8 @@
 <%@ page import="objects.questions.Question" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Question[] questions = (Question[]) request.getSession().getAttribute("questions");
+%>
 <html>
 <head>
 
@@ -24,31 +27,19 @@
 
     <link rel="stylesheet" type="text/css" href="questions/css/base.css">
     <link rel="stylesheet" type="text/css" href="questions/css/Matching.css">
-    <link rel="stylesheet" type="text/css" href="questions/css/Multi.css">
+<%--    <link rel="stylesheet" type="text/css" href="questions/css/Multi.css">--%>
 
     <title>quiz</title>
 </head>
 <body>
-<%
-    Question[] questions = (Question[]) request.getSession().getAttribute("questions");
-%>
-
-<%--    <ul>--%>
-<%--        <% for (Question question : questions) { %>--%>
-<%--        <li><%= question.getQuestionType() %></li>--%>
-<%--        <% } %>--%>
-<%--    </ul>--%>
-
-<%--    <jsp:include page="questions/QuizBar.jsp"/>--%>
 
 <div class="question-page">
     <div>
         <%
             for (int i = 0; i < questions.length; i++) {
-                %>
-        <input type="text" id="answer<%=i%>">
+        %>
+            <input type="text" name="answer<%=i%>" id="answer<%=i%>" hidden="hidden">
         <%
-
             }
         %>
     </div>
@@ -61,15 +52,78 @@
             String type = current.getQuestionType();
             String path = "questions/"+type+".jsp";
     %>
-    <div class="question-card">
-                <jsp:include page="<%= path %>" />
+        <div class="question-card">
+            <jsp:include page="<%= path %>" />
 
-    </div>
+        </div>
     <%
-            i++;
+        i++;
         }
     %>
     <button class="finish">submit</button>
 </div>
+<script>
+    function saveAnswersForOneInputQuestions(index) {
+        let inputField = document.getElementsByName("question" + index);
+        let value = inputField[0].value;
+        let answers = document.getElementById("answer" + index);
+        answers.value = value;
+    }
+    function getMatchingAnswers(index, total) {
+        let value = '';
+        for (let i = 0; i < total; i++) {
+            let left = document.getElementById("question" + index + "left" + i);
+            let right = document.getElementById("question" + index + "right" + i);
+            value += left.textContent + ':' + right.textContent;
+            if (i + 1 != total) {
+                value += ',';
+            }
+            let answers = document.getElementById("answer" + index);
+            answers.value = value;
+        }
+    }
+    getMatchingAnswers();
+
+    function saveMultipleChoiceWithMultipleAnswerAnswers(index) {
+        let checkBoxButtons = document.querySelectorAll("input[type=\"checkbox\"][name=\"question" + index + "\"]");
+        let value = '';
+        for (let i = 0; i < checkBoxButtons.length; i++) {
+            if (checkBoxButtons[i].checked) {
+                value += checkBoxButtons[i].value + ',';
+            }
+        }
+        value = value.substring(0, value.length - 1);
+        let answers = document.getElementById("answer" + index);
+        answers.value = value;
+    }
+
+    function saveMultipleChoiceAnswer(index) {
+        let radioButtons = document.querySelectorAll('.question' + index);
+        let value = '';
+        for (let i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+                value = radioButtons[i].value;
+                break;
+            }
+        }
+        let answers = document.getElementById("answer" + index);
+        answers.value = value;
+    }
+
+    function saveMultiAnswerAnswers(index, numFields) {
+        let value = '';
+        for (let i = 0; i < numFields; i++) {
+            let inputField = document.getElementById("question" + index + i);
+            value += inputField.value;
+            if (i + 1 != numFields) {
+                value += ',';
+            }
+        }
+        let answers = document.getElementById("answer" + index);
+        answers.value = value;
+    }
+
+</script>
 </body>
 </html>
+

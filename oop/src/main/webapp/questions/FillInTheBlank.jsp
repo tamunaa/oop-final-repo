@@ -1,6 +1,8 @@
 <%@ page import="objects.questions.Question" %>
 <%
     Question question = (Question)request.getAttribute("current");
+    String indexStr = request.getAttribute("index").toString();
+    int index = Integer.parseInt(indexStr);
 %>
 <form class="form-container">
     <h3>Fill In The Blank</h3>
@@ -10,9 +12,6 @@
 
     <div class="user-answer">
         <label>Your Answer:</label>
-        <label>
-            <input type="text" name="userAnswer" required>
-        </label>
+        <input type="text" name="question<%=index%>" oninput="saveAnswersForOneInputQuestions(<%=index%>)">
     </div>
 </form>
-

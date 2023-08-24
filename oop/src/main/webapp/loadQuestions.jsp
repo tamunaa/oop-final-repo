@@ -4,6 +4,7 @@
     Question[] questions = (Question[]) request.getSession().getAttribute("questions");
     int total = questions.length;
     int index = Integer.parseInt(request.getParameter("index"));
+    request.setAttribute("index", index);
     if (index>=total){
         index%=total;
     }
