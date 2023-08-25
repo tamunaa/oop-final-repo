@@ -66,10 +66,11 @@ body {
 
 .chat-messages {
     flex: 1;
-    /*overflow-y: auto;*/
+    overflow-x: auto;
     padding: 10px;
     background-color: white;
     border-radius: 20px;
+    width: 600px;
 }
 
 .input-container {
@@ -106,3 +107,4 @@ body {
 .message p{
     color: black;
 }
+
