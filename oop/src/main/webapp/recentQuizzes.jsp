@@ -21,12 +21,6 @@
 <jsp:include page="navbar.jsp" />
 <jsp:include page="notificationbar.jsp" />
 
-<%--recent quizshia serchi chasamatebeli--%>
-<%--<li class="nav-item">--%>
-<%--    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Search Quiz" href="serach.jsp">--%>
-<%--        <i class="bi bi-search-heart"></i>--%>
-<%--    </a>--%>
-<%--</li>--%>
 
 <%
     UserDAO userDAO = ((UserDAO)request.getServletContext().getAttribute("userDAO"));
@@ -34,10 +28,35 @@
 
     List<Quiz> quizzList = quizDAO.getAllQuizzes();
 %>
-
 <div id="wrapper" class="wrapper">
     <div id="page" class="page">
         <h1 class="text-center">List of Recent Quizzes</h1>
+
+
+        <div class="search-area">
+            <div class="search-container">
+                <form action="SearchServlet" method="GET">
+                    <input type="hidden" name="type" value="quizName">
+                    <input class="input-field" type="text" name="searchInput" placeholder="Search by quiz name...">
+
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="bi bi-search-heart"></i>
+                        Search
+                    </button>
+                </form>
+            </div>
+
+            <div class="search-container">
+                <form action="SearchServlet" method="GET">
+                    <input type="hidden" name="type" value="quizTag">
+                    <input  class="input-field type=text" name="searchInput" placeholder="Search by quiz tag...">
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="bi bi-search-heart"></i>
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
 
         <div>
             <%
