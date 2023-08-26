@@ -1,5 +1,8 @@
 package servlets;
 
+import dataBase.ChallengeDAO;
+import dataBase.QuizDAO;
+import objects.Challenge;
 import objects.messages.*;
 import objects.User;
 import dataBase.UserDAO;
@@ -17,11 +20,16 @@ public class NotificationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("currUser");
-        if (user == null) return;
+        User currUser = (User) request.getSession().getAttribute("currUser");
+        if (currUser == null) return;
         String recipient = request.getParameter("recipient");
+
         String type = request.getParameter("type");
         String content = request.getParameter("content");
+
+        System.out.println("recipient " + recipient);
+        System.out.println("type " + type);
+        System.out.println("content "+ content);
 
         if (recipient == null || type == null) return;
         if (type.equals("CHALLENGE") && content == null) return;
@@ -29,19 +37,26 @@ public class NotificationServlet extends HttpServlet {
 
         UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
         User recipientUser = userDAO.getUserByUsername(recipient);
-        if (recipientUser == null || recipientUser.getId() == user.getId()) {
+        if (recipientUser == null || recipientUser.getId() == currUser.getId()) {
             return;
         }
         MessageDAO messageDAO = (MessageDAO) request.getServletContext().getAttribute("messageDAO");
         Message newNotification = null;
         if(type.equals("CHALLENGE")) {
-            newNotification = new ChallengeMessage(user.getId(),recipientUser.getId(),content);
+            newNotification = new ChallengeMessage(currUser.getId(),recipientUser.getId(),content);
+            QuizDAO quizDAO = (QuizDAO) request.getServletContext().getAttribute("quizDAO");
+            ChallengeDAO challengeDAO = (ChallengeDAO) request.getServletContext().getAttribute("challengeDAO");
+            String quizName = request.getParameter("quizName");
+            Challenge challenge = new Challenge(currUser.getId(), recipientUser.getId(), quizDAO.getQuizByQuizName(quizName).get(0).getID());
+            challengeDAO.addChallenge(challenge);
+
         }else if(type.equals("REQUEST")) {
-            newNotification = new RequestMessage(user.getId(),recipientUser.getId());
+            newNotification = new RequestMessage(currUser.getId(),recipientUser.getId());
         }
 
         messageDAO.addMessage(newNotification);
-
-        response.sendRedirect("homepage.jsp");
+        String quizName = request.getParameter("quizName");
+        String path = "quizPage.jsp?searchInput="+quizName;
+        response.sendRedirect(path);
     }
 }

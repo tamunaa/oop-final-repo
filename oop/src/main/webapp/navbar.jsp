@@ -22,9 +22,12 @@
             <ul class="navbar-nav" >
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Home" href="home.jsp">
-                        <i class="bi bi-house-door"></i>
+                       <form action="NewsFeedServlet" method="GET">
+                           <button class="homeButton"><i class="bi bi-house-door"></i> </button>
+                       </form>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Profile" href="profile.jsp?self=true">
                         <i class="bi bi-person"></i>
