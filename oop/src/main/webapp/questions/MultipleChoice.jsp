@@ -1,10 +1,18 @@
-
-<form class="form-container" method="post">
-<%--    <h1>Multiple Choice Question</h1>--%>
-    <div class="question"><h2>Who was President during the Bay of Pigs fiasco?</h2></div>
-    <div class="user-answer">
-        <label><input type="radio" name="userAnswer" value="A" required> A. John F. Kennedy</label><br>
-        <label><input type="radio" name="userAnswer" value="B"> B. Richard Nixon</label><br>
-        <label><input type="radio" name="userAnswer" value="C"> C. Ronald Reagan</label><br>
-    </div>
-</form>
+<%@ page import="objects.questions.Question" %>
+<%
+    Question question = (Question)request.getAttribute("current");
+    String indexStr = request.getAttribute("index").toString();
+    int index = Integer.parseInt(indexStr);
+%>
+<h3>Multiple Choice Question</h3>
+<div class="question"><h2><%=question.getQuestion()%></h2></div>
+<div class="user-answer">
+    <%
+        for (String option : question.getOptions()) {
+    %>
+        <input type="radio" class="question<%=index%>" name="question<%=index%>" value="<%=option%>" onclick="saveMultipleChoiceAnswer(<%=index%>)"><%=option%>
+        <br>
+    <%
+    }
+    %>
+</div>

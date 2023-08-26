@@ -1,8 +1,8 @@
 package objects.questions;
 
 import java.util.HashSet;
-
-public class OrderedMultiAnswer implements MultiAnswerType{
+import java.io.Serializable;
+public class OrderedMultiAnswer implements MultiAnswerType, Serializable {
     private final String[] correctAnswers;
     private final HashSet<String> correctAnswersSet;
     public OrderedMultiAnswer(String[] answers) {

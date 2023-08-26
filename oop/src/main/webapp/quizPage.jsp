@@ -50,14 +50,15 @@
                 <p>Description: <%=curQuiz.getDescription()%></p>
             </div>
 
-            <div class="quiz-options">
-                <form><a href="question" class="take-btn">Take Quiz</a></form>
-                <%if (true) {%>
-                <form><a class="practice-btn"> practice </a></form>
-                <%}%>
-                <%if (currUser.getId() == curQuiz.getAuthor()){%>
-                    <form><a href = "editQuiz?quizId=<%=curQuiz.getID()%>" class="edit-btn"> Edit Quiz </a></form>
-                <%}%>
+        <div class="quiz-options">
+        <form><a href="loadQuizQuestions?quizId=<%=curQuiz.getID()%>" class="take-btn">Take Quiz</a></form>
+        <%if (true) {%>
+        <form><a class="practice-btn"> practice </a></form>
+        <%}%>
+        <%if (currUser.getId() == curQuiz.getAuthor()){%>
+            <form><a href = "editQuiz?quizId=<%=curQuiz.getID()%>" class="edit-btn"> Edit Quiz </a></form>
+        <%}%>
+
 
                 <button id="challengeFriendBtn" class="btn btn-secondary">Challenge Friend</button>
             </div>
@@ -85,12 +86,12 @@
             document.addEventListener("DOMContentLoaded", function () {
                 const challengeFriendBtn = document.getElementById("challengeFriendBtn");
                 const friendListContainer = document.getElementById("friendList");
-
                 challengeFriendBtn.addEventListener("click", () => {
                     friendListContainer.style.display = friendListContainer.style.display === "none" ? "block" : "none";
                 });
             });
         </script>
+
     </div>
     </div>
 
