@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import dataBase.questionsDAOs.GradeDAO;
 import dataBase.questionsDAOs.ResponseDAO;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -14,29 +15,29 @@ import java.sql.SQLException;
 
 public class ResponseDAOTest {
 
-    private static Connection connection;
+    private static BasicDataSource dataSource;
     private ResponseDAO responseDAO;
     private GradeDAO gradeDAO;
 
     @BeforeAll
     static void setupConnection() throws SQLException {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/test_db";
-        String user = "root";
-        String password = "root:root";
-        connection = DriverManager.getConnection(jdbcUrl, user, password);
+        dataSource = new BasicDataSource();
+        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
+        dataSource.setUsername("root");
+        dataSource.setPassword("root:root");
     }
 
     @AfterAll
     static void closeConnection() throws SQLException {
-        if (connection != null) {
-            connection.close();
+        if (dataSource != null) {
+            dataSource.close();
         }
     }
 
     @BeforeEach
     void setup() {
-        responseDAO = new ResponseDAO(connection);
-        gradeDAO = new GradeDAO(connection);
+        responseDAO = new ResponseDAO(dataSource);
+        gradeDAO = new GradeDAO(dataSource);
     }
 
     @Test

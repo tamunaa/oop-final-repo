@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="dataBase.UserDAO" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="dataBase.FriendsDAO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,29 +27,20 @@
 <%
         MessageDAO messageDAO = (MessageDAO) request.getServletContext().getAttribute("messageDAO");
         UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
-
+        FriendsDAO friendsDAO = (FriendsDAO) request.getServletContext().getAttribute("friendsDAO");
         User currUser = (User) session.getAttribute("currUser");
-        int curUserId = currUser.getId();
-
-        List<Integer> interactions = messageDAO.getInteractions(curUserId);
-        User[] interactedUsers = new User[interactions.size()];
-
-        for (int i = 0; i < interactions.size(); i++){
-                int curId = interactions.get(i);
-                interactedUsers[i] = (User) userDAO.getUserByUserId(curId);
-        }
-
+        List<User> interactedUsers = friendsDAO.getAllFriends(currUser);
+        String recipient = request.getParameter("recipient");
 %>
 <div id="messagediv" class="d-flex justify-content-around">
         <div class="message-container">
                 <div class="user-list" id="user-list">
                         <%
-                                for(int i = 0; i < interactedUsers.length; i++){
+                                for(int i = 0; i < interactedUsers.size(); i++){
                         %>
-                        <div class="user" data-user="<%=interactedUsers[i].getUsername()%>">
-                                <%=interactedUsers[i].getUsername()%>
-                        </div>
-
+                                <div class="user" data-user="<%=interactedUsers.get(i).getUsername()%>">
+                                        <%=interactedUsers.get(i).getUsername()%>
+                                </div>
                         <%
                                 }
                         %>
@@ -73,36 +65,39 @@
                 const messageInput = document.getElementById('message-input');
                 const sendButton = document.getElementById('send-button');
 
+
                 userList.addEventListener('click', (event) => {
                         if (event.target.classList.contains('user')) {
                                 const users = document.querySelectorAll('.user');
                                 users.forEach((user) => {
                                         user.classList.remove('active');
                                 });
-
                                 const clickedUser = event.target;
                                 clickedUser.classList.add('active');
-
                                 const selectedUser = clickedUser.getAttribute('data-user');
                                 updateChat(selectedUser);
-                                console.log("userlists emateba listeneri");
                         }
                 });
+
+
+                const desiredRecipient = "<%=recipient%>";
+                const recipientToClick = document.querySelector(`.user[data-user="${desiredRecipient}"]`);
+                if (recipientToClick) {
+                        recipientToClick.click();
+                }
 
                 sendButton.addEventListener('click', () => {
                         const selectedUser = document.querySelector('.user.active').getAttribute('data-user');
                         const messageText = messageInput.value;
                         if (messageText.trim() !== '') {
                                 $.ajax({
-                                        url: "MessengerServlet", // The URL of your servlet
+                                        url: "MessengerServlet",
                                         type: "POST",
                                         data: { selectedUser: selectedUser, messageText: messageText },
                                         success: function(response) {
-                                                // Handle success, maybe update the chat interface
                                                 updateChat(selectedUser);
                                         },
                                         error: function(error) {
-                                                // Handle error
                                                 console.error("Error sending message:", error);
                                         }
                                 });
@@ -125,18 +120,13 @@
                         });
                 }
 
-                function sendMessage(user) {
-                        const messageText = messageInput.value;
-                        if (messageText.trim() !== '') {
-                                // Implement your logic to send the message to the server
-                                // and update the chat
-                                // userChats[user].push(messageText);
-                                // updateChat(user);
-                                messageInput.value = '';
+                messageInput.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter') {
+                                event.preventDefault();
+                                sendButton.click();
                         }
-                }
+                });
 
-                // Additional logic here
         });
 </script>
 

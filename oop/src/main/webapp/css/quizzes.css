@@ -26,3 +26,15 @@
     border-radius: 4px;
     margin: 5px;
 }
+
+.search-area{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.input-field{
+    border-radius: 10px;
+    height: 35px;
+    border: 1px solid lightslategray;
+}

@@ -1,15 +1,15 @@
 <%@ page import="objects.questions.Question" %>
-<form class="form-container">
-    <div class="question">
-        <h2>questioonnn</h2>
-<%--        <h2> <%= ((Question)session.getAttribute("current")).getQuestion()%> </h2>--%>
-    </div>
+<%
+    Question question = (Question)request.getAttribute("current");
+    String indexStr = request.getAttribute("index").toString();
+    int index = Integer.parseInt(indexStr);
+%>
+<h3>Fill In The Blank</h3>
+<div class="question">
+    <h2> <%= question.getQuestion()%> </h2>
+</div>
 
-    <div class="user-answer">
-        <label>Your Answer:</label>
-        <label>
-            <input type="text" name="userAnswer" required>
-        </label>
-    </div>
-</form>
-
+<div class="user-answer">
+    <label>Your Answer:</label>
+    <input type="text" name="question<%=index%>" oninput="saveAnswersForOneInputQuestions(<%=index%>)">
+</div>

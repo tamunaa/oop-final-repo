@@ -1,5 +1,5 @@
 const boxElements = document.querySelectorAll(".box");
-console.log("box elements", boxElements)
+// console.log("box elements", boxElements)
 boxElements.forEach(elem => {
     elem.addEventListener("dragstart", dragStart);
     // elem.addEventListener("drag", drag);

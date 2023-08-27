@@ -114,3 +114,8 @@ body {
     /* Add your filled star icon styles here */
     color: yellow;
 }
+
+.homeButton{
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+}

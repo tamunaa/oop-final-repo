@@ -29,11 +29,15 @@
     User currUser = (User) session.getAttribute("currUser");
     boolean isAdmin = currUser.isAdmin();
     boolean isSelf = Boolean.parseBoolean(request.getParameter("self"));
+    boolean areFriends = false;
+    FriendsDAO friendsDAO = (FriendsDAO) request.getServletContext().getAttribute("friendsDAO");
 
     if (!isSelf){
         String name = request.getParameter("username");
         UserDAO dao = (UserDAO) request.getServletContext().getAttribute("userDAO");
-        currUser = dao.getUserByUsername(name);
+        User newUser = dao.getUserByUsername(name);
+        areFriends = friendsDAO.isFriendship(currUser, newUser);
+        currUser = newUser;
     }
 %>
 
@@ -148,14 +152,20 @@
 
                         request.getSession().setAttribute("username", currUser.getUsername());
                     %>
+                    <%if(!areFriends){%>
                     <form action='<%=url%>' method="GET">
                         <button class="custom-btn2">
                             <i class="bi bi-person-plus"></i>  send friend request
                         </button>
                     </form>
-                    <button class="custom-btn2">
-                        <i class="bi bi-envelope-at-fill"></i> Send Message
-                    </button>
+                    <%}%>
+
+                    <% if (areFriends) { %>
+                        <a class="custom-btn2" href="messages.jsp?recipient=<%=currUser.getUsername()%>">
+                            <i class="bi bi-envelope-at-fill"></i> Send Message
+                        </a>
+                    <% } %>
+
                 </div>
             </div>
 
@@ -226,24 +236,30 @@
 
             <!-- Achievements -->
             <%
-                AchievementDAO achievementDAO = (AchievementDAO) request.getServletContext().getAttribute("achievementDAO");
-                List<Achievement> achievements = achievementDAO.getUserAchievements(currUser.getId());
+                AchievementDAO  AchievementsDAO = (AchievementDAO)request.getServletContext().getAttribute("achievementDAO");
+                List<Achievement> achievements = AchievementsDAO.getUserAchievements(currUser.getId());
+
             %>
 
             <div class="profile-section">
-                <div class="profile-card">
+                <div class="profile-card" >
                     <h2>Achievements</h2>
-                    <ul class="custom-link-list">
+                    <div class="custom-link-list" id ="achievements">
 
                     <%for (int i = 0; i < 1; i++){
 //                        Achievement curAchievement = achievements.get(i);
                     %>
-                        <li><img src="photos/amature.jpg"  width="100px" alt="amateur"> </img> </li>
-<%--                        <li><%=curAchievement.getPictureUrl()%></li>--%>
+                        <div><img src="photos/amateur.jpeg"  width="100px" height="140" alt="amateur"></div>
+                        <div><img src="photos/I%20am%20the%20Greatest.png" width="100px"  height="140" alt="amateur"> </img> </div>
+                        <div><img src="photos/Practice%20Makes%20Perfect.jpg" width="100px"  height="140" alt="amateur"> </img> </div>
+                        <div><img src="photos/Profilic%20Author.jpg" width="100px"  height="140" alt="amateur"> </img> </div>
+                        <div><img src="photos/Prodigious%20Author.jpg" width="100px"  height="140" alt="amateur"> </img> </div>
+                        <div><img src="photos/Quiz%20Machine.jpg" width="100px"  height="140" alt="amateur"> </img> </div>
                     <%
                     }
                     %>
-                    </ul>
+
+                    </div>
                 </div>
             </div>
         </div>

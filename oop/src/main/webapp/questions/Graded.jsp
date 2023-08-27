@@ -2,21 +2,16 @@
 <%
     Question question = (Question)request.getAttribute("current");
     String indexStr = request.getAttribute("index").toString();
-    int numFields = question.getNumFields();
     int index = Integer.parseInt(indexStr);
 %>
-<h3>Multi Answer</h3>
+<h3>Graded Question</h3>
+
 <div class="question">
-    <h2> <%=question.getQuestion()%> </h2>
+    <h2><%= question.getQuestion() %></h2>
 </div>
 
 <div class="user-answer">
     <label>Your Answer:</label>
-    <%
-        for (int i = 0; i < numFields; i++) {
-    %>
-        <input type="text" id="question<%=index%><%=i%>" oninput="saveMultiAnswerAnswers(<%=index%>, <%=numFields%>)">
-    <%
-        }
-    %>
+    <textarea type="text" name="question<%=index%>" required rows="5" cols="50" oninput="saveAnswersForOneInputQuestions(<%=index%>)"></textarea>
 </div>
+
