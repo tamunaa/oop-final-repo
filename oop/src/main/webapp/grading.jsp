@@ -1,32 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
+<%@ page import="objects.QuestionResponsePair" %>
+<%@ page import="objects.Response" %>
 
-<%!
-    // Helper method to create an entry
-    List<String> createEntry(String responseId, String questionText, String responseText) {
-        List<String> entry = new ArrayList<String>();
-        entry.add(responseId);
-        entry.add(questionText);
-        entry.add(responseText);
-        return entry;
-    }
-%>
+
 
 <!DOCTYPE html>
 <html>
 <%
     // Retrieve the questionResponse list from session or create it if not present
-    List<List<String>> questionResponse = (ArrayList<List<String>>) request.getSession().getAttribute("questions");
+    List<QuestionResponsePair> questionResponsePairs = (ArrayList<QuestionResponsePair>)request.getSession().getAttribute("responses");
 
+        //List<QuestionResponsePair> questionResponsePairs = new ArrayList<QuestionResponsePair>();
+        //Response r = new Response(44, 2, 1, 0, false, "smth");
+        //QuestionResponsePair qr = new QuestionResponsePair("smth?", r);
+        //questionResponsePairs.add(qr);
 %>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css" href="css/navbar.css">
-    <link rel="stylesheet" type="text/css" href="css/grading.css">
+
     <script src="js/navbar.js"></script>
     <link rel="stylesheet" type="text/css" href="css/profile.css">
     <meta charset="UTF-8">
@@ -60,9 +56,6 @@
 </head>
 <body>
 
-<jsp:include page="navbar.jsp" />
-<jsp:include page="notificationbar.jsp" />
-
     <h1>Grade Questions</h1>
 <table border="1">
     <tr>
@@ -71,13 +64,13 @@
         <th>Score</th>
     </tr>
     <%
-        for (List<String> entry : questionResponse) {
+        for (QuestionResponsePair entry : questionResponsePairs) {
     %>
         <tr>
-            <td><%= entry.get(1) %></td> <!-- Question Text -->
-            <td><%= entry.get(2) %></td> <!-- Response Text -->
+            <td><%= entry.getQuestionText() %></td> <!-- Question Text -->
+            <td><%= entry.getResponse().getResponseText() %></td> <!-- Response Text -->
             <td> <!-- Score Input -->
-                <input type="number" id="score_<%= entry.get(0) %>" min="0" max="10" required
+                <input type="number" id="1" min="0" max="10" required
                        oninput="validateScore(this)">
             </td>
         </tr>

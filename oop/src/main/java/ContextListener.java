@@ -20,9 +20,9 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
         dataSource.setUsername("root");
-        dataSource.setPassword("password");
+        dataSource.setPassword("root:root");
         dataSource.setMaxTotal(-1);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -43,6 +43,12 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         AnnouncementDAO announcementDAO = new AnnouncementDAOSQL(dataSource);
         ResponseDAO responseDAO = new ResponseDAO(dataSource);
         ChallengeDAO challengeDAO = new DbChallengeDAO(dataSource);
+        GradeDAO gradeDAO;
+        try {
+            gradeDAO = new GradeDAO(dataSource);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         context.setAttribute("userDAO", userDAO);
         context.setAttribute("friendsDAO", friendsDAO);
@@ -54,6 +60,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         context.setAttribute("announcementDAO", announcementDAO);
         context.setAttribute("responseDAO", responseDAO);
         context.setAttribute("challengeDAO", challengeDAO);
+        context.setAttribute("gradeDAO", gradeDAO);
 
         FriendshipService service = new FriendshipService();
         context.setAttribute("friendshipService", service);

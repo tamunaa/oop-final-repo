@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import dataBase.questionsDAOs.GradeDAO;
 import dataBase.questionsDAOs.ResponseDAO;
+import objects.QuestionResponsePair;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ResponseDAOTest {
 
@@ -35,7 +37,7 @@ public class ResponseDAOTest {
     }
 
     @BeforeEach
-    void setup() {
+    void setup() throws SQLException {
         responseDAO = new ResponseDAO(dataSource);
         gradeDAO = new GradeDAO(dataSource);
     }
@@ -118,5 +120,11 @@ public class ResponseDAOTest {
     @Test
     void TestUngradedGradeDAO(){
         assertEquals(0, gradeDAO.getScoreByHistoryId(2));
+    }
+
+    @Test
+    public void testGetUngradedResponsesByAuthorID() throws SQLException {
+        assertEquals(6, responseDAO.getUngradedResponsesByAuthorID(1).size());
+        assertEquals("What is 6 multiplied by 7?", responseDAO.getUngradedResponsesByAuthorID(1).get(0).getQuestionText());
     }
 }
