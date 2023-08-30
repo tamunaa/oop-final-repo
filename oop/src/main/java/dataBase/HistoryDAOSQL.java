@@ -135,4 +135,65 @@ public class HistoryDAOSQL implements HistoryDAO{
 
         return historyList;
     }
+    @Override
+    public List<History> UserRecentHistory(int quizId, int userId, int limit) {
+        List<History> historyList = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM HISTORY WHERE Quiz_ID = ? and User_ID = ? ORDER BY Date_taken DESC LIMIT ?; "
+            );
+
+            preparedStatement.setInt(1, quizId);
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setInt(3, limit);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                int score = resultSet.getInt("score");
+                int timeElapsed = resultSet.getInt("Time_relapsed");
+                Timestamp dateTaken = resultSet.getTimestamp("Date_taken");
+
+                History history = new History(quizId, userId, score, timeElapsed, dateTaken);
+                history.setId(id);
+                historyList.add(history);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return historyList;
+    }
+    @Override
+    public List<History> sortedHistory(int quizId, String orderType,int limit) {
+        List<History> historyList = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM HISTORY WHERE Quiz_ID = ? ORDER BY ? DESC LIMIT ?;"
+            );
+
+            preparedStatement.setInt(1, quizId);
+            preparedStatement.setString(2, orderType);
+            preparedStatement.setInt(3, limit);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                int userId = resultSet.getInt("User_ID");
+                int score = resultSet.getInt("score");
+                int timeElapsed = resultSet.getInt("Time_relapsed");
+                Timestamp dateTaken = resultSet.getTimestamp("Date_taken");
+
+                History history = new History(quizId, userId, score, timeElapsed, dateTaken);
+                history.setId(id);
+                historyList.add(history);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return historyList;
+    }
 }

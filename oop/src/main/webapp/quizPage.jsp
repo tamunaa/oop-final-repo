@@ -102,33 +102,129 @@
         HistoryDAO historyDAO = (HistoryDAO) request.getServletContext().getAttribute("historyDAO");
         int curQuizId = curQuiz.getID();
         List<History> historyList =  historyDAO.getHistoryByQuizId(curQuiz.getID());
+        double averageScore = 0;
+        double averageTime = 0;
+        double sumScore = 0;
+        double sumTime = 0;
+        for(int i = 0; i < historyList.size(); i++){
+            History currHistory = historyList.get(i);
+            sumScore += currHistory.getScore();
+            sumTime += currHistory.getTimeRelapsed();
+        }
+        averageTime = sumTime/historyList.size();
+        averageScore = sumScore/historyList.size();
+        List<History> topScorersHistory = historyDAO.sortedHistory(curQuizId,"score",10);
+        List<History> recentScorersHistory = historyDAO.sortedHistory(curQuizId,"Date_taken",10);
+        List<History> myHistory = historyDAO.UserRecentHistory(curQuizId,currUser.getId(),10);
+
+
     %>
 
     <div class="quiz-history">
         <h2>Quiz History</h2>
-        <table>
-            <tr>
-                <th>When</th>
-                <th>Who</th>
-                <th>Time</th>
-                <th>Score</th>
-            </tr>
-            <%
-                for (int i = 0; i < historyList.size(); i++) {
-                    History history = historyList.get(i);
-                    String who = userDAO.getUserByUserId(history.getUserId()).getUsername();
-                    String path = "profile.jsp?self=false&&username="+who;
-            %>
-            <tr>
-                <td><%= history.getDateTaken()%></td>
-                <td><a href= '<%=path%>'> <%=who%> </a> </td>
-                <td><%= history.getTimeRelapsed()%></td>
-                <td><%= history.getScore()%></td>
-            </tr>
-            <%
-                }
-            %>
-        </table>
+
+
+
+        <input class="tabs" type="button" name="Showdiv1" value="Top Scorers" onclick="showDiv('1')"/>
+        <input class="tabs" type="button" name="Showdiv2" value="My Scores" onclick="showDiv('2')"/>
+        <input class="tabs" type="button" name="Showdiv3" value="Recent Scores" onclick="showDiv('3')"/>
+
+        <div id="div1">
+            <table>
+                <tr>
+                    <th>When</th>
+                    <th>Who</th>
+                    <th>Time</th>
+                    <th>Score</th>
+                </tr>
+                <%
+                    for (int i = 0; i < topScorersHistory.size(); i++) {
+                        History history = topScorersHistory.get(i);
+                        String who = userDAO.getUserByUserId(history.getUserId()).getUsername();
+                        String path = "profile.jsp?self=false&&username="+who;
+                %>
+                <tr>
+                    <td><%= history.getDateTaken()%></td>
+                    <td><a href= '<%=path%>'> <%=who%> </a> </td>
+                    <td><%= history.getTimeRelapsed()%></td>
+                    <td><%= history.getScore()%></td>
+                </tr>
+                <%
+                    }
+                %>
+            </table>
+        </div>
+        <div id=div2>
+            <table>
+                <tr>
+                    <th>When</th>
+                    <th>Time</th>
+                    <th>Score</th>
+                </tr>
+                <%
+                    for (int i = 0; i < myHistory.size(); i++) {
+                        History history = myHistory.get(i);
+                %>
+                <tr>
+                    <td><%= history.getDateTaken()%></td>
+                    <td><%= history.getTimeRelapsed()%></td>
+                    <td><%= history.getScore()%></td>
+                </tr>
+                <%
+                    }
+                %>
+            </table>
+        </div>
+        <div id=div3>
+            <table>
+                <tr>
+                    <th>When</th>
+                    <th>Who</th>
+                    <th>Time</th>
+                    <th>Score</th>
+                </tr>
+                <%
+                    for (int i = 0; i < recentScorersHistory.size(); i++) {
+                        History history = recentScorersHistory.get(i);
+                        String who = userDAO.getUserByUserId(history.getUserId()).getUsername();
+                        String path = "profile.jsp?self=false&&username="+who;
+                %>
+                <tr>
+                    <td><%= history.getDateTaken()%></td>
+                    <td><a href= '<%=path%>'> <%=who%> </a> </td>
+                    <td><%= history.getTimeRelapsed()%></td>
+                    <td><%= history.getScore()%></td>
+                </tr>
+                <%
+                    }
+                %>
+            </table>
+        </div>
+        <script type="text/javascript">
+            function showDiv(num) {
+                document.getElementById('div1').style.display = 'none';
+                document.getElementById('div2').style.display = 'none';
+                document.getElementById('div3').style.display = 'none';
+                document.getElementById('div' + num).style.display = 'block'
+            }
+        </script>
+        <br>
+
+        <div class="w3-container">
+            <span class="w3-tag w3-padding w3-round-large w3-red w3-center">Average Score: <%=averageScore%></span>
+            <span class="w3-tag w3-padding w3-round-large w3-red w3-center">Average Time Spent in Minutes: <%=averageTime%></span>
+        </div>
+        <input name="quiz_id" type="hidden" value="<%=curQuizId%>"/>
+        <br>
+        <%
+            if (curQuiz.isPractice()){%>
+
+        <label class="container">Practice Mode
+            <input type="checkbox" value="YES" name="IsPracticed" >
+            <span class="checkmark"></span>
+        </label>
+
+        <%}%>
     </div>
     </div>
 </div>
