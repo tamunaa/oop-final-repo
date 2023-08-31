@@ -19,9 +19,13 @@
 <body>
 <header class="text-center py-4">
     <p class="text-center">Admin Area</p>
-    <a class="text-center go-back" href="home.jsp">
-        <i class="fa-solid fa-person-walking-arrow-loop-left"></i>
-    </a>
+    <form action="NewsFeedServlet" method="get">
+        <button type="submit" class="go-back">
+            <a class="text-center" href="home.jsp">
+                <i class="fa-solid fa-person-walking-arrow-loop-left"></i>
+            </a>
+        </button>
+    </form>
 </header>
 
 <div class="admin-section scrollable">
