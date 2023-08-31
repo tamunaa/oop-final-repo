@@ -31,7 +31,7 @@ public class quiz extends HttpServlet {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
         dataSource.setUsername("root");
-        dataSource.setPassword("rootroot");
+        dataSource.setPassword("");
 
         int quizId = Integer.parseInt(request.getParameter("quizId"));
         QuizDAO quizDAO = new DbQuizDAO(dataSource);
@@ -58,7 +58,7 @@ public class quiz extends HttpServlet {
 
 
 
-        request.getRequestDispatcher("quiz.jsp?quizId=" + quizId).forward(request, response);
+        request.getRequestDispatcher("quizPage.jsp?quizId=" + quizId).forward(request, response);
 
 
     }
