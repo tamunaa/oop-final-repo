@@ -2,6 +2,7 @@
 <%@ page import="objects.questions.Question" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
+<%@ page import="objects.Quiz" %>
 <%List<Question> questions = (ArrayList<Question>)request.getAttribute("questions");%>
 <html>
 <head>
@@ -31,7 +32,13 @@
         </select>
         <input type="submit" value="Add">
     </form>
+    <div>
+        <form action="finishCreating?quizId=<%=request.getParameter("quizId")%>" method="Post">
+            <input type="submit" value="Finish">
+        </form>
+    </div>
 </div>
+
 
 
 <%
