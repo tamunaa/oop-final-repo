@@ -8,23 +8,13 @@
 <%@ page import="objects.Quiz" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="objects.questions.Question" %>
-<%@ page import="objects.questions.QuestionResponse" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="dataBase.QuizDAO" %>
-<%@ page import="dataBase.DbQuizDAO" %>
-<%@ page import="org.apache.commons.dbcp2.BasicDataSource" %>
-<%@ page import="com.sun.tools.javac.Main" %>
-<%@ page import="javax.imageio.stream.ImageInputStream" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.mysql.cj.xdevapi.JsonArray" %>
-<%@ page import="dataBase.UserDAO" %>
 <%@ page import="objects.History" %>
-<%@ page import="dataBase.HistoryDAO" %>
 <%@ page import="objects.User" %>
-<%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.Objects" %>
 <%@ page import="dataBase.questionsDAOs.ResponseDAO" %>
+<%@ page import="objects.Review" %>
+<%@ page import="dataBase.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -64,14 +54,14 @@
         <p>
           Correct Answer : <%= Arrays.toString(questions[i].getCorrectAnswers())%>
           <br> Your Answer: <%= answers[i]%>
+          <%
+            int curScore = questions[i].evaluate(answers[i]);
+            int cur_max_score = questions[i].getCorrectAnswers().length;
+            score += curScore;
+            max_score += cur_max_score;
+          %>
+          <br>Score: <%=curScore%> / <%=cur_max_score%>
         </p>
-        <%
-          int curScore = questions[i].evaluate(answers[i]);
-          int cur_max_score = questions[i].getCorrectAnswers().length;
-          score += curScore;
-          max_score += cur_max_score;
-        %>
-        Score: <%=curScore%> / <%=cur_max_score%>
       </div>
   <%  }
     } %>
@@ -93,5 +83,16 @@
       }
     %>
   </header>
+
+  <br>
+  <div>
+    <form action="review?quizId=<%=request.getParameter("quizId")%>" method="post">
+      Review:  <input type="text" name="review">
+      <br> <label for="rating">Rate Quiz between 1 and 10</label>
+      <input type="number" min="1" max="10" name="rating" id="rating">
+      <input type="submit" value="Add Rating and Review">
+    </form>
+  </div>
+
 </body>
 </html>
