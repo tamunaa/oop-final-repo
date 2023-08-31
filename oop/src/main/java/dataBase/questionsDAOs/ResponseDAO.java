@@ -1,5 +1,6 @@
 package dataBase.questionsDAOs;
 
+import objects.QuestionResponsePair;
 import objects.Response;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -7,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResponseDAO {
     private BasicDataSource dataSource;
@@ -14,6 +17,42 @@ public class ResponseDAO {
     public ResponseDAO(BasicDataSource dataSource) {
         this.dataSource = dataSource;
     }
+
+    public List<QuestionResponsePair> getUngradedResponsesByAuthorID(int authorId) throws SQLException {
+        List<QuestionResponsePair> questionResponsePairs = new ArrayList<>();
+
+        String query = "SELECT R.*, Q.question_text FROM RESPONSES R JOIN QUESTIONS Q ON R.Question_ID = Q.question_id JOIN QUIZZES Z ON Q.quiz_id = Z.ID WHERE Z.Author = ? AND R.Is_graded = FALSE";
+
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, 16);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String questionText = resultSet.getString("question_text");
+
+                int id = resultSet.getInt("ID");
+                int questionId = resultSet.getInt("Question_ID");
+                int historyId = resultSet.getInt("History_ID");
+                int grade = resultSet.getInt("grade");
+                boolean isGraded = resultSet.getBoolean("Is_graded");
+                String responseText = resultSet.getString("Response");
+
+                Response response = new Response(id, questionId, historyId, grade, isGraded, responseText);
+
+                QuestionResponsePair pair = new QuestionResponsePair(questionText, response);
+                questionResponsePairs.add(pair);
+//                System.out.println(questionResponsePairs.size());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Rethrow the exception for handling at a higher level
+        }
+
+        return questionResponsePairs;
+    }
+
+
 
     public void addResponse(int questionId, int historyId, int grade, boolean isGraded, String response) {
         String query = "INSERT INTO RESPONSES (Question_ID, History_ID, grade, Is_graded, Response) VALUES (?, ?, ?, ?, ?)";
@@ -51,8 +90,8 @@ public class ResponseDAO {
                 } else {
                     // Execute GradeDAO logic when no ungraded responses are found
                     int score = calculateTotalScoreForHistory(historyId);
-                    GradeDAO gradeDAO = new GradeDAO(connection);
-                    gradeDAO.updateScore(historyId, score);
+                    GradeDAO gradeDAO = new GradeDAO(dataSource);
+                    gradeDAO.updateScore(historyId);
                     return null;
                 }
             }
@@ -82,20 +121,27 @@ public class ResponseDAO {
     }
 
 
-    public boolean addScoreAndMarkAsGraded(int responseId, int grade) {
-        String query = "UPDATE RESPONSES SET grade = ?, Is_graded = ? WHERE ID = ?";
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, grade);
-            statement.setBoolean(2, true);
-            statement.setInt(3, responseId);
+    public boolean addScoreAndMarkAsGraded(int responseId, int grade, boolean isGraded) {
+        if(isGraded) {
+            System.out.println("here");
+            String query = "UPDATE RESPONSES SET grade = ?, Is_graded = ? WHERE ID = ?";
+            try (Connection connection = dataSource.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, grade);
+                System.out.println(grade);
+                statement.setBoolean(2, true);
 
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0; // Return true if at least one row was affected
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false; // Return false in case of an error
+                statement.setInt(3, responseId);
+                System.out.println(responseId);
+
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0; // Return true if at least one row was affected
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false; // Return false in case of an error
+            }
         }
+        return true;
     }
 
 
