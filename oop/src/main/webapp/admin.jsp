@@ -52,6 +52,7 @@
                             <label for="deleteUser">
                                 <input type="hidden" id="deleteUser" name="deleteUser" value="<%=curUserName%>">
                             </label>
+                            <input type="hidden" name="type" value="user">
 
                             <button class="trash">
                                 <i class="fas fa-trash-alt"></i>
@@ -83,7 +84,10 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <a class="me-3" href="<%=pathToQuiz%>"><%=curQuizName%></a>
-                                    <form action="" method="">
+
+                                    <form action="AdminServlet" method="GET">
+                                        <input type="hidden" name="deleteQuiz" value="<%=curQuizName%>">
+                                        <input type="hidden" name="type" value="quiz">
                                         <button class="trash"><i class="fas fa-trash-alt"></i></button>
                                     </form>
                                 </div>
