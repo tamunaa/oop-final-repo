@@ -19,9 +19,13 @@
 <body>
 <header class="text-center py-4">
     <p class="text-center">Admin Area</p>
-    <a class="text-center go-back" href="home.jsp">
-        <i class="fa-solid fa-person-walking-arrow-loop-left"></i>
-    </a>
+    <form action="NewsFeedServlet" method="get">
+        <button type="submit" class="go-back">
+            <a class="text-center" href="home.jsp">
+                <i class="fa-solid fa-person-walking-arrow-loop-left"></i>
+            </a>
+        </button>
+    </form>
 </header>
 
 <div class="admin-section scrollable">
@@ -48,6 +52,7 @@
                             <label for="deleteUser">
                                 <input type="hidden" id="deleteUser" name="deleteUser" value="<%=curUserName%>">
                             </label>
+                            <input type="hidden" name="type" value="user">
 
                             <button class="trash">
                                 <i class="fas fa-trash-alt"></i>
@@ -79,7 +84,10 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <a class="me-3" href="<%=pathToQuiz%>"><%=curQuizName%></a>
-                                    <form action="" method="">
+
+                                    <form action="AdminServlet" method="GET">
+                                        <input type="hidden" name="deleteQuiz" value="<%=curQuizName%>">
+                                        <input type="hidden" name="type" value="quiz">
                                         <button class="trash"><i class="fas fa-trash-alt"></i></button>
                                     </form>
                                 </div>

@@ -19,7 +19,6 @@ public class editQuiz extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         QuizDAO quizDAO = (DbQuizDAO) request.getServletContext().getAttribute("quizDAO");
 
-
         int quizId = Integer.parseInt(request.getParameter("quizId"));
         List<Question> questions = quizDAO.getQuestions(quizId);
         request.setAttribute("questions", questions);

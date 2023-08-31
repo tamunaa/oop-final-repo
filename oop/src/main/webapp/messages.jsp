@@ -59,6 +59,23 @@
 </div>
 
 <script>
+        const socket = new WebSocket("ws://localhost:8080/messages.jsp");
+
+        socket.onopen = event => {
+                console.log("WebSocket connection opened:", event);
+        };
+
+        socket.onmessage = event => {
+                const chatMessages = document.getElementById('chat-messages');
+                chatMessages.innerHTML += "<p>" + event.data + "</p>";
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
+        socket.onclose = event => {
+                console.log("WebSocket connection closed:", event);
+        };
+
+
         $(document).ready(function() {
                 const userList = document.getElementById('user-list');
                 const chatMessages = document.getElementById('chat-messages');
@@ -90,22 +107,16 @@
                         const selectedUser = document.querySelector('.user.active').getAttribute('data-user');
                         const messageText = messageInput.value;
                         if (messageText.trim() !== '') {
-                                $.ajax({
-                                        url: "MessengerServlet",
-                                        type: "POST",
-                                        data: { selectedUser: selectedUser, messageText: messageText },
-                                        success: function(response) {
-                                                updateChat(selectedUser);
-                                        },
-                                        error: function(error) {
-                                                console.error("Error sending message:", error);
-                                        }
-                                });
+                                socket.send(JSON.stringify({
+                                        type: 'message',
+                                        recipient: selectedUser,
+                                        message: messageText,
+                                        sender: '<%=currUser.getUsername()%>',
+
+                                }));
                                 messageInput.value = '';
                         }
                 });
-
-
 
                 function updateChat(user) {
                         chatMessages.innerHTML = '<p>Loading messages...</p>';
@@ -129,9 +140,6 @@
 
         });
 </script>
-
-
-
-
 </body>
 </html>
+

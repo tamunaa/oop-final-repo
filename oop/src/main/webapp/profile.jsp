@@ -238,29 +238,24 @@
             <%
                 AchievementDAO  AchievementsDAO = (AchievementDAO)request.getServletContext().getAttribute("achievementDAO");
                 List<Achievement> achievements = AchievementsDAO.getUserAchievements(currUser.getId());
-
             %>
 
             <div class="profile-section">
                 <div class="profile-card" >
                     <h2>Achievements</h2>
                     <div class="custom-link-list" id ="achievements">
+                        <%for (int i = 0; i < achievements.size(); i++){
+                        Achievement curAchievement = achievements.get(i);
+                        String name = curAchievement.getAchievementType();
+                        %>
+                        <div><img src="<%=curAchievement.getPictureUrl()%>"  width="100px" height="140" alt="amateur"></div>
 
-                    <%for (int i = 0; i < 1; i++){
-//                        Achievement curAchievement = achievements.get(i);
-                    %>
-                        <div><img src="photos/amateur.jpeg"  width="100px" height="140" alt="amateur"></div>
-                        <div><img src="photos/I%20am%20the%20Greatest.png" width="100px"  height="140" alt="amateur"> </img> </div>
-                        <div><img src="photos/Practice%20Makes%20Perfect.jpg" width="100px"  height="140" alt="amateur"> </img> </div>
-                        <div><img src="photos/Profilic%20Author.jpg" width="100px"  height="140" alt="amateur"> </img> </div>
-                        <div><img src="photos/Prodigious%20Author.jpg" width="100px"  height="140" alt="amateur"> </img> </div>
-                        <div><img src="photos/Quiz%20Machine.jpg" width="100px"  height="140" alt="amateur"> </img> </div>
-                    <%
-                    }
-                    %>
+                        <%
+                        }
+                        %>
                     </div>
-
                 </div>
+
                 <div class="profile-section">
                     <div class="profile-card">
                         <form action="GradingServlet" method="GET">

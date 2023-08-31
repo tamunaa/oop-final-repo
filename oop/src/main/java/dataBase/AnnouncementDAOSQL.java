@@ -96,7 +96,7 @@ public class AnnouncementDAOSQL implements AnnouncementDAO {
 
         try (Connection connection = dataSource.getConnection()) {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM ANNOUNCEMENTS");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM ANNOUNCEMENTS ORDER BY CREATION_DATE DESC");
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("ID");
