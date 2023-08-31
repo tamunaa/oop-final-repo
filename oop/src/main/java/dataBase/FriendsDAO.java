@@ -7,19 +7,19 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class FriendsDAO implements FriendsDAOInterface{
-    private BasicDataSource ds;
-   // private UserDAO userDAO;
+    private ConnectionPool pool;
 
-    public FriendsDAO(BasicDataSource basicDataSource) {
-        ds = basicDataSource;
-      //  userDAO = new UserDAO(ds);
+
+    public FriendsDAO(ConnectionPool pool) {
+        this.pool = pool;
     }
 
     @Override
     public boolean addFriendship(User user1, User user2){
         if(isFriendship(user1,user2)) return false;
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm;
 
             stm = conn.prepareStatement("INSERT IGNORE INTO FRIENDS (User_ID, Friend_ID) VALUES (? , ?); ");
@@ -30,6 +30,9 @@ public class FriendsDAO implements FriendsDAOInterface{
         }catch(SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
             return false;
 
     }
@@ -37,8 +40,8 @@ public class FriendsDAO implements FriendsDAOInterface{
     @Override
     public boolean removeFriendship(User user1, User user2){
         if(!isFriendship(user1,user2)) return false;
+        Connection conn = pool.getConnection();
         try{
-            Connection conn = ds.getConnection();
             PreparedStatement stm;
             stm = conn.prepareStatement("DELETE FROM FRIENDS WHERE (User_ID = ? AND Friend_ID = ? ) OR (Friend_ID = ? AND User_ID = ?) ;");
             stm.setInt(1, user1.getId());
@@ -50,6 +53,9 @@ public class FriendsDAO implements FriendsDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return false;
     }
 
@@ -59,8 +65,8 @@ public class FriendsDAO implements FriendsDAOInterface{
     }
 
     private boolean isFriendshipHelper(User user1, User user2){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm;
 
             stm = conn.prepareStatement("SELECT * FROM FRIENDS WHERE (User_ID = ? AND Friend_ID = ? ) ;");
@@ -72,14 +78,17 @@ public class FriendsDAO implements FriendsDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
             return false;
     }
 
     @Override
     public List<User> getAllFriends(User user){
         List<User> res = new ArrayList<>();
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm;
 
             String query = "SELECT U.ID, U.Username, U.Email, U.Password_hash, U.Is_administrator, U.Date_added  FROM USERS U JOIN FRIENDS F ON U.ID = F.Friend_ID WHERE F.User_ID = ? ;";
@@ -113,12 +122,15 @@ public class FriendsDAO implements FriendsDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
             }
+        finally{
+            pool.releaseConnection(conn);
+        }
             return res;
     }
     @Override
     public boolean addFriendshipRequest(User target, User sender){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm;
 
             stm = conn.prepareStatement("INSERT IGNORE INTO FRIEND_REQS (Reciever_ID, Sender_ID) VALUES (? , ?) ;");
@@ -130,13 +142,16 @@ public class FriendsDAO implements FriendsDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
             return false;
     }
 
     @Override
     public boolean removeFriendshipRequest(User target, User sender){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm;
 
             stm = conn.prepareStatement("DELETE FROM FRIEND_REQS WHERE (Reciever_ID = ? AND Sender_ID = ? );");
@@ -147,6 +162,9 @@ public class FriendsDAO implements FriendsDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
             return false;
 
     }
@@ -154,8 +172,8 @@ public class FriendsDAO implements FriendsDAOInterface{
     @Override
     public List<User> getAllFriendshipRequests(User target){
         List<User> res = new ArrayList<>();
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm;
 
             String query = "SELECT U.ID, U.Username, U.Email, U.Password_hash, U.Is_administrator, U.Date_added  FROM USERS U JOIN FRIEND_REQS F ON U.ID = F.Sender_ID WHERE F.Reciever_ID = ? ;";
@@ -170,13 +188,16 @@ public class FriendsDAO implements FriendsDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
             return res;
     }
 
     @Override
     public boolean isInFriendshipRequests(User target, User sender){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm;
 
             stm = conn.prepareStatement("SELECT * FROM FRIEND_REQS WHERE (Reciever_ID = ? AND Sender_ID = ? ) ;");
@@ -188,6 +209,9 @@ public class FriendsDAO implements FriendsDAOInterface{
         }catch(SQLException e){
                 e.printStackTrace();
             }
+        finally{
+            pool.releaseConnection(conn);
+        }
             return false;
     }
 }

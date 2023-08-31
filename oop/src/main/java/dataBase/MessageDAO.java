@@ -11,15 +11,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class MessageDAO implements MessageDAOInterface{
-    BasicDataSource ds;
-    public MessageDAO(BasicDataSource basicDataSource){
-        this.ds = basicDataSource;
-    }
+    private final ConnectionPool pool;
+    public MessageDAO(ConnectionPool pool){this.pool = pool;}
 
     @Override
     public boolean addMessage(Message message) {
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm;
 
             int senderID = message.getSenderID();
@@ -42,13 +41,18 @@ public class MessageDAO implements MessageDAOInterface{
         }catch(SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
+
         return true;
     }
 
     @Override
     public boolean deleteMessage(int id){
+        Connection conn = pool.getConnection();
         try{
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("DELETE FROM MESSAGE WHERE ID = ? ;");
             stm.setInt(1,id);
             int changed = stm.executeUpdate();
@@ -56,19 +60,26 @@ public class MessageDAO implements MessageDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return false;
     }
 
     @Override
     public int deleteNotifications(int reciever_id){
+        Connection conn = pool.getConnection();
         try{
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("DELETE FROM MESSAGE WHERE Reciever_ID = ? AND Message_type != 'NOTE' ;");
             stm.setInt(1,reciever_id);
             int changed = stm.executeUpdate();
             if(changed > 0) return changed;
         }catch (SQLException e){
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(conn);
         }
         return -1;
     }
@@ -77,8 +88,8 @@ public class MessageDAO implements MessageDAOInterface{
     public int deleteAllMessages(int sender_id, int reciever_id){
         if(sender_id == -1 || reciever_id == -1)
             return -1;
+        Connection conn = pool.getConnection();
         try{
-            Connection conn = ds.getConnection();
             PreparedStatement stm = conn.prepareStatement("DELETE FROM MESSAGE WHERE ((Sender_ID = ? AND Reciever_ID = ?) OR (Sender_ID = ? AND Reciever_ID = ?) ) AND Message_type = ? ;");
             stm.setInt(1,sender_id);
             stm.setInt(2,reciever_id);
@@ -90,20 +101,27 @@ public class MessageDAO implements MessageDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return -1;
     }
 
     @Override
     public Message getMessage(int id){
         Message res = null;
+        Connection conn = pool.getConnection();
         try{
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM MESSAGE WHERE ID = ? ;");
             stm.setInt(1,id);
             ResultSet rs = stm.executeQuery();
             if(rs.next()) res = messageParser(rs);
         }catch (SQLException e){
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(conn);
         }
         return res;
     }
@@ -132,8 +150,9 @@ public class MessageDAO implements MessageDAOInterface{
         if(sender_id == -1 || reciever_id == -1)
             return null;
         List<Message> result = new ArrayList<>();
+        Connection conn = pool.getConnection();
         try{
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm;
             String statement =  "SELECT * FROM MESSAGE WHERE ((Sender_ID = ? AND Reciever_ID = ?) OR (Sender_ID = ? AND Reciever_ID = ?)) AND Message_type = ? ORDER BY Date_sent "+ (asc ? "asc" : "desc") +";";
             stm = conn.prepareStatement(statement);
@@ -151,14 +170,18 @@ public class MessageDAO implements MessageDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return result;
     }
 
     @Override
     public List<Message> getUsersRecentIncomingNotifications(int user_id){
         List<Message> result = new ArrayList<>();
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM MESSAGE WHERE Reciever_ID = ? AND Message_type != 'NOTE' ORDER BY Date_sent DESC ;");
             stm.setInt(1,user_id);
             ResultSet rs = stm.executeQuery();
@@ -168,6 +191,9 @@ public class MessageDAO implements MessageDAOInterface{
             return result;
         }catch (SQLException e){
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(conn);
         }
         return result;
     }
@@ -185,8 +211,9 @@ public class MessageDAO implements MessageDAOInterface{
 
     private List<Integer> getRecievers(int sender_id) {
         List<Integer> result = new ArrayList<>();
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("SELECT Reciever_ID FROM MESSAGE WHERE Sender_ID = ? AND Message_type = ?;");
             stm.setInt(1,sender_id);
             stm.setString(2,"NOTE");
@@ -199,12 +226,16 @@ public class MessageDAO implements MessageDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return result;
     }
     private List<Integer> getSenders(int reciever_id) {
         List<Integer> result = new ArrayList<>();
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("SELECT Sender_ID FROM MESSAGE WHERE Reciever_ID = ? AND Message_type = ?;");
             stm.setInt(1,reciever_id);
             stm.setString(2,"NOTE");
@@ -216,6 +247,9 @@ public class MessageDAO implements MessageDAOInterface{
             return result;
         }catch (SQLException e){
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(conn);
         }
         return result;
     }
