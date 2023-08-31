@@ -8,6 +8,7 @@
     List<Question> questions = (ArrayList<Question>)request.getAttribute("questions");
     String quizId = request.getParameter("quizId");
 %>
+
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/editQuiz.css">
@@ -45,6 +46,7 @@
     <div class="question">
         <h2><%= i++ %>. <%= questionType %></h2>
 
+
         <div class="questionText">
             <p id="questionText">Question text: <%= question.getQuestion() %></p>
             <% if ("PictureResponse".equals(questionType)) { %>
@@ -53,6 +55,7 @@
         </div>
 
         <% if (Arrays.asList("MultipleChoice", "MultipleChoiceWithMultipleAnswer").contains(questionType)) { %>
+
             <div class="questionOptions">
                 <% for (String choice : question.getOptions()) { %>
                     <p class="choice"><%= choice %></p>

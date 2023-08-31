@@ -51,7 +51,11 @@
             </div>
 
         <div class="quiz-options">
-        <form><a href="loadQuizQuestions?quizId=<%=curQuiz.getID()%>" class="take-btn">Take Quiz</a></form>
+        <form>
+            <a href="loadQuizQuestions?quizId=<%=curQuiz.getID()%>" class="take-btn">Take Quiz</a>
+            <% request.getSession().setAttribute("startTime", new Timestamp(new java.util.Date().getTime()));
+            %>
+        </form>
         <%if (true) {%>
         <form><a class="practice-btn"> practice </a></form>
         <%}%>

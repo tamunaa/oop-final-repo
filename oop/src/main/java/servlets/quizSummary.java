@@ -24,15 +24,8 @@ public class quizSummary extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int quizId = Integer.parseInt(request.getParameter("quizId"));
-        Question[] questions = (Question[]) request.getSession().getAttribute("questions");
-        String[] answers = request.getParameterValues("answers");
-
-        System.out.println("quiId: " + quizId);
-        for (int i = 0; i < answers.length; i++) {
-            System.out.println("question is: " + questions[i].getQuestion());
-            System.out.println("my answer is: " + answers[i]);
-        }
+        request.getSession().setAttribute("endTime", new Timestamp(new java.util.Date().getTime()));
+        request.getRequestDispatcher("quizResult.jsp?quizId=" + request.getParameter("quizId")).forward(request, response);
     }
 
 }
