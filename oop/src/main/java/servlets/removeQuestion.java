@@ -16,14 +16,10 @@ import java.io.IOException;
 @WebServlet("/removeQuestion")
 public class removeQuestion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
-        dataSource.setUsername("root");
-        dataSource.setPassword("rootroot");
 
         int questionId = Integer.parseInt(request.getParameter("questionId"));
         int quizId = Integer.parseInt(request.getParameter("quizId"));
-        QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
+        QuestionsDAO questionsDAO = (QuestionsDAO) request.getServletContext().getAttribute("questionsDAO");
         questionsDAO.removeQuestion(questionId);
 
         response.sendRedirect("editQuiz?quizId=" + quizId);

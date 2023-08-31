@@ -8,15 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnnouncementDAOSQL implements AnnouncementDAO {
-    private BasicDataSource dataSource;
-
-    public AnnouncementDAOSQL(BasicDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    private final ConnectionPool pool;
+    public AnnouncementDAOSQL(ConnectionPool pool){this.pool = pool;}
 
     @Override
     public int insertAnnouncement(Announcement announcement) {
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = pool.getConnection();
+
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO ANNOUNCEMENTS (User_ID, Creation_date, Announcement_title, Announcement_text) VALUES (?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
@@ -40,12 +39,17 @@ public class AnnouncementDAOSQL implements AnnouncementDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
 
         return ERROR;
     }
     @Override
     public Announcement getAnnouncementById(int id) {
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = pool.getConnection();
+
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM ANNOUNCEMENTS WHERE ID = ?"
             );
@@ -66,13 +70,18 @@ public class AnnouncementDAOSQL implements AnnouncementDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
 
         return null;
     }
 
     @Override
     public int deleteAnnouncementById(int id) {
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = pool.getConnection();
+
+        try  {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM ANNOUNCEMENTS WHERE ID = ?"
             );
@@ -86,6 +95,9 @@ public class AnnouncementDAOSQL implements AnnouncementDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
 
         return ERROR;
     }
@@ -93,8 +105,9 @@ public class AnnouncementDAOSQL implements AnnouncementDAO {
     @Override
     public List<Announcement> getAllAnnouncements() {
         List<Announcement> announcements = new ArrayList<>();
+        Connection connection = pool.getConnection();
 
-        try (Connection connection = dataSource.getConnection()) {
+        try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM ANNOUNCEMENTS");
 
@@ -112,6 +125,9 @@ public class AnnouncementDAOSQL implements AnnouncementDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
 
         return announcements;
     }
@@ -119,8 +135,9 @@ public class AnnouncementDAOSQL implements AnnouncementDAO {
     @Override
     public List<Announcement> searchAnnouncements(String searchInput) {
         List<Announcement> searchResults = new ArrayList<>();
+        Connection connection = pool.getConnection();
 
-        try (Connection connection = dataSource.getConnection()) {
+        try  {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM ANNOUNCEMENTS WHERE Announcement_title LIKE ? OR Announcement_text LIKE ?"
             );
@@ -142,6 +159,9 @@ public class AnnouncementDAOSQL implements AnnouncementDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(connection);
         }
 
         return searchResults;

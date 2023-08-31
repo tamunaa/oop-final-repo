@@ -15,37 +15,26 @@ import dataBase.*;
 import dataBase.questionsDAOs.*;
 @WebListener
 public class ContextListener implements ServletContextListener, HttpSessionListener  {
-    private Connection conn;
+    ConnectionPool pool;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
-        dataSource.setUsername("root");
-        dataSource.setPassword("password");
-        dataSource.setMaxTotal(-1);
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = dataSource.getConnection();
-            conn.createStatement().execute("USE oopquizzweb;");
-        } catch (SQLException | ClassNotFoundException e ) {
-            throw new RuntimeException(e);
-        }
+        pool = new ConnectionPool(10);
 
         ServletContext context = sce.getServletContext();
-        UserDAO userDAO = new UserDAO(dataSource);
-        FriendsDAO friendsDAO = new FriendsDAO(dataSource);
-        MessageDAO messageDAO = new MessageDAO(dataSource);
-        HistoryDAO historyDAO = new HistoryDAOSQL(dataSource);
-        DbQuizDAO quizDAO = new DbQuizDAO(dataSource);
-        AchievementDAO achievementDAO = new DbAchievementDAO(dataSource);
-        QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
-        AnnouncementDAO announcementDAO = new AnnouncementDAOSQL(dataSource);
-        ResponseDAO responseDAO = new ResponseDAO(dataSource);
-        ChallengeDAO challengeDAO = new DbChallengeDAO(dataSource);
+        UserDAO userDAO = new UserDAO(pool);
+        FriendsDAO friendsDAO = new FriendsDAO(pool);
+        MessageDAO messageDAO = new MessageDAO(pool);
+        HistoryDAO historyDAO = new HistoryDAOSQL(pool);
+        DbQuizDAO quizDAO = new DbQuizDAO(pool);
+        AchievementDAO achievementDAO = new DbAchievementDAO(pool);
+        QuestionsDAO questionsDAO = new QuestionsDAO(pool);
+        AnnouncementDAO announcementDAO = new AnnouncementDAOSQL(pool);
+        ResponseDAO responseDAO = new ResponseDAO(pool);
+        ChallengeDAO challengeDAO = new DbChallengeDAO(pool);
         GradeDAO gradeDAO;
         try {
-            gradeDAO = new GradeDAO(dataSource);
+            gradeDAO = new GradeDAO(pool);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -79,7 +68,7 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
         sce.getServletContext().removeAttribute("challengeDAO");
         sce.getServletContext().removeAttribute("responseDAO");
         sce.getServletContext().removeAttribute("announcementDAO");
-
+        pool.close();
 
     }
 

@@ -8,9 +8,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class UserDAO implements UserDAOInterface{
     private final ConnectionPool pool;
-
-    public UserDAO(ConnectionPool pool){this.pool = pool;
-    }
+    public UserDAO(ConnectionPool pool){this.pool = pool;}
 
     @Override
     public int addUser(User user){

@@ -28,7 +28,7 @@ public class ConnectionPool {
         }
     }
 
-    public ConnectionPool(int numConnections, String db_name) {
+    public ConnectionPool(int numConnections, String db_name,String password) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -37,7 +37,7 @@ public class ConnectionPool {
         queue = new ArrayBlockingQueue<>(numConnections);
         for(int i = 0; i < numConnections; i++){
             try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:" + PORT, USERNAME, PASSWORD);
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:" + PORT, USERNAME, password);
                 con.createStatement().execute("USE " +  db_name +";");
                 queue.add(con);
             } catch (SQLException e) {

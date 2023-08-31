@@ -1,5 +1,6 @@
 package dataBase.questionsDAOs;
 
+import dataBase.ConnectionPool;
 import objects.questions.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -12,19 +13,18 @@ import java.util.HashSet;
 import java.util.List;
 
 class PictureResponseDAO implements QuestionDAOType {
-    private final BasicDataSource basicDataSource;
+    private final ConnectionPool pool;
 
-    public PictureResponseDAO(BasicDataSource basicDataSource) {
-        this.basicDataSource = basicDataSource;
-    }
+    public PictureResponseDAO(ConnectionPool pool) {this.pool = pool;}
 
     @Override
     public int addQuestion(Question question, int quizId) {
         int questionId = -1;
         String insertQuestionQuery = "INSERT INTO QUESTIONS (quiz_id, question_text, question_type, timer) VALUES (?, ?, ?, ?)";
         String insertOptionsQuery = "INSERT INTO PICTURE_RESPONSE (question_id, question_URL, response_answer) VALUES (?, ?, ?)";
+        Connection connection = pool.getConnection();
 
-        try (Connection connection = basicDataSource.getConnection();
+        try (
              PreparedStatement insertQuestionStatement = connection.prepareStatement(insertQuestionQuery, PreparedStatement.RETURN_GENERATED_KEYS);
              PreparedStatement insertOptionsStatement = connection.prepareStatement(insertOptionsQuery)) {
 
@@ -53,6 +53,9 @@ class PictureResponseDAO implements QuestionDAOType {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return questionId;
     }
 
@@ -60,7 +63,9 @@ class PictureResponseDAO implements QuestionDAOType {
     public Question getQuestionByQuestionId(int questionId) {
         String selectQuestionQuery = "SELECT * FROM QUESTIONS WHERE question_id = ?";
         String selectOptionsQuery = "SELECT * FROM PICTURE_RESPONSE WHERE question_id = ?";
-        try (Connection connection = basicDataSource.getConnection();
+        Connection connection = pool.getConnection();
+
+        try (
              PreparedStatement selectQuestionStatement = connection.prepareStatement(selectQuestionQuery);
              PreparedStatement selectOptionsStatement = connection.prepareStatement(selectOptionsQuery)) {
 
@@ -89,6 +94,9 @@ class PictureResponseDAO implements QuestionDAOType {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(connection);
         }
         return null;
     }

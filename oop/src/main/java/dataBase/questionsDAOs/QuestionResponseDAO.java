@@ -1,5 +1,6 @@
 package dataBase.questionsDAOs;
 
+import dataBase.ConnectionPool;
 import objects.questions.FillInTheBlank;
 import objects.questions.PictureResponse;
 import objects.questions.Question;
@@ -12,18 +13,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 class QuestionResponseDAO implements QuestionDAOType {
-    private final BasicDataSource basicDataSource;
+    private final ConnectionPool pool;
 
-    public QuestionResponseDAO(BasicDataSource basicDataSource) {
-        this.basicDataSource = basicDataSource;
-    }
+    public QuestionResponseDAO(ConnectionPool pool) {this.pool = pool;}
 
     @Override
     public int addQuestion(Question question, int quizId) {
         int questionId = -1;
         String insertQuestionQuery = "INSERT INTO QUESTIONS (quiz_id, question_text, question_type, timer) VALUES (?, ?, ?, ?);";
         String insertResponseQuery = "INSERT INTO QUESTION_RESPONSE (question_id, response_answer) VALUES (?, ?);";
-        try (Connection connection = basicDataSource.getConnection();
+        Connection connection = pool.getConnection();
+
+        try (
             PreparedStatement insertQuestionStatement = connection.prepareStatement(insertQuestionQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             PreparedStatement insertResponseStmt = connection.prepareStatement(insertResponseQuery)) {
             insertQuestionStatement.setInt(1, quizId);
@@ -47,6 +48,9 @@ class QuestionResponseDAO implements QuestionDAOType {
                 } else { throw new SQLException("Inserting Question to QUESTION_RESPONSE failed"); }
             }
         } catch (SQLException e) { e.printStackTrace(); }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return questionId;
     }
 
@@ -56,7 +60,9 @@ class QuestionResponseDAO implements QuestionDAOType {
                 "JOIN QUESTION_RESPONSE " +
                 "ON QUESTIONS.question_id = QUESTION_RESPONSE.question_id " +
                 "WHERE QUESTIONS.question_id = ?;";
-        try (Connection connection = basicDataSource.getConnection();
+        Connection connection = pool.getConnection();
+
+        try (
              PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
             selectStatement.setInt(1, questionId);
             try (ResultSet resultSet = selectStatement.executeQuery()) {
@@ -79,6 +85,9 @@ class QuestionResponseDAO implements QuestionDAOType {
                 }
             }
         } catch (SQLException e) {e.printStackTrace(); }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return null;
     }
 }
