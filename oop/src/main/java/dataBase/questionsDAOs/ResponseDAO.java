@@ -21,11 +21,11 @@ public class ResponseDAO {
     public List<QuestionResponsePair> getUngradedResponsesByAuthorID(int authorId) throws SQLException {
         List<QuestionResponsePair> questionResponsePairs = new ArrayList<>();
 
-        String query = "SELECT R.*, Q.question_text FROM RESPONSES R JOIN QUESTIONS Q ON R.Question_ID = Q.question_id JOIN QUIZZES Z ON Q.quiz_id = Z.ID WHERE Z.Author = 1 AND R.Is_graded = FALSE";
+        String query = "SELECT R.*, Q.question_text FROM RESPONSES R JOIN QUESTIONS Q ON R.Question_ID = Q.question_id JOIN QUIZZES Z ON Q.quiz_id = Z.ID WHERE Z.Author = ? AND R.Is_graded = FALSE";
 
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
-            //statement.setInt(1, 1);
+            statement.setInt(1, 16);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -42,6 +42,7 @@ public class ResponseDAO {
 
                 QuestionResponsePair pair = new QuestionResponsePair(questionText, response);
                 questionResponsePairs.add(pair);
+//                System.out.println(questionResponsePairs.size());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,20 +121,27 @@ public class ResponseDAO {
     }
 
 
-    public boolean addScoreAndMarkAsGraded(int responseId, int grade) {
-        String query = "UPDATE RESPONSES SET grade = ?, Is_graded = ? WHERE ID = ?";
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, grade);
-            statement.setBoolean(2, true);
-            statement.setInt(3, responseId);
+    public boolean addScoreAndMarkAsGraded(int responseId, int grade, boolean isGraded) {
+        if(isGraded) {
+            System.out.println("here");
+            String query = "UPDATE RESPONSES SET grade = ?, Is_graded = ? WHERE ID = ?";
+            try (Connection connection = dataSource.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, grade);
+                System.out.println(grade);
+                statement.setBoolean(2, true);
 
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0; // Return true if at least one row was affected
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false; // Return false in case of an error
+                statement.setInt(3, responseId);
+                System.out.println(responseId);
+
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0; // Return true if at least one row was affected
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false; // Return false in case of an error
+            }
         }
+        return true;
     }
 
 

@@ -4,16 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import dataBase.questionsDAOs.GradeDAO;
 import dataBase.questionsDAOs.ResponseDAO;
-import objects.QuestionResponsePair;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 
 public class ResponseDAOTest {
 
@@ -85,7 +81,7 @@ public class ResponseDAOTest {
         assertEquals(0, responseDAO.getResponseByHistory(historyId).getGrade());
         assertFalse(responseDAO.getResponseByHistory(historyId).isGraded());
 
-        responseDAO.addScoreAndMarkAsGraded(responseDAO.getResponseByHistory(historyId).getId(), 1);
+        responseDAO.addScoreAndMarkAsGraded(responseDAO.getResponseByHistory(historyId).getId(), 1, true);
         assertNotEquals("Paris", responseDAO.getResponseByHistory(historyId).getResponseText());
 
         assertEquals("Mars", responseDAO.getResponseByHistory(historyId).getResponseText());
@@ -97,7 +93,7 @@ public class ResponseDAOTest {
 
     @Test
     void TestNullResponse(){
-        responseDAO.addScoreAndMarkAsGraded(2, 0);
+        responseDAO.addScoreAndMarkAsGraded(2, 0, false);
         assertNull(responseDAO.getResponseByHistory(1));
     }
 

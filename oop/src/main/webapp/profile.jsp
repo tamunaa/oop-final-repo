@@ -258,9 +258,14 @@
                     <%
                     }
                     %>
-                    <form action="name" method="GET">
-                    <button type="submit">grading</button>
-                    </form>
+                    </div>
+
+                </div>
+                <div class="profile-section">
+                    <div class="profile-card">
+                        <form action="GradingServlet" method="GET">
+                        <button type="submit" class="centered-button">GRADE QUESTIONS</button>
+                        </form>
                     </div>
                 </div>
             </div>
