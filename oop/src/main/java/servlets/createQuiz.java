@@ -1,5 +1,6 @@
 package servlets;
 
+import dataBase.AchievementDAO;
 import dataBase.DbQuizDAO;
 import dataBase.QuizDAO;
 import objects.Quiz;
@@ -37,6 +38,17 @@ public class createQuiz extends HttpServlet {
         quiz.setCorrectImmediately(immediateCorrection);
         quiz.setOnOnePage(questionDisplayMode.equals("singlePage"));
         quiz.setRandom(randomOrder);
+
+        AchievementDAO achievementDAO = (AchievementDAO) request.getServletContext().getAttribute("achievementDAO");
+
+        int quizzesCreated = quizDAO.getQuizzesByAuthor(author).size();
+        if(quizzesCreated == 1){
+            achievementDAO.addUserAchievement(author, 1);
+        }else if(quizzesCreated == 5){
+            achievementDAO.addUserAchievement(author, 5);
+        }else if(quizzesCreated == 10) {
+            achievementDAO.addUserAchievement(author, 4);
+        }
         
         int quizId = quizDAO.addQuiz(quiz);
         response.sendRedirect("editQuiz?quizId=" + quizId);
