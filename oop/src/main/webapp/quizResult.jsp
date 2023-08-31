@@ -43,25 +43,31 @@
   <jsp:include page="navbar.jsp" />
   <jsp:include page="notificationbar.jsp" />
   <%
-    HashMap<Question, String> questionAnswer = (HashMap<Question, String>) request.getSession().getAttribute("questionAnswer");
-    Quiz currQuiz = (Quiz) request.getSession().getAttribute("currQuiz");
+    QuizDAO quizDAO = (QuizDAO) request.getServletContext().getAttribute("quizDAO");
+    Quiz currQuiz = (Quiz) quizDAO.getQuizByID(Integer.parseInt(request.getParameter("quizId")));
     User currUser = (User) request.getSession().getAttribute("currUser");
     HistoryDAO historyDAO = (HistoryDAO) request.getServletContext().getAttribute("historyDAO");
+
+    int quizId = Integer.parseInt(request.getParameter("quizId"));
+    Question[] questions = (Question[]) request.getSession().getAttribute("questions");
+    String[] answers = request.getParameterValues("answers");
+
     int score = 0;
     int max_score = 0;
-    for(Question question: questionAnswer.keySet()){
 
-      if(!Objects.equals(question.getQuestionType(), "Graded")){
+    for (int i = 0; i < answers.length; i++){
+
+      if(!Objects.equals(questions[i].getQuestionType(), "Graded")){
   %>
       <div>
-        <label><%= question.getQuestion()%></label>
+        <label><%= questions[i].getQuestion()%></label>
         <p>
-          Correct Answer : <%= Arrays.toString(question.getCorrectAnswers())%>
-          <br> Your Answer: <%= questionAnswer.get(question)%>
+          Correct Answer : <%= Arrays.toString(questions[i].getCorrectAnswers())%>
+          <br> Your Answer: <%= answers[i]%>
         </p>
         <%
-          int curScore = question.evaluate(questionAnswer.get(question));
-          int cur_max_score = question.getCorrectAnswers().length;
+          int curScore = questions[i].evaluate(answers[i]);
+          int cur_max_score = questions[i].getCorrectAnswers().length;
           score += curScore;
           max_score += cur_max_score;
         %>
@@ -72,19 +78,20 @@
 
   <header>
     Overall Score: <%=score%> / <%=max_score%>
-    <%int time = ((((Timestamp)request.getSession().getAttribute("endTime")).getTime()-
-            ((Timestamp) request.getSession().getAttribute("startTime")).getTime()) / 1000) % 60%>
+    <br>
+    <%long time = ((((Timestamp)request.getSession().getAttribute("endTime")).getTime()-
+            ((Timestamp) request.getSession().getAttribute("startTime")).getTime()) / 1000) % 60;%>
     Time: <%=time%>seconds
+    <br>
     <% History history = new History(currQuiz.getID(), currUser.getId(), score, time, (Timestamp)request.getSession().getAttribute("endTime"));
-      for(Question question: questionAnswer.keySet()){
-        if(Objects.equals(question.getQuestionType(), "Graded")){
+    historyDAO.insertHistory(history);
+      for (int i = 0; i < questions.length; i++) {
+        if (Objects.equals(questions[i].getQuestionType(), "Graded")) {
           ResponseDAO responseDAO = (ResponseDAO) request.getServletContext().getAttribute("responseDAO");
-          responseDAO.addResponse(question.getQuestionId(), history.getId(), score, false, questionAnswer.get(question));
+          responseDAO.addResponse(questions[i].getQuestionId(), history.getId(), score, false, answers[i]);
         }
-    %>
+      }
     %>
   </header>
-
-
 </body>
 </html>
