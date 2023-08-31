@@ -1,27 +1,22 @@
 package dataBase;
 import objects.User;
 import objects.Review;
-import java.sql.Date;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.dbcp2.BasicDataSource;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class UserDAO implements UserDAOInterface{
-    private final BasicDataSource ds;
+    private final ConnectionPool pool;
 
-    public UserDAO(BasicDataSource ds){
-        this.ds = ds;
+    public UserDAO(ConnectionPool pool){this.pool = pool;
     }
 
     @Override
     public int addUser(User user){
+        Connection conn = pool.getConnection();
         int userID = -1;
         try {
-
-            Connection conn = ds.getConnection();
             PreparedStatement stm = conn.prepareStatement("INSERT INTO USERS (Username, Email, Password_hash, Is_administrator, Date_added) VALUES (?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             stm.setString(1, user.getUsername());
             stm.setString(2, user.getEmail());
@@ -42,14 +37,17 @@ public class UserDAO implements UserDAOInterface{
         } catch (SQLException e) {
             e.printStackTrace();
     }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return userID;
     }
 
 
     @Override
     public boolean removeUser(int userID){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm = conn.prepareStatement("DELETE FROM USERS WHERE ID = ?;");
             stm.setInt(1, userID);
             int added = stm.executeUpdate();
@@ -57,13 +55,16 @@ public class UserDAO implements UserDAOInterface{
         }catch(SQLException e){
                 e.printStackTrace();
             }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return false;
     }
 
     @Override
     public User getUserByEmail(String email){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
 
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM USERS WHERE Email = ?;");
             stm.setString(1, email);
@@ -81,13 +82,17 @@ public class UserDAO implements UserDAOInterface{
         } catch(SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return null;
     }
 
     @Override
     public User getUserByUserId(int ID){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM USERS WHERE ID = ?;");
             stm.setInt(1, ID);
             ResultSet rs = stm.executeQuery();
@@ -105,12 +110,16 @@ public class UserDAO implements UserDAOInterface{
         }catch(SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return null;
     }
     @Override
     public User getUserByUsername(String username){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM USERS WHERE Username = ?;");
             stm.setString(1, username);
             ResultSet rs = stm.executeQuery();
@@ -127,13 +136,16 @@ public class UserDAO implements UserDAOInterface{
         }catch(SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return null;
     }
 
     @Override
     public int getIDByUsername(String username){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm = conn.prepareStatement("SELECT ID FROM USERS WHERE Username = ?;");
             stm.setString(1, username);
             ResultSet rs = stm.executeQuery();
@@ -143,13 +155,16 @@ public class UserDAO implements UserDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return -1;
     }
 
     @Override
     public String getUsernameByID(int ID){
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm = conn.prepareStatement("SELECT Username FROM USERS WHERE ID = ?;");
             stm.setInt(1, ID);
             ResultSet rs = stm.executeQuery();
@@ -158,6 +173,9 @@ public class UserDAO implements UserDAOInterface{
             }
         }catch (SQLException e){
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(conn);
         }
         return null;
     }
@@ -183,9 +201,9 @@ public class UserDAO implements UserDAOInterface{
             charArray[i] = newPassword.charAt(i);
         }
         String passwordHash = hasher.hashToString(10,charArray);
-
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("UPDATE USERS SET Password_hash = ? WHERE Username = ? ;");
             stm.setString(1, passwordHash);
             stm.setString(2,username);
@@ -194,14 +212,17 @@ public class UserDAO implements UserDAOInterface{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return false;
     }
 
     @Override
     public boolean changeUsername(User user, String newUsername) {
-
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("UPDATE USERS SET Username = ? WHERE ID = ? ;");
             stm.setString(1, newUsername);
             stm.setInt(2,user.getId());
@@ -213,14 +234,18 @@ public class UserDAO implements UserDAOInterface{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return false;
     }
     
     @Override
     public List<User> getAllUsers() {
         List<User> res = new ArrayList<>();
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("SELECT * FROM USERS;");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -231,14 +256,18 @@ public class UserDAO implements UserDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return res;
     }
 
     @Override
     public boolean makeAdmin(User user){
         if(user.isAdmin()) return false;
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm;
 
             stm = conn.prepareStatement("UPDATE USERS SET Is_administrator = TRUE WHERE ID = ?;");
@@ -251,15 +280,17 @@ public class UserDAO implements UserDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return false;
     }
 
     @Override
     public boolean removeAdmin(User user){
         if(!user.isAdmin()) return false;
-
+        Connection conn = pool.getConnection();
         try {
-            Connection conn = ds.getConnection();
             PreparedStatement stm;
 
             stm = conn.prepareStatement("UPDATE USERS SET Is_administrator = FALSE WHERE ID = ?;");
@@ -272,15 +303,18 @@ public class UserDAO implements UserDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return false;
     }
 
     @Override
     public int addReview(Review review) {
         int reviewID = -1;
+        Connection conn = pool.getConnection();
         try {
 
-            Connection conn = ds.getConnection();
             PreparedStatement stm = conn.prepareStatement("INSERT INTO REVIEW (User_ID, Quiz_ID, Content, Time_reviewed) VALUES (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             stm.setInt(1, review.getUser_id());
             stm.setInt(2, review.getQuiz_id());
@@ -300,14 +334,18 @@ public class UserDAO implements UserDAOInterface{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return reviewID;
     }
 
     @Override
     public boolean setRating(int userId, int quizId, double rating) {
+        Connection conn = pool.getConnection();
         if(isRated(userId,quizId)) {
+
             try {
-                Connection conn = ds.getConnection();
                 PreparedStatement stm = conn.prepareStatement("UPDATE RATING SET Rating = ? WHERE User_ID = ? AND Quiz_ID = ? ;");
                 stm.setDouble(1,rating);
                 stm.setInt(2,userId);
@@ -317,9 +355,11 @@ public class UserDAO implements UserDAOInterface{
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            finally{
+                pool.releaseConnection(conn);
+            }
         } else {
             try{
-                Connection conn = ds.getConnection();
                 PreparedStatement stm = conn.prepareStatement("INSERT INTO RATING (User_ID, Quiz_ID, Rating) VALUES (?,?,?);", PreparedStatement.RETURN_GENERATED_KEYS);
                 stm.setInt(1,userId);
                 stm.setInt(2,quizId);
@@ -329,15 +369,20 @@ public class UserDAO implements UserDAOInterface{
             }catch (SQLException e){
                 e.printStackTrace();
             }
+            finally{
+                pool.releaseConnection(conn);
+            }
         }
+
         return false;
     }
 
     @Override
     public List<String> getCategories() {
         ArrayList<String> categories = new ArrayList<>();
+        Connection conn = pool.getConnection();
         try{
-            Connection conn = ds.getConnection();
+
             PreparedStatement stm = conn.prepareStatement("SELECT Category FROM CATEGORY");
             ResultSet rs =  stm.executeQuery();
             while (rs.next()){
@@ -346,13 +391,16 @@ public class UserDAO implements UserDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return categories;
     }
 
     @Override
     public boolean addCategory(int id, String category) {
+        Connection conn = pool.getConnection();
         try{
-            Connection conn = ds.getConnection();
             if(getUserByUserId(id).isAdmin()) {
                 PreparedStatement stm = conn.prepareStatement("INSERT INTO CATEGORY(User_ID, Category) VALUES (?,?);");
                 stm.setInt(1, id);
@@ -365,13 +413,16 @@ public class UserDAO implements UserDAOInterface{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(conn);
+        }
         return false;
     }
 
 
     private boolean isRated(int userId, int quizId) {
+        Connection conn = pool.getConnection();
         try{
-            Connection conn = ds.getConnection();
             PreparedStatement stm = conn.prepareStatement("SELECT Rating FROM RATING WHERE User_ID = ? AND Quiz_ID = ? ;");
             stm.setInt(1,userId);
             stm.setInt(2,quizId);
@@ -379,6 +430,9 @@ public class UserDAO implements UserDAOInterface{
             if(rs.next()) return true;
         }catch (SQLException e){
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(conn);
         }
         return false;
     }

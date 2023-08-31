@@ -1,5 +1,6 @@
 package userDAOTests;
 
+import dataBase.ConnectionPool;
 import dataBase.UserDAO;
 import objects.Review;
 import objects.User;
@@ -27,20 +28,17 @@ public class UserDAOTest {
     private Statement statement;
     private UserDAO userDAO;
     private DbQuizDAO quizDAO;
-    private BasicDataSource dataSource;
+    private ConnectionPool pool;
+    private Connection conn;
     private User user1;
     private User user2;
     private User admin;
 
     @BeforeAll
     public static void emptyTables() throws SQLException {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setUrl("jdbc:mysql://localhost:3306/test_user");
-        ds.setUsername("root");
-        ds.setPassword("");
-        Connection conn = ds.getConnection();
-        PreparedStatement stm = conn.prepareStatement("USE test_user ; ");
-        stm.execute();
+        ConnectionPool pool = new ConnectionPool(5, "test_user");
+        Connection conn = pool.getConnection();
+        PreparedStatement stm;
         stm = conn.prepareStatement("DELETE FROM USERS ;");
         stm.executeUpdate();
         stm = conn.prepareStatement("DELETE FROM QUIZZES ;");
@@ -50,36 +48,17 @@ public class UserDAOTest {
         stm = conn.prepareStatement("DELETE FROM RATING ;");
         stm.executeUpdate();
         stm.close();
-        conn.close();
+        pool.releaseConnection(conn);
     }
     @BeforeEach
     public void setUp() {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_user");
-        dataSource.setUsername("root");
-        dataSource.setPassword("");
-        userDAO = new UserDAO(dataSource);
-        quizDAO = new DbQuizDAO(dataSource);
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = dataSource.getConnection();
-            statement = connection.createStatement();
-            statement.execute("USE test_user");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        pool = new ConnectionPool(5, "test_user");
+        Connection conn = pool.getConnection();
     }
 
     @AfterEach
     public void tearDown() {
-        try {
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        pool.releaseConnection(conn);
     }
 
     @Test
