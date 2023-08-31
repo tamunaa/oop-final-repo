@@ -35,36 +35,44 @@
 
     <form action="quizSummary?quizId=<%=request.getParameter("quizId")%>" method="POST">
     <div class="question-page">
-        <div>
-            <%
-                for (int i = 0; i < questions.length; i++) {
-            %>
-                <input type="text" name="answers" id="answer<%=i%>" hidden="hidden">
-            <%
-                }
-            %>
-        </div>
-        <%
-            int i = 0;
-            while (i < questions.length) {
-                Question current = questions[i];
-                request.setAttribute("index", i);
-                request.setAttribute("current", current);
-                String type = current.getQuestionType();
-                String path = "questions/"+type+".jsp";
-        %>
-            <div class="question-card">
-                <jsp:include page="<%= path %>" />
+          <div class="timer" onload="timer(10)">
+              <div>Section</div>
+              <div class="time">
+                  <strong>Time left: <span id="time">Loading...</span></strong>
+              </div>
+          </div>
+          <form id="timeOut" name="timeOut" action="CheckServlet" method="POST">
+          <div>
+              <%
+                  for (int i = 0; i < questions.length; i++) {
+              %>
+                  <input type="text" name="answers" id="answer<%=i%>" hidden="hidden">
+              <%
+                  }
+              %>
+          </div>
+          <%
+              int i = 0;
+              while (i < questions.length) {
+                  Question current = questions[i];
+                  request.setAttribute("index", i);
+                  request.setAttribute("current", current);
+                  String type = current.getQuestionType();
+                  String path = "questions/"+type+".jsp";
+          %>
+              <div class="question-card">
+                  <jsp:include page="<%= path %>" />
 
-            </div>
-        <%
-            i++;
-            }
-        %>
-            <button class="finish">submit</button>
-    </form>
-</div>
-<%--    <script src="questions/js/Matching.js"></script>--%>
+              </div>
+          <%
+              i++;
+              }
+          %>
+            <input class="button1" type="hidden" id="timeLeft" name="timeLeft" value="">
+              <button class="finish">submit</button>
+      </form>
+  </div>
+  <%--    <script src="questions/js/Matching.js"></script>--%>
     <script>
     function saveAnswersForOneInputQuestions(index) {
         let inputField = document.getElementsByName("question" + index);
@@ -126,6 +134,26 @@
     }
 
 </script>
+    <script>
+        let time = <%= (int) request.getSession().getAttribute("timeLeft")%>;
+        setInterval(function() {
+            let seconds = time % 60;
+            let minutes = (time - seconds) / 60;
+            if (seconds.toString().length == 1) {
+                seconds = "0" + seconds;
+            }
+            if (minutes.toString().length == 1) {
+                minutes = "0" + minutes;
+            }
+            document.getElementById("time").innerHTML = minutes + ":" + seconds;
+            document.getElementById("timeLeft").setAttribute('value' , time);
+            time--;
+            if (time == 0) {
+                document.timeOut.submit();
+
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
 
