@@ -28,9 +28,6 @@ public class MessengerServlet extends HttpServlet {
         int receiverID = userDAO.getIDByUsername(receiver);
 
         String text = request.getParameter("messageText");
-        System.out.println(senderID + " " + receiverID + " " + text);
-
-
 
         Message message = new NoteMessage(senderID, receiverID, text, new Timestamp(System.currentTimeMillis()));
         messageDAO.addMessage(message);
