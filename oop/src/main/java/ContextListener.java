@@ -20,9 +20,9 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
         dataSource.setUsername("root");
-        dataSource.setPassword("root:root");
+        dataSource.setPassword("password");
         dataSource.setMaxTotal(-1);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
