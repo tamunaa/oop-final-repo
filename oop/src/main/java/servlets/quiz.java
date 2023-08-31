@@ -28,25 +28,19 @@ import java.util.Date;
 @WebServlet("/quiz")
 public class quiz extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
-        dataSource.setUsername("root");
-        dataSource.setPassword("");
 
         int quizId = Integer.parseInt(request.getParameter("quizId"));
-        QuizDAO quizDAO = new DbQuizDAO(dataSource);
-
-        UserDAO userDao = new UserDAO(dataSource);
-        HistoryDAO historyDao = new HistoryDAOSQL(dataSource);
-
+        QuizDAO quizDAO = (QuizDAO) request.getServletContext().getAttribute("quizDAO");
+        UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
+        HistoryDAO historyDAO = (HistoryDAO) request.getServletContext().getAttribute("historyDAO");
         Quiz quiz = quizDAO.getQuizByID(quizId);
-        String author = userDao.getUsernameByID(quiz.getAuthor());
+        String author = userDAO.getUsernameByID(quiz.getAuthor());
 
-        List<History> historyList = historyDao.getHistoryByQuizId(quizId);
+        List<History> historyList = historyDAO.getHistoryByQuizId(quizId);
         List<String> historyUsernames = new ArrayList<>();
 
         for (History history : historyList) {
-            String username = userDao.getUsernameByID(history.getUserId());
+            String username = userDAO.getUsernameByID(history.getUserId());
             historyUsernames.add(username);
         }
 
@@ -58,7 +52,7 @@ public class quiz extends HttpServlet {
 
 
 
-        request.getRequestDispatcher("quizPage.jsp?quizId=" + quizId).forward(request, response);
+        request.getRequestDispatcher("quiz.jsp?quizId=" + quizId).forward(request, response);
 
 
     }

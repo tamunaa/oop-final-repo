@@ -11,16 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbQuizDAO implements QuizDAO{
-    private final BasicDataSource dataSource;
+    private final ConnectionPool pool;
 
-    public DbQuizDAO(BasicDataSource dataSource) {
-        this.dataSource = dataSource;
+    public DbQuizDAO(ConnectionPool pool) {
+        this.pool = pool;
     }
 
     public int addQuiz(Quiz quiz){
         int quiz_id = -1;
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("INSERT INTO QUIZZES(Author, Quiz_name, Descr, Timer, Category, Date_created, Is_random, Display_type, Corrects_immediately, Is_practice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, quiz.getAuthor());
             statement.setString(2, quiz.getQuizName());
@@ -51,12 +51,16 @@ public class DbQuizDAO implements QuizDAO{
             e.printStackTrace();
             //throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return quiz_id;
     }
 
     public boolean removeQuiz(int id){
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
+
             PreparedStatement statement = connection.prepareStatement("DELETE FROM QUIZZES WHERE ID = ?");
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -67,13 +71,15 @@ public class DbQuizDAO implements QuizDAO{
             e.printStackTrace();
             return false;
         }
-
+        finally{
+            pool.releaseConnection(connection);
+        }
     }
 
     public List<Quiz> getQuizzesByAuthor(int author){
         ArrayList<Quiz> quizzes = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select * from QUIZZES where Author = ?");
             statement.setInt(1, author);
             ResultSet resultSet = statement.executeQuery();
@@ -92,13 +98,17 @@ public class DbQuizDAO implements QuizDAO{
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return quizzes;
     }
 
     public List<Quiz> getQuizByQuizName(String name){
         ArrayList<Quiz> quizzes = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
+
             PreparedStatement statement = connection.prepareStatement("select * from QUIZZES where Quiz_name = ?");
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
@@ -116,13 +126,16 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return quizzes;
     }
 
     public Quiz getQuizByID(int id){
         Quiz quiz = null;
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select * from QUIZZES where ID = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -139,13 +152,16 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return quiz;
     }
 
     public List<Quiz> getPopularQuizzes(int top){
         ArrayList<Quiz> quizzes = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select Quiz_ID from HISTORY group by Quiz_ID order by count(*) desc limit ?");
             statement.setInt(1, top);
             ResultSet resultSet = statement.executeQuery();
@@ -158,18 +174,21 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return quizzes;
     }
 
     public List<Question> getQuestions(int id){
         ArrayList<Question> questions = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select question_id from QUESTIONS where quiz_id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
-                QuestionsDAO quesDAO = new QuestionsDAO(dataSource);
+                QuestionsDAO quesDAO = new QuestionsDAO(pool);
                 Question question = quesDAO.getQuestionByQuestionId(resultSet.getInt("question_id"));
                 questions.add(question);
             }
@@ -178,14 +197,17 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return questions;
     }
 
 
     public List<Quiz> recentlyCreatedQuizzes(int num){
         ArrayList<Quiz> quizzes = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select * from QUIZZES order by Date_created desc limit ?");
             statement.setInt(1, num);
             ResultSet resultSet = statement.executeQuery();
@@ -203,13 +225,16 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return quizzes;
     }
 
     public List<String> getTags(int id){
         ArrayList<String> tags = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select Hashtag from TAG where Quiz_ID = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -221,13 +246,16 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return tags;
     }
 
     public List<Review> getReviews(int id){
         ArrayList<Review> reviews = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select * from REVIEW where Quiz_ID = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -241,12 +269,15 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return reviews;
     }
 
     public Double getRating(int id){
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement( "select avg(Rating) from RATING where Quiz_ID = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -258,13 +289,16 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return (double) -1;
     }
 
     public List<Quiz> getTopRatedQuizzes(int top){
         ArrayList<Quiz> quizzes = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select Quiz_ID from RATING group by Quiz_ID  order by avg(Rating) desc limit ?");
             statement.setInt(1, top);
             ResultSet resultSet = statement.executeQuery();
@@ -277,12 +311,15 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return quizzes;
     }
 
     public String getCategory(int id){
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement( "select Category from QUIZZES where ID = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -294,14 +331,17 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return "";
     }
 
     @Override
     public List<Quiz> getQuizzesByTag(String tag) {
         ArrayList<Quiz> quizzes = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select Quiz_ID from TAG where Hashtag = ?");
             statement.setString(1, tag);
             ResultSet resultSet = statement.executeQuery();
@@ -314,13 +354,16 @@ public class DbQuizDAO implements QuizDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return quizzes;
     }
 
     @Override
     public void addTag(int id, String tag) {
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("INSERT INTO TAG(Quiz_ID, Hashtag) VALUES (?, ?)");
             statement.setInt(1, id);
             statement.setString(2, tag);
@@ -336,12 +379,15 @@ public class DbQuizDAO implements QuizDAO{
             e.printStackTrace();
             //throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
     }
 
     @Override
     public void removeTag(int id, String tag) {
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("DELETE FROM TAG WHERE Quiz_ID = ? and Hashtag = ?");
             statement.setInt(1, id);
             statement.setString(2, tag);
@@ -352,13 +398,16 @@ public class DbQuizDAO implements QuizDAO{
             e.printStackTrace();
             //throw new RuntimeException(e);
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
     }
 
     @Override
     public List<Quiz> getAllQuizzes() {
         ArrayList<Quiz> quizzes = new ArrayList<>();
+        Connection connection = pool.getConnection();
         try {
-            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("select * from QUIZZES order by Date_created desc");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
@@ -374,6 +423,9 @@ public class DbQuizDAO implements QuizDAO{
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+        finally{
+            pool.releaseConnection(connection);
         }
         return quizzes;
     }

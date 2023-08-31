@@ -35,4 +35,6 @@ public interface HistoryDAO {
      * @return A list of history objects for the quiz
      */
     List<History> getHistoryByQuizId(int quizId);
+    List<History> UserRecentHistory(int quizId, int userId, int limit);
+    List<History> sortedHistory(int quizId, String orderType, int limit);
 }

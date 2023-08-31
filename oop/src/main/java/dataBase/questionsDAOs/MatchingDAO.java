@@ -1,5 +1,6 @@
 package dataBase.questionsDAOs;
 
+import dataBase.ConnectionPool;
 import objects.questions.Matching;
 import objects.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -12,19 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 class MatchingDAO implements QuestionDAOType {
-    private final BasicDataSource basicDataSource;
+    private final ConnectionPool pool;
 
-    public MatchingDAO(BasicDataSource basicDataSource) {
-        this.basicDataSource = basicDataSource;
-    }
+    public MatchingDAO(ConnectionPool pool) {this.pool = pool;}
 
     @Override
     public int addQuestion(Question question, int quizId) {
         int questionId = 1;
         String insertQuestionQuery = "INSERT INTO QUESTIONS (quiz_id, question_text, question_type, timer) VALUES (?, ?, ?, ?)";
         String insertMatchingQuery = "INSERT INTO MATCHING (question_id, source, target) VALUES (?, ?, ?)";
+        Connection connection = pool.getConnection();
 
-        try (Connection connection = basicDataSource.getConnection();
+        try (
              PreparedStatement insertQuestionStatement = connection.prepareStatement(insertQuestionQuery, PreparedStatement.RETURN_GENERATED_KEYS);
              PreparedStatement insertMatchingStatement = connection.prepareStatement(insertMatchingQuery)) {
 
@@ -58,6 +58,9 @@ class MatchingDAO implements QuestionDAOType {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return questionId;
     }
 
@@ -65,7 +68,9 @@ class MatchingDAO implements QuestionDAOType {
     public Question getQuestionByQuestionId(int questionId) {
         String selectQuestionQuery = "SELECT * FROM QUESTIONS WHERE question_id = ?";
         String selectMatchingQuery = "SELECT * FROM MATCHING WHERE question_id = ?";
-        try (Connection connection = basicDataSource.getConnection();
+        Connection connection = pool.getConnection();
+
+        try (
              PreparedStatement selectQuestionStatement = connection.prepareStatement(selectQuestionQuery);
              PreparedStatement selectMatchingStatement = connection.prepareStatement(selectMatchingQuery)) {
 
@@ -102,6 +107,9 @@ class MatchingDAO implements QuestionDAOType {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(connection);
         }
         return null;
     }

@@ -1,5 +1,6 @@
 package dataBase.questionsDAOs;
 
+import dataBase.ConnectionPool;
 import objects.questions.GradedQuestion;
 import objects.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -10,12 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GradedQuestionDAO implements QuestionDAOType {
-    private BasicDataSource connection;
+    private ConnectionPool pool;
     private Connection conn;
 
-    public GradedQuestionDAO(BasicDataSource connection) throws SQLException {
-        this.connection = connection;
-        this.conn = connection.getConnection();
+    public GradedQuestionDAO(ConnectionPool pool) throws SQLException {
+        this.pool = pool;
+        this.conn = pool.getConnection();
     }
 
     @Override

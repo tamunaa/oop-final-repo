@@ -1,5 +1,6 @@
 package dataBase.questionsDAOs;
 
+import dataBase.ConnectionPool;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
@@ -8,12 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GradeDAO {
-    private BasicDataSource connection;
+    private final ConnectionPool pool;
     private Connection con;
 
-    public GradeDAO(BasicDataSource connection) throws SQLException {
-        this.connection = connection;
-        this.con = connection.getConnection();
+    public GradeDAO(ConnectionPool pool) throws SQLException {
+        this.pool = pool;
+        this.con = pool.getConnection();
     }
 
     public boolean updateScore(int historyId) {

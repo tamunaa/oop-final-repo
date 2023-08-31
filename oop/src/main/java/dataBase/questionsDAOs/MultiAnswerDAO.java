@@ -1,5 +1,6 @@
 package dataBase.questionsDAOs;
 
+import dataBase.ConnectionPool;
 import objects.questions.MultiAnswer;
 import objects.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -12,10 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 class MultiAnswerDAO implements QuestionDAOType {
-    private final BasicDataSource basicDataSource;
+    private final ConnectionPool pool;
 
-    public MultiAnswerDAO(BasicDataSource basicDataSource) {
-        this.basicDataSource = basicDataSource;
+    public MultiAnswerDAO(ConnectionPool pool) {this.pool = pool;
     }
 
     @Override
@@ -24,7 +24,8 @@ class MultiAnswerDAO implements QuestionDAOType {
         String insertQuestionQuery = "INSERT INTO QUESTIONS (quiz_id, question_text, question_type, timer) VALUES (?, ?, ?, ?)";
         String insertMultiAnswerQuery = "INSERT INTO MULTI_ANSWER (question_id, is_ordered, num_fields) VALUES (?, ?, ?)";
         String insertOptionQuery = "INSERT INTO MULTI_ANSWER_ANSWERS (question_id, answer_text, answer_order) VALUES (?, ?, ?)";
-        try (Connection connection = basicDataSource.getConnection();
+        Connection connection = pool.getConnection();
+        try (
              PreparedStatement insertQuestionStatement = connection.prepareStatement(insertQuestionQuery, PreparedStatement.RETURN_GENERATED_KEYS);
              PreparedStatement insertMULTI_ANSWERStmt = connection.prepareStatement(insertMultiAnswerQuery);
              PreparedStatement insertOptionStmt = connection.prepareStatement(insertOptionQuery)) {
@@ -62,6 +63,9 @@ class MultiAnswerDAO implements QuestionDAOType {
         }  catch (SQLException e) {
             e.printStackTrace();
         }
+        finally{
+            pool.releaseConnection(connection);
+        }
         return questionId;
     }
 
@@ -70,7 +74,9 @@ class MultiAnswerDAO implements QuestionDAOType {
         String selectQuestionQuery = "SELECT * FROM QUESTIONS WHERE question_id = ?";
         String selectMultiAnswerQuery = "SELECT * FROM MULTI_ANSWER WHERE question_id = ?";
         String selectAnswersQuery = "SELECT * FROM MULTI_ANSWER_ANSWERS WHERE question_id = ? ORDER BY answer_order";
-        try (Connection connection = basicDataSource.getConnection();
+        Connection connection = pool.getConnection();
+
+        try (
              PreparedStatement selectQuestionStatement = connection.prepareStatement(selectQuestionQuery);
              PreparedStatement selectMultiAnswerStatement = connection.prepareStatement(selectMultiAnswerQuery);
              PreparedStatement selectAnswersStatement = connection.prepareStatement(selectAnswersQuery)) {
@@ -111,6 +117,9 @@ class MultiAnswerDAO implements QuestionDAOType {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        finally{
+            pool.releaseConnection(connection);
         }
         return null;
     }
