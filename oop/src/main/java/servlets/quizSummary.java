@@ -38,7 +38,9 @@ public class quizSummary extends HttpServlet {
         if(quizDAO.getQuizByID(Integer.parseInt(request.getParameter("quizId"))).isPractice()){
             achievementDAO.addUserAchievement(userId, 3);
         }
-//        if(historyDAO.)
+        if(historyDAO.sortedHistory(Integer.parseInt(request.getParameter("quizId")),"score", 1).get(0).getUserId() == userId){
+            achievementDAO.addUserAchievement(userId, 2);
+        }
         request.getRequestDispatcher("quizResult.jsp?quizId=" + request.getParameter("quizId")).forward(request, response);
     }
 
