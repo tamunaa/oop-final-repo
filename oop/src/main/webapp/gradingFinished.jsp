@@ -22,7 +22,7 @@
         <div class="content">
             <div class="frame">
                 <h1>Quiz Grading Finished</h1>
-                <p>The quiz has been graded successfully.</p>
+                <p>Scores have been graded successfully.</p>
                 <p>Thank you for your effort!</p>
             </div>
         </div>
