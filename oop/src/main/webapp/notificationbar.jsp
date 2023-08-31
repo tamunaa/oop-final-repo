@@ -19,9 +19,6 @@
 
 %>
 
-<%--CHALLENGE--%>
-<%--REQUEST--%>
-
 <div class="notification-wrapper">
     <div class="notification-panel" id="notificationPanel">
 
@@ -31,14 +28,20 @@
             String pathToUser = "profile.jsp?self=false&&username="+sender.getUsername();
 
         %>
-
         <%if(notification.getType().equals("REQUEST")){%>
-            <form class="notification">
-                You have a new friend request from <a href="<%=pathToUser%>"><%=sender.getUsername()%></a>
+            <form class="notification" action="FriendRequestServlet" method="POST">
+                You have a new friend request from <a href="<%= pathToUser %>"><%= sender.getUsername() %></a>
+                <input type="hidden" name="username" value="<%= sender.getUsername() %>">
                 <br>
-                <button> accept </button>
-                <button> reject </button>
+                <button type="submit" name="response" value="accept">
+                    accept
+                </button>
+
+                <button type="submit" name="response" value="reject">
+                    reject
+                </button>
             </form>
+
         <%}else{%>
             <form class="notification">
                 your friend <a href="<%=pathToUser%>"> <%=sender.getUsername()%> </a>

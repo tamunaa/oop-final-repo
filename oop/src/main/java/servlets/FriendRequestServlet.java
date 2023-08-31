@@ -9,17 +9,18 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "FriendRequestServlet", value = "/FriendRequestServlet")
+@WebServlet("/FriendRequestServlet")
 public class FriendRequestServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletContext context = request.getServletContext();
         String username = request.getParameter("username");
         String friendRequestResponse = request.getParameter("response");
         User user = (User) request.getSession().getAttribute("currUser");
         UserDAO dao = (UserDAO) context.getAttribute("userDAO");
         User friend = dao.getUserByUsername(username);
+
         if(username == null || user == null || friend == null){
             request.setAttribute("mess", "the request could not be made");
             request.getRequestDispatcher("invalidUser.jsp").forward(request,response);
@@ -29,15 +30,14 @@ public class FriendRequestServlet extends HttpServlet {
         FriendshipService friendshipService = (FriendshipService) context.getAttribute("friendshipService");
         if(friendRequestResponse.equals("accept")){
             if(friendshipService.acceptRequest(user, friend, friendsDAO)){
-
-                response.sendRedirect("friend-requests.jsp");
+                response.sendRedirect("profile.jsp?self=true");
             }else{
                 request.setAttribute("mess", "request could not be accepted");
                 request.getRequestDispatcher("invalidUser.jsp").forward(request,response);
             }
         }else if(friendRequestResponse.equals("reject")){
             if(friendshipService.rejectRequest(user, friend, friendsDAO)){
-                response.sendRedirect("friend-requests.jsp");
+                response.sendRedirect("profile.jsp?self=true");
             }else{
                 request.setAttribute("mess", "could not be ");
                 request.getRequestDispatcher("invalidUser.jsp").forward(request,response);
