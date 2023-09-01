@@ -1,5 +1,6 @@
 package friendsDAOTest;
 
+import dataBase.ConnectionPool;
 import dataBase.DbQuizDAO;
 import dataBase.FriendsDAO;
 import dataBase.UserDAO;
@@ -19,61 +20,41 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FriendsDAOTest {
     private Connection connection;
-    private Statement statement;
     private UserDAO userDAO;
     private FriendsDAO friendsDAO;
-    private BasicDataSource dataSource;
+    private static ConnectionPool pool;
     private static User tako;
     private static User shako;
     private static User mako;
 
     @BeforeAll
     public static void emptyTables() throws SQLException {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setUrl("jdbc:mysql://localhost:3306/test_friend");
-        ds.setUsername("root");
-        ds.setPassword("root");
-        Connection conn = ds.getConnection();
-        PreparedStatement stm = conn.prepareStatement("USE test_friend ; ");
-        stm.execute();
-        stm = conn.prepareStatement("DELETE FROM FRIENDS ;");
+        pool = new ConnectionPool(5, "test_friend","root");
+        Connection con = pool.getConnection();
+        PreparedStatement stm;
+        stm = con.prepareStatement("DELETE FROM FRIENDS ;");
         stm.executeUpdate();
-        stm = conn.prepareStatement("DELETE FROM FRIEND_REQS;");
+        stm = con.prepareStatement("DELETE FROM FRIEND_REQS;");
         stm.executeUpdate();
         stm.close();
-        conn.close();
+        pool.releaseConnection(con);
 
     }
     @BeforeEach
     public void setUp() {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_friend");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
-        userDAO = new UserDAO(dataSource);
-        friendsDAO = new FriendsDAO(dataSource);
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = dataSource.getConnection();
-            statement = connection.createStatement();
-            statement.execute("USE test_friend");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        connection = pool.getConnection();
+        userDAO = new UserDAO(pool);
+        friendsDAO = new FriendsDAO(pool);
     }
 
-
+@AfterAll
+public static void closeUp() throws SQLException {
+        pool.close();
+}
 
     @AfterEach
     public void tearDown() {
-        try {
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        pool.releaseConnection(connection);
     }
 
     @Test

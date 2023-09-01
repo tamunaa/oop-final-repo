@@ -1,8 +1,11 @@
+import dataBase.ConnectionPool;
 import dataBase.HistoryDAO;
 import dataBase.HistoryDAOSQL;
 import objects.History;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.sql.SQLException;
@@ -10,18 +13,25 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
+import java.sql.*;
 public class HistoryDAOTest {
-    private BasicDataSource dataSource;
+    private static ConnectionPool pool = new ConnectionPool(5,"test_history","");
+    private Connection conn;
+
     private HistoryDAO historyDAO;
 
     @BeforeEach
     public void setup() throws SQLException {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_history");
-        dataSource.setUsername("root");
-        dataSource.setPassword("");
-        historyDAO = new HistoryDAOSQL(dataSource);
+        conn = pool.getConnection();
+        historyDAO = new HistoryDAOSQL(pool);
+    }
+    @AfterEach
+    public void release() throws SQLException {
+        pool.releaseConnection(conn);
+    }
+    @AfterAll
+    public static void closeUp() throws SQLException {
+        pool.close();
     }
 
     @Test

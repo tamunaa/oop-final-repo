@@ -1,28 +1,41 @@
 package questionsDAOTests;
 
+import dataBase.ConnectionPool;
 import dataBase.questionsDAOs.QuestionsDAO;
 import objects.questions.Matching;
 import objects.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MatchingDAOTest {
-    private BasicDataSource dataSource;
+    private static final ConnectionPool pool = new ConnectionPool(5,"test_db","rootroot");
     private QuestionsDAO questionsDAO;
+    private Connection conn;
 
 
     @BeforeEach
     public void setup() {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_db");
-        dataSource.setUsername("root");
-        dataSource.setPassword("rootroot");
-        questionsDAO = new QuestionsDAO(dataSource);
+        conn = pool.getConnection();
+        questionsDAO = new QuestionsDAO(pool);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        pool.releaseConnection(conn);
+    }
+    @AfterAll
+    static void closeConnection() throws SQLException {
+        if (pool != null) {
+            pool.close();
+        }
     }
 
     @Test

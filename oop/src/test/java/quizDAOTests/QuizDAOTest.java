@@ -1,5 +1,6 @@
 package quizDAOTests;
 
+import dataBase.ConnectionPool;
 import dataBase.DbQuizDAO;
 import dataBase.questionsDAOs.QuestionsDAO;
 import junit.framework.TestCase;
@@ -22,32 +23,21 @@ import java.util.List;
 
 public class QuizDAOTest extends TestCase {
     private Connection connection;
+    private ConnectionPool pool = new ConnectionPool(5,"test_quiz","123456789");
     private Statement statement;
     private DbQuizDAO quizDAO;
-    private BasicDataSource dataSource;
 
-    public void beforeEach() {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_quiz");
-        dataSource.setUsername("root");
-        dataSource.setPassword("123456789");
-
-        quizDAO = new DbQuizDAO(dataSource);
-
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.createStatement();
-            statement.execute("USE test_quiz");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void beforeEach() throws SQLException {
+        quizDAO = new DbQuizDAO(pool);
+        connection = pool.getConnection();
+        statement = connection.createStatement();
     }
 
     public void clearQuizzes() throws SQLException {
         statement.execute("DELETE FROM quizzes");
     }
 
-    public void addQuizzes(){
+    public void addQuizzes() throws SQLException {
         beforeEach();
 //        Quiz quiz = new Quiz(1, "qvizi2", "satesto quiz" ,15, "physics");
 //        quizDAO.addQuiz(quiz);
@@ -69,7 +59,7 @@ public class QuizDAOTest extends TestCase {
 
     }
 
-    public void testAddQuizzes(){
+    public void testAddQuizzes() throws SQLException {
         beforeEach();
 //        Quiz quiz = new Quiz(1, "qvizi", "satesto quiz" ,20, "math");
 //        quiz.setDateCreated(Timestamp.valueOf("2023-08-11 19:51:50"));
@@ -81,7 +71,7 @@ public class QuizDAOTest extends TestCase {
         assertTrue(quizDAO.removeQuiz(27));
     }
 
-    public void testGetQuizzesByAuthor(){
+    public void testGetQuizzesByAuthor() throws SQLException {
         beforeEach();
         List<Quiz> quizzes = quizDAO.getQuizzesByAuthor(1);
         assertEquals(8, quizzes.size());
@@ -104,7 +94,7 @@ public class QuizDAOTest extends TestCase {
         assertEquals("physics", q2.getCategory());
     }
 
-    public void testGetQuizByQuizName(){
+    public void testGetQuizByQuizName() throws SQLException {
         beforeEach();
 
         List<Quiz> quizzes = quizDAO.getQuizByQuizName("qvizi");
@@ -124,7 +114,7 @@ public class QuizDAOTest extends TestCase {
         assertEquals("math", q1.getCategory());
     }
 
-    public void testGetQuizByID(){
+    public void testGetQuizByID() throws SQLException {
         beforeEach();
         Quiz quiz;
 //        quiz = new Quiz(2, "qvizi", "sashualo quiz" ,35, "physics");
@@ -144,7 +134,7 @@ public class QuizDAOTest extends TestCase {
         assertFalse(quiz.correctImmediately());
     }
 
-    public void testGetPopularQuizzes(){
+    public void testGetPopularQuizzes() throws SQLException {
         beforeEach();
         ArrayList<Quiz> quizzes = (ArrayList<Quiz>) quizDAO.getPopularQuizzes(2);
         assertEquals(30, quizzes.get(0).getID());
@@ -160,7 +150,7 @@ public class QuizDAOTest extends TestCase {
 
         question.setTimer(17);
 
-        QuestionsDAO questionsDAO = new QuestionsDAO(dataSource);
+        QuestionsDAO questionsDAO = new QuestionsDAO(pool);
         int questionId = questionsDAO.addQuestion(question, 41);
 
         questionText = "Whats the capitals of France, Germany and Italy?";
@@ -194,7 +184,7 @@ public class QuizDAOTest extends TestCase {
         assertEquals(17, questions.get(1).getTimer());
     }
 
-    public void testRecentlyCreatedQuizzes(){
+    public void testRecentlyCreatedQuizzes() throws SQLException {
         beforeEach();
         List<Quiz> quizzes = quizDAO.recentlyCreatedQuizzes(5);
         assertEquals(44, quizzes.get(0).getID());
@@ -251,7 +241,7 @@ public class QuizDAOTest extends TestCase {
         assertEquals(9.15, quizDAO.getRating(44));
     }
 
-    public void testGetTopRatedQuizzes(){
+    public void testGetTopRatedQuizzes() throws SQLException {
         beforeEach();
         List<Quiz> quizes = quizDAO.getTopRatedQuizzes(1);
         assertEquals(1, quizes.size());
@@ -259,13 +249,13 @@ public class QuizDAOTest extends TestCase {
 
     }
 
-    public void testGetCategory(){
+    public void testGetCategory() throws SQLException {
         beforeEach();
         assertEquals("history", quizDAO.getCategory(44));
         assertEquals("english", quizDAO.getCategory(35));
     }
 
-    public void testGetQuizzesByTag(){
+    public void testGetQuizzesByTag() throws SQLException {
         beforeEach();
         List<Quiz> quizzes = quizDAO.getQuizzesByTag("Simple");
         assertEquals(2, quizzes.size());
@@ -273,21 +263,21 @@ public class QuizDAOTest extends TestCase {
         assertEquals(40, quizzes.get(1).getID());
     }
 
-    public void testAddTag(){
+    public void testAddTag() throws SQLException {
         beforeEach();
         quizDAO.removeTag(40, "English");
         quizDAO.addTag(40, "English");
         assertTrue(quizDAO.getTags(40).contains("English"));
     }
 
-    public void testRemoveTag(){
+    public void testRemoveTag() throws SQLException {
         beforeEach();
         assertTrue(quizDAO.getTags(40).contains("English"));
         quizDAO.removeTag(40, "English");
         assertFalse(quizDAO.getTags(40).contains("English"));
     }
 
-    public void testGetAllQuizzes(){
+    public void testGetAllQuizzes() throws SQLException {
         beforeEach();
         List<Quiz> quizzes = quizDAO.getAllQuizzes();
         assertEquals(18, quizzes.size());

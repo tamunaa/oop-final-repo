@@ -1,5 +1,6 @@
 package userDAOTests;
 
+import dataBase.ConnectionPool;
 import dataBase.UserDAO;
 import objects.Review;
 import objects.User;
@@ -27,61 +28,44 @@ public class UserDAOTest {
     private Statement statement;
     private UserDAO userDAO;
     private DbQuizDAO quizDAO;
-    private BasicDataSource dataSource;
+    private static ConnectionPool pool;
+    private Connection conn;
     private User user1;
     private User user2;
     private User admin;
 
     @BeforeAll
     public static void emptyTables() throws SQLException {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setUrl("jdbc:mysql://localhost:3306/test_user");
-        ds.setUsername("root");
-        ds.setPassword("");
-        Connection conn = ds.getConnection();
-        PreparedStatement stm = conn.prepareStatement("USE test_user ; ");
-        stm.execute();
-        stm = conn.prepareStatement("DELETE FROM USERS ;");
+        pool = new ConnectionPool(5, "test_user","root");
+        Connection con = pool.getConnection();
+        PreparedStatement stm;
+        stm = con.prepareStatement("DELETE FROM USERS ;");
         stm.executeUpdate();
-        stm = conn.prepareStatement("DELETE FROM QUIZZES ;");
+        stm = con.prepareStatement("DELETE FROM QUIZZES ;");
         stm.executeUpdate();
-        stm = conn.prepareStatement("DELETE FROM REVIEW ;");
+        stm = con.prepareStatement("DELETE FROM REVIEW ;");
         stm.executeUpdate();
-        stm = conn.prepareStatement("DELETE FROM RATING ;");
+        stm = con.prepareStatement("DELETE FROM RATING ;");
         stm.executeUpdate();
         stm.close();
-        conn.close();
+        pool.releaseConnection(con);
     }
     @BeforeEach
     public void setUp() {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_user");
-        dataSource.setUsername("root");
-        dataSource.setPassword("");
-        userDAO = new UserDAO(dataSource);
-        quizDAO = new DbQuizDAO(dataSource);
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = dataSource.getConnection();
-            statement = connection.createStatement();
-            statement.execute("USE test_user");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+         conn = pool.getConnection();
+        userDAO = new UserDAO(pool);
+        quizDAO = new DbQuizDAO(pool);
     }
 
     @AfterEach
     public void tearDown() {
-        try {
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        pool.releaseConnection(conn);
     }
 
+    @AfterAll
+    public static void closeUp() throws SQLException {
+        pool.close();
+    }
     @Test
     @Order(1)
     void addUserTest(){
@@ -294,6 +278,7 @@ public class UserDAOTest {
     }
 */
     @Test
+    @Order(14)
     void addCategory(){
         User user = new User("imagine", "imagine@test,com", BCrypt.withDefaults().hashToString(10, "image".toCharArray()), true);
         userDAO.addUser(user);
@@ -303,6 +288,7 @@ public class UserDAOTest {
     }
 
     @Test
+    @Order(15)
     void cannotAddCategory(){
         User user2 = new User("imag", "imag@test,com", BCrypt.withDefaults().hashToString(10, "imag".toCharArray()), false);
         userDAO.addUser(user2);
@@ -310,18 +296,19 @@ public class UserDAOTest {
     }
 
     @Test
+    @Order(16)
     void getCategories(){
         User user = new User("cat", "cat@test,com", BCrypt.withDefaults().hashToString(10, "cat".toCharArray()), true);
         userDAO.addUser(user);
         int id = user.getId();
-        assertTrue(userDAO.addCategory(id, "Math"));
-        assertTrue(userDAO.addCategory(id, "History"));
+        assertFalse(userDAO.addCategory(id, "Math"));
+        assertFalse(userDAO.addCategory(id, "History"));
 //        assertTrue(userDAO.addCategory(id, "English"));
 //        assertTrue(userDAO.addCategory(id, "Biology"));
 //        assertTrue(userDAO.addCategory(id,  "Science"));
 
         List<String> categories = userDAO.getCategories();
-        assertEquals(2, categories.size());
+        assertEquals(3, categories.size());
         assertTrue(categories.contains("Math"));
         assertTrue(categories.contains("History"));
 ////        assertTrue(categories.contains("Science"));

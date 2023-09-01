@@ -1,11 +1,14 @@
 import dataBase.AnnouncementDAOSQL;
+import dataBase.ConnectionPool;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import objects.Announcement;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -13,27 +16,22 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AnnouncementDAOTest {
-    private BasicDataSource dataSource;
+    private ConnectionPool pool = new ConnectionPool(5,"test_announcement","root");
+    private Connection conn;
+
     private AnnouncementDAOSQL announcementDAO;
 
     @BeforeEach
     public void setup() {
-        BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://localhost:3306/oopquizzweb");
-        basicDataSource.setUsername("root");
-        basicDataSource.setPassword("");
-        dataSource = basicDataSource;
-        announcementDAO = new AnnouncementDAOSQL(dataSource);
+        conn = pool.getConnection();
+        announcementDAO = new AnnouncementDAOSQL(pool);
     }
 
     @AfterEach
     public void tearDown() {
-        try {
-            dataSource.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        pool.releaseConnection(conn);
     }
+
 
     @Test
     public void testInsertAndRetrieveAnnouncement() {
