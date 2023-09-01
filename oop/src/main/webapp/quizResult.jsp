@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: mariamtsikarishvili
-  Date: 22.08.23
-  Time: 23:03
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page import="objects.Quiz" %>
+        <%@ page import="objects.Quiz" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="objects.questions.Question" %>
 <%@ page import="objects.History" %>
@@ -15,7 +8,8 @@
 <%@ page import="dataBase.questionsDAOs.ResponseDAO" %>
 <%@ page import="objects.Review" %>
 <%@ page import="dataBase.*" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+        <%@ page import="java.util.List" %>
+        <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,12 +20,16 @@
   <link rel="stylesheet" type="text/css" href="css/navbar.css">
   <script src="js/navbar.js"></script>
   <link rel="stylesheet" type="text/css" href="css/quiz.css">
+  <link rel="stylesheet" type="text/css" href="css/quizResult.css">
+
 
   <title>Quiz Result</title>
 </head>
 <body>
   <jsp:include page="navbar.jsp" />
   <jsp:include page="notificationbar.jsp" />
+
+<div class="review-section">
   <%
     QuizDAO quizDAO = (QuizDAO) request.getServletContext().getAttribute("quizDAO");
     Quiz currQuiz = (Quiz) quizDAO.getQuizByID(Integer.parseInt(request.getParameter("quizId")));
@@ -39,58 +37,59 @@
     HistoryDAO historyDAO = (HistoryDAO) request.getServletContext().getAttribute("historyDAO");
 
     int quizId = Integer.parseInt(request.getParameter("quizId"));
-    Question[] questions = (Question[]) request.getSession().getAttribute("questions");
+    List<Question> questions = quizDAO.getQuestions(quizId);
     String[] answers = request.getParameterValues("answers");
+    String isPractice = request.getParameter("practice");
+
 
     int score = 0;
     int max_score = 0;
 
     for (int i = 0; i < answers.length; i++){
 
-      if(!Objects.equals(questions[i].getQuestionType(), "Graded")){
+      if(!Objects.equals(questions.get(i).getQuestionType(), "Graded")){
   %>
-      <div>
-        <label><%= questions[i].getQuestion()%></label>
-        <p>
-          Correct Answer : <%= Arrays.toString(questions[i].getCorrectAnswers())%>
-          <br> Your Answer: <%= answers[i]%>
-          <%
-            int curScore = questions[i].evaluate(answers[i]);
-            int cur_max_score = questions[i].getCorrectAnswers().length;
-            score += curScore;
-            max_score += cur_max_score;
-          %>
-          <br>Score: <%=curScore%> / <%=cur_max_score%>
-        </p>
-      </div>
+  <div class="review-container">
+    <label><%= questions.get(i).getQuestion()%></label>
+    <p>
+      Correct Answer : <%= Arrays.toString(questions.get(i).getCorrectAnswers())%>
+      <br> Your Answer: <%= answers[i]%>
+      <%
+        int curScore = questions.get(i).evaluate(answers[i]);
+        int cur_max_score = questions.get(i).getCorrectAnswers().length;
+        score += curScore;
+        max_score += cur_max_score;
+      %>
+      <br>Score: <%=curScore%> / <%=cur_max_score%>
+    </p>
+  </div>
   <%  }
-    } %>
+  } %>
 
-  <header>
-    Overall Score: <%=score%> / <%=max_score%>
-    <br>
-    <%long time = ((((Timestamp)request.getSession().getAttribute("endTime")).getTime()-
-            ((Timestamp) request.getSession().getAttribute("startTime")).getTime()) / 1000) % 60;%>
-    Time: <%=time%>seconds
-    <br>
-    <% History history = new History(currQuiz.getID(), currUser.getId(), score, time, (Timestamp)request.getSession().getAttribute("endTime"));
-    historyDAO.insertHistory(history);
-      for (int i = 0; i < questions.length; i++) {
-        if (Objects.equals(questions[i].getQuestionType(), "Graded")) {
-          ResponseDAO responseDAO = (ResponseDAO) request.getServletContext().getAttribute("responseDAO");
-          responseDAO.addResponse(questions[i].getQuestionId(), history.getId(), score, false, answers[i]);
+  Overall Score: <%=score%> / <%=max_score%>
+</div>
+
+  <% if (Objects.equals(isPractice, "true")){
+      int time = 2;
+      History history = new History(currQuiz.getID(), currUser.getId(), score, time, (Timestamp) request.getSession().getAttribute("endTime"));
+      historyDAO.insertHistory(history);
+        for (int i = 0; i < questions.size(); i++) {
+          if (Objects.equals(questions.get(i).getQuestionType(), "Graded")) {
+            ResponseDAO responseDAO = (ResponseDAO) request.getServletContext().getAttribute("responseDAO");
+            responseDAO.addResponse(questions.get(i).getQuestionId(), history.getId(), score, false, answers[i]);
+          }
         }
-      }
-    %>
-  </header>
+    }
+  %>
 
-  <br>
-  <div>
+  <div class="review-section">
     <form action="review?quizId=<%=request.getParameter("quizId")%>" method="post">
-      Review:  <input type="text" name="review">
-      <br> <label for="rating">Rate Quiz between 1 and 10</label>
-      <input type="number" min="1" max="10" name="rating" id="rating">
-      <input type="submit" value="Add Rating and Review">
+      <div class="elem">Review:  <input type="text" name="review"> </div>
+      <label class="elem" for="rating">Rate Quiz between 1 and 10
+        <input type="number" min="1" max="10" name="rating" id="rating">
+      </label>
+      <br>
+      <button class="elem btn btn-secondary" type="submit"> Add Rating and Review</button>
     </form>
   </div>
 
