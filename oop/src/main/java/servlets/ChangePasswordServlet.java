@@ -26,7 +26,7 @@ public class ChangePasswordServlet extends HttpServlet {
         UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
             boolean res = userDAO.changePassword(userUsername, password);
         if(res){
-            response.sendRedirect("success.jsp");
+            response.sendRedirect("profile.jsp?self=true");
         }else{
             request.setAttribute("incorrect", true);
             request.setAttribute("mess", "Failed to update password. Please try again.");

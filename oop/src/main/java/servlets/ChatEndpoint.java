@@ -98,7 +98,6 @@ public class ChatEndpoint {
             Message newMessage = new NoteMessage(senderId, recipientId, messageText);
             messageDAO.addMessage(newMessage);
 
-            System.out.println(messageDAO);
             for (Session s : sessions) {
                 s.getBasicRemote().sendText(messageText);
             }
