@@ -27,9 +27,6 @@ public class NotificationServlet extends HttpServlet {
         String type = request.getParameter("type");
         String content = request.getParameter("content");
 
-        System.out.println("recipient " + recipient);
-        System.out.println("type " + type);
-        System.out.println("content "+ content);
 
         if (recipient == null || type == null) return;
         if (type.equals("CHALLENGE") && content == null) return;

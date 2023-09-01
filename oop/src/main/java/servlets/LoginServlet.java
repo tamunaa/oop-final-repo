@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
         if(!userDAO.isValidUser(username, password)) {
             request.setAttribute("incorrect", true);
             request.setAttribute("mess", "Username Or Password Is Not Correct");
-            request.getRequestDispatcher("invalidUser.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
             return;
         }
         User user = userDAO.getUserByUsername(username);

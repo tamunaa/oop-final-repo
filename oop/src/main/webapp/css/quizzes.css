@@ -38,3 +38,18 @@
     height: 35px;
     border: 1px solid lightslategray;
 }
+
+.tag-area{
+    display: flex;
+    flex-direction: row;
+}
+
+.single-tag{
+    margin: 10px;
+    background-color: rgba(175, 180, 187, 0.46);
+    border-radius: 10px;
+    text-align: center;
+    padding: 5px;
+    vertical-align: center;
+    height: 30px;
+}

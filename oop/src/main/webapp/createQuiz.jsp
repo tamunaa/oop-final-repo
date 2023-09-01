@@ -1,3 +1,7 @@
+<%@ page import="objects.User" %>
+<%@ page import="dataBase.QuizDAO" %>
+<%@ page import="dataBase.UserDAO" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +12,15 @@
     <script src="js/navbar.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <link rel="stylesheet" type="text/css" href="css/createQuiz.css"></head>
-
-
     <title>Create Quiz</title>
 <body>
 <jsp:include page="navbar.jsp" />
+
+<%
+    User currUser = ((User) request.getSession().getAttribute("currUser"));
+    UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
+    List<String> categories = userDAO.getCategories();
+%>
 
 <h1 class="text-center" >Create a New Quiz</h1>
 
@@ -32,6 +40,21 @@
         <input type="checkbox" id="practice" name="practice">
     </div>
 
+
+
+    <div class="radio">
+        <label for="category">Select Category:</label>
+        <select id="category" name="category">
+            <option value="" selected disabled>Select a category</option>
+            <% for (String category : categories) { %>
+            <option style="color: #1a1a56" value="<%= category%>">
+                <%= category%>
+            </option>
+            <% } %>
+        </select>
+    </div>
+
+
     <div class="radio">
         <label for="questionDisplay">Question Display Mode:</label>
         <select id="questionDisplay" name="questionDisplay" style="margin: 3px; padding: 2px">
@@ -41,8 +64,8 @@
     </div>
 
     <div class="radio">
-        <label for="correction">Immediate Correction:</label>
-        <input type="checkbox" id="correction" name="correction">
+<%--        <label type="hidden" for="correction">Immediate Correction:</label>--%>
+        <input type="hidden" type="checkbox" id="correction" name="correction">
     </div>
 
     <div class="radio">
@@ -54,6 +77,12 @@
         <label for="quizDescription">Quiz Description:</label>
         <textarea id="quizDescription" name="quizDescription" rows="4" cols="50"></textarea>
     </div>
+
+    <div>
+        <label for="tags">Tags:</label>
+        <input type="text" id="tags" name="tags" placeholder="Enter tags separated by commas">
+    </div>
+
 
     <button type="submit" class="btn btn-primary">Create Quiz</button>
 </form>

@@ -26,6 +26,7 @@
     UserDAO userDAO = ((UserDAO)request.getServletContext().getAttribute("userDAO"));
     QuizDAO quizDAO = ((QuizDAO)request.getServletContext().getAttribute("quizDAO"));
 
+
     List<Quiz> quizzList = quizDAO.getAllQuizzes();
 %>
 <div id="wrapper" class="wrapper">
@@ -107,6 +108,20 @@
                         <i class="bi bi-x-lg"></i>
                         <%}%>
                     </p>
+
+                    <div class="tag-area">
+                        <%
+                            List<String> tags = quizDAO.getTags(quiz.getID());
+                        %>
+
+                        <%
+                            for(String s : tags){
+                        %>
+                        <div class="single-tag" type="button"><p> #<%=s%> </p></div>
+                        <%
+                            }
+                        %>
+                    </div>
                 </div>
             <%}%>
 

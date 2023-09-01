@@ -28,7 +28,7 @@ public class ChangeUsernameServlet extends HttpServlet {
         UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
         boolean res = userDAO.changeUsername(currUser, username);
         if(res){
-            response.sendRedirect("success.jsp");
+            response.sendRedirect("profile.jsp?self=true");
         }else{
             request.setAttribute("incorrect", true);
             request.setAttribute("mess", "Failed to update username. Please try again.");

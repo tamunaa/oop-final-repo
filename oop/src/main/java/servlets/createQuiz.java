@@ -3,6 +3,7 @@ package servlets;
 import dataBase.AchievementDAO;
 import dataBase.DbQuizDAO;
 import dataBase.QuizDAO;
+import dataBase.UserDAO;
 import objects.Quiz;
 import objects.User;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -14,12 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
 
 
 @WebServlet("/createQuiz")
 public class createQuiz extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         QuizDAO quizDAO = (DbQuizDAO) request.getServletContext().getAttribute("quizDAO");
+        UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
+        AchievementDAO achievementDAO = (AchievementDAO) request.getServletContext().getAttribute("achievementDAO");
+
 
         int author = ((User) request.getSession().getAttribute("currUser")).getId();
         String quizName = request.getParameter("quizName");
@@ -30,16 +36,20 @@ public class createQuiz extends HttpServlet {
         boolean immediateCorrection = request.getParameter("correction") != null;
         String quizDescription = request.getParameter("quizDescription");
         boolean randomOrder = request.getParameter("randomOrder") != null;
-//        String category = request.getParameter("category");
-        String category = "MAGARI;";
+        String category = request.getParameter("category");
+        if (category == null){
+            category = "other";
+        }
 
-        Quiz quiz = new Quiz(author, quizName, quizDescription, timer,category);
+        Quiz quiz = new Quiz(author, quizName, quizDescription, timer, category);
         quiz.setPractice(practiceMode);
         quiz.setCorrectImmediately(immediateCorrection);
         quiz.setOnOnePage(questionDisplayMode.equals("singlePage"));
         quiz.setRandom(randomOrder);
+        int quizId = quizDAO.addQuiz(quiz);
 
-        AchievementDAO achievementDAO = (AchievementDAO) request.getServletContext().getAttribute("achievementDAO");
+        String tagsInput = request.getParameter("tags");
+        String[] tagsArray = tagsInput.split(",");
 
         int quizzesCreated = quizDAO.getQuizzesByAuthor(author).size();
         if(quizzesCreated == 1){
@@ -49,8 +59,13 @@ public class createQuiz extends HttpServlet {
         }else if(quizzesCreated == 10) {
             achievementDAO.addUserAchievement(author, 4);
         }
-        
-        int quizId = quizDAO.addQuiz(quiz);
+
+        for (String s : tagsArray) {
+            s = s.trim();
+            if (s.isEmpty())continue;
+            quizDAO.addTag(quiz.getID(), s);
+        }
+
         response.sendRedirect("editQuiz?quizId=" + quizId);
     }
 }

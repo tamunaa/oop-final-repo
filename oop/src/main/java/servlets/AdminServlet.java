@@ -18,12 +18,12 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!((User) request.getSession().getAttribute("currUser")).isAdmin()) {
-            response.sendRedirect("profile.jsp");
+            response.sendRedirect("profile.jsp?self=true");
             return;
         }
-
+        User currUser = ((User) request.getSession().getAttribute("currUser"));
         String type = request.getParameter("type");
-        System.out.println(type);
+
 
         if (type.equals("user")) {
             UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
@@ -37,6 +37,10 @@ public class AdminServlet extends HttpServlet {
             String deleteQuizName = request.getParameter("deleteQuiz");
             int quizId = ((Quiz)quizDAO.getQuizByQuizName(deleteQuizName).get(0)).getID();
             quizDAO.removeQuiz(quizId);
+        }else if (type.equals("addCategory")){
+            String category = request.getParameter("categoryName");
+            UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
+            userDAO.addCategory(currUser.getId(), category);
         }
         request.getRequestDispatcher("admin.jsp").forward(request, response);
     }

@@ -72,6 +72,8 @@ input {
     color: #0f36c8;
     font-weight: bold;
     text-decoration: none;
+    border-radius: 2px;
+    border: 1px solid #928787;
 }
 
 /* ... your existing styles ... */

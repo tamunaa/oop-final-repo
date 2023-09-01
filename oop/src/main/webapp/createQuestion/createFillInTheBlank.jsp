@@ -2,9 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" type="text/css" href="./css/createQuestion.css">
+
   <meta charset="UTF-8">
-  <title>Create Fill in the Blank</title>
-  <link rel="stylesheet" type="text/css" href="css/createQuestion/createFillInTheBlank.css">
+  <link rel="stylesheet" type="text/css" href="./css/createQuestion/createFillInTheBlank.css">
   <script>
     let blankSpaceAdded = false;
 
@@ -37,10 +38,9 @@
     }
   </script>
 </head>
-<body>
-<h1>Create Fill in the Blank</h1>
 
-<form action="addQuestions/addFillInTheBlank?quizId=<%=request.getParameter("quizId")%>" method="POST" onsubmit="return checkBlankSpace();">
+<body>
+<form class="create-question-card" action="addQuestions/addFillInTheBlank?quizId=<%=request.getParameter("quizId")%>" method="POST" onsubmit="return checkBlankSpace();">
   <label for="questionText">Question Text:</label><br>
   <textarea id="questionText" name="questionText" rows="4" cols="50" required></textarea><br><br>
 
@@ -54,10 +54,16 @@
 
   <%
     boolean timerIsAllowed = Boolean.parseBoolean(request.getAttribute("timerIsAllowed").toString());
-    if (!timerIsAllowed) {
-      out.println("<p class=\"warning-text\">Timed questions are only allowed in one-question-per-page format quizzes</p>");
-    }
   %>
+
+  <%
+    if (!timerIsAllowed){
+  %>
+    <p>Timed questions are only allowed in one-question-per-page format quizzes</p>
+  <%
+  }
+  %>
+
   <label for="timer">Timer (in seconds):</label><br>
   <input type="number" id="timer" name="timer" min="1" <%if(!timerIsAllowed) out.print("readonly");%>><br><br>
 
