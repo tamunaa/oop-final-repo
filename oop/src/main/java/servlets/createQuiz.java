@@ -1,5 +1,6 @@
 package servlets;
 
+import dataBase.AchievementDAO;
 import dataBase.DbQuizDAO;
 import dataBase.QuizDAO;
 import dataBase.UserDAO;
@@ -23,6 +24,7 @@ public class createQuiz extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         QuizDAO quizDAO = (DbQuizDAO) request.getServletContext().getAttribute("quizDAO");
         UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("userDAO");
+        AchievementDAO achievementDAO = (AchievementDAO) request.getServletContext().getAttribute("achievementDAO");
 
 
         int author = ((User) request.getSession().getAttribute("currUser")).getId();
@@ -48,6 +50,15 @@ public class createQuiz extends HttpServlet {
 
         String tagsInput = request.getParameter("tags");
         String[] tagsArray = tagsInput.split(",");
+
+        int quizzesCreated = quizDAO.getQuizzesByAuthor(author).size();
+        if(quizzesCreated == 1){
+            achievementDAO.addUserAchievement(author, 1);
+        }else if(quizzesCreated == 5){
+            achievementDAO.addUserAchievement(author, 5);
+        }else if(quizzesCreated == 10) {
+            achievementDAO.addUserAchievement(author, 4);
+        }
 
         for (String s : tagsArray) {
             s = s.trim();

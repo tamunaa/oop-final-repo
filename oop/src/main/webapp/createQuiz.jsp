@@ -12,8 +12,6 @@
     <script src="js/navbar.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <link rel="stylesheet" type="text/css" href="css/createQuiz.css"></head>
-
-
     <title>Create Quiz</title>
 <body>
 <jsp:include page="navbar.jsp" />
@@ -66,8 +64,8 @@
     </div>
 
     <div class="radio">
-        <label for="correction">Immediate Correction:</label>
-        <input type="checkbox" id="correction" name="correction">
+<%--        <label type="hidden" for="correction">Immediate Correction:</label>--%>
+        <input type="hidden" type="checkbox" id="correction" name="correction">
     </div>
 
     <div class="radio">

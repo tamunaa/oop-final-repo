@@ -1,10 +1,8 @@
 <%@ page import="objects.questions.Question" %>
-<%@ page import="java.security.Timestamp" %>
-<%@ page import="java.util.List" %>
 
 <%
-    List<Question> questions = (List<Question>) request.getSession().getAttribute("questions");
-    int total = questions.size();
+    Question[] questions = (Question[]) request.getSession().getAttribute("questions");
+    int total = questions.length;
     int index = Integer.parseInt(request.getParameter("index"));
     request.setAttribute("index", index);
     if (index>=total){
@@ -12,8 +10,8 @@
     }
     out.print("<h1> Question "+(index+1) +"/" + total +"</h1>");
 
-    String type = questions.get(index).getQuestionType();
+    String type = questions[index].getQuestionType();
     String path = "questions/" + type + ".jsp";
-    request.setAttribute("current", questions.get(index));
+    request.setAttribute("current", questions[index]);
 %>
 <jsp:include page="<%= path %>" />

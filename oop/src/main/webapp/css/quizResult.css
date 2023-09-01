@@ -3,14 +3,23 @@
     justify-content: center;
     align-items: center;
     margin: 20px auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .review-container {
     background-color: #f5f5f5;
-    padding: 15px;
-    margin: 10px;
+    padding: 5px;
+    margin: 5px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    width: 100%;
+    /*margin: 1px solid black;*/
+}
+
+.review-container :hover {
+    background-color: rgba(226, 230, 229, 0.74);
+
 }
 
 .review-container label {
@@ -35,7 +44,8 @@
 
 
 .overall-container {
-    background-color: rgba(232, 236, 238, 0.76);
+    width: 100%;
+    background-color: rgba(238, 232, 235, 0.76);
     padding: 15px;
     border-radius: 5px;
     margin: 10px 0;
@@ -67,11 +77,16 @@
     padding: 10px;
 }
 
+.review-section input{
+    margin: 5px;
+}
+
 .review-section{
-    width: 70%;
+    width: 100%;
     border: 1px dashed darkblue;
     border-radius: 3px;
-    margin: 50px auto;
+    margin: 10px auto;
+    padding: 10px;
 }
 .elem{
     margin: 5px;
