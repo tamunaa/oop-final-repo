@@ -19,15 +19,20 @@ public class ResponseDAO {
     public List<QuestionResponsePair> getUngradedResponsesByAuthorID(int authorId) throws SQLException {
         List<QuestionResponsePair> questionResponsePairs = new ArrayList<>();
 
-        String query = "SELECT R.*, Q.question_text FROM RESPONSES R JOIN QUESTIONS Q ON R.Question_ID = Q.question_id JOIN QUIZZES Z ON Q.quiz_id = Z.ID WHERE Z.Author = ? AND R.Is_graded = FALSE";
+        String query = "SELECT R.*, Q.question_text FROM RESPONSES R " +
+                "JOIN QUESTIONS Q ON R.Question_ID = Q.question_id " +
+                "JOIN QUIZZES Z ON Q.quiz_id = Z.ID " +
+                "WHERE Z.Author = ? AND R.Is_graded = FALSE";
         Connection connection = pool.getConnection();
 
         try  {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, 16);
+            statement.setInt(1, authorId);
 
             ResultSet resultSet = statement.executeQuery();
+            System.out.println("aqamde movidaaaaaaaaaaaaa");
             while (resultSet.next()) {
+                System.out.println("wailshi shevidaa");
                 String questionText = resultSet.getString("question_text");
 
                 int id = resultSet.getInt("ID");
@@ -41,7 +46,7 @@ public class ResponseDAO {
 
                 QuestionResponsePair pair = new QuestionResponsePair(questionText, response);
                 questionResponsePairs.add(pair);
-//                System.out.println(questionResponsePairs.size());
+                System.out.println("size daoShi "+ questionResponsePairs.size());
             }
         } catch (SQLException e) {
             e.printStackTrace();
