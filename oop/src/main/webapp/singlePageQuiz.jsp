@@ -1,7 +1,12 @@
 <%@ page import="objects.questions.Question" %>
+<%@ page import="dataBase.QuizDAO" %>
+<%@ page import="objects.Quiz" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Question[] questions = (Question[]) request.getSession().getAttribute("questions");
+    String quizId = request.getParameter("quizId");
+    QuizDAO quizDAO = (QuizDAO) request.getServletContext().getAttribute("quizDAO");
+    List<Question> questions = quizDAO.getQuestions(Integer.parseInt(quizId));
 %>
 <html>
 <head>
@@ -27,7 +32,6 @@
 
     <link rel="stylesheet" type="text/css" href="questions/css/base.css">
     <link rel="stylesheet" type="text/css" href="questions/css/Matching.css">
-<%--    <link rel="stylesheet" type="text/css" href="questions/css/Multi.css">--%>
 
     <title>quiz</title>
 </head>
@@ -37,7 +41,7 @@
     <div class="question-page">
         <div>
             <%
-                for (int i = 0; i < questions.length; i++) {
+                for (int i = 0; i < questions.size(); i++) {
             %>
                 <input type="text" name="answers" id="answer<%=i%>" hidden="hidden">
             <%
@@ -46,8 +50,8 @@
         </div>
         <%
             int i = 0;
-            while (i < questions.length) {
-                Question current = questions[i];
+            while (i < questions.size()) {
+                Question current = questions.get(i);
                 request.setAttribute("index", i);
                 request.setAttribute("current", current);
                 String type = current.getQuestionType();
@@ -64,7 +68,6 @@
             <button class="finish">submit</button>
     </form>
 </div>
-<%--    <script src="questions/js/Matching.js"></script>--%>
     <script>
     function saveAnswersForOneInputQuestions(index) {
         let inputField = document.getElementsByName("question" + index);
