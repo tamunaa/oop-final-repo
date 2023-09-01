@@ -14,7 +14,15 @@
     <link rel="stylesheet" type="text/css" href="css/editQuiz.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="css/createQuestion.css">
     <title>Editing Quiz</title>
+    
+    <style>
+        body{
+            font-family: 'Bricolage Grotesque', "Lohit Bengali", serif;
+        }
+        
+    </style>
 </head>
 
 <body>
