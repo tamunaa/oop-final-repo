@@ -67,9 +67,12 @@
 
         socket.onmessage = event => {
                 const chatMessages = document.getElementById('chat-messages');
-                chatMessages.innerHTML += "<p>" + event.data + "</p>";
+                chatMessages.innerHTML += "<div class='message'>"+
+                        "<p>" + '<%=currUser.getUsername()%>' + ': ' +  event.data + "</p>"+
+                        "</div>";
                 chatMessages.scrollTop = chatMessages.scrollHeight;
         };
+
 
         socket.onclose = event => {
                 console.log("WebSocket connection closed:", event);

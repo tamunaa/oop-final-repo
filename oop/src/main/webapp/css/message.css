@@ -70,7 +70,7 @@ body {
     padding: 10px;
     background-color: white;
     border-radius: 20px;
-    width: 600px;
+    width: 98%;
 }
 
 .input-container {
@@ -106,5 +106,23 @@ body {
 
 .message p{
     color: black;
+}
+
+
+/* Add these styles to your CSS file */
+.message {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.message-right {
+    background-color: #dcf8c6; /* Light green for messages sent by you */
+    text-align: right;
+}
+
+.message-left {
+    background-color: #f0f0f0; /* Light gray for messages sent by others */
+    text-align: left;
 }
 
