@@ -21,12 +21,6 @@
 <jsp:include page="navbar.jsp" />
 <jsp:include page="notificationbar.jsp" />
 
-<%--recent quizshia serchi chasamatebeli--%>
-<%--<li class="nav-item">--%>
-<%--    <a class="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Search Quiz" href="serach.jsp">--%>
-<%--        <i class="bi bi-search-heart"></i>--%>
-<%--    </a>--%>
-<%--</li>--%>
 
 <%
     UserDAO userDAO = ((UserDAO)request.getServletContext().getAttribute("userDAO"));
@@ -88,6 +82,21 @@
                     <i class="bi bi-x-lg"></i>
                     <%}%>
                 </p>
+
+                <div class="tag-area">
+                    <%
+                        List<String> tags = quizDAO.getTags(quiz.getID());
+                    %>
+
+                    <%
+                        for(String s : tags){
+                    %>
+                    <div class="single-tag" type="button"><p> #<%=s%> </p></div>
+                    <%
+                        }
+                    %>
+                </div>
+
             </div>
             <%}%>
 
