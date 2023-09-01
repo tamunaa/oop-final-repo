@@ -190,6 +190,16 @@
                 </div>
                 <%}%>
             </div>
+
+            <div class="grade-icon">
+                <form action="GradingServlet" method="GET">
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="bi bi-list-check"></i>GRADE
+                    </button>
+                </form>
+            </div>
+
+
         </div>
 
         <div class="col-md-8">
@@ -256,17 +266,11 @@
                     </div>
                 </div>
 
-                <div class="profile-section">
-                    <div class="profile-card">
-                        <form action="GradingServlet" method="GET">
-                        <button type="submit" class="centered-button">GRADE QUESTIONS</button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
     const actions = document.getElementById('actions')
