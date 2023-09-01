@@ -1,15 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="objects.questions.Question" %>
-<%
-    Question[] questions = (Question[]) request.getSession().getAttribute("questions");
-%>
+<%@ page import="dataBase.QuizDAO" %>
+<%@ page import="java.util.List" %>
+
 <html>
 <head>
     <title>Title</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="questions/css/Matching.css">
     <link rel="stylesheet" type="text/css" href="questions/css/multi.css">
-
     <style>
         body {
             flex-direction: column;
@@ -17,6 +16,13 @@
     </style>
 </head>
 <body>
+
+<%
+    String quizId = request.getParameter("quizId");
+    QuizDAO quizDAO = (QuizDAO) request.getServletContext().getAttribute("quizDAO");
+    List<Question> questions = quizDAO.getQuestions(Integer.parseInt(quizId));
+    request.getSession().setAttribute("questions", questions);
+%>
 
 <div class="question-space">
     <div class="question-card" id="dynamic-container">
@@ -26,7 +32,7 @@
 <form action="quizSummary?quizId=<%=request.getParameter("quizId")%>" method="POST" onsubmit="return checkIfFinished();">
     <div>
         <%
-            for (int i = 0; i < questions.length; i++) {
+            for (int i = 0; i < questions.size(); i++) {
         %>
             <input type="text" name="answers" id="answer<%=i%>" hidden="hidden">
         <%
@@ -39,7 +45,7 @@
 
 <script>
     let currentIndex = 0;
-    let total = <%=questions.length%>;
+    let total = <%=questions.size()%>;
 
     const dynamicContainer = $("#dynamic-container");
     const loadButton = $("#load-button");
