@@ -26,8 +26,7 @@
             Message notification = notifications.get(i);
             User sender = userDAO.getUserByUserId(notification.getSenderID());
             String pathToUser = "profile.jsp?self=false&&username="+sender.getUsername();
-
-        %>
+            %>
         <%if(notification.getType().equals("REQUEST")){%>
             <form class="notification" action="FriendRequestServlet" method="POST">
                 You have a new friend request from <a href="<%= pathToUser %>"><%= sender.getUsername() %></a>
@@ -43,12 +42,10 @@
             </form>
 
         <%}else{%>
+            <%String path = "quizPage.jsp?searchInput=" + notification.getContent(); %>
             <form class="notification">
                 your friend <a href="<%=pathToUser%>"> <%=sender.getUsername()%> </a>
-                challenged you in quiz
-                <br>
-                <button> accept </button>
-                <button> reject </button>
+                challenged you in <a href="<%=path%>" > <%=notification.getContent()%> </a>
             </form>
         <%}}%>
     </div>
