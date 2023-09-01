@@ -33,7 +33,6 @@ public class GradingServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(questionResponsePairs);
         request.getSession().setAttribute("responses", questionResponsePairs);
 
         request.getRequestDispatcher("grading.jsp").forward(request, response);
