@@ -1,11 +1,17 @@
 package ChallengeDAOTests;
 
 import dataBase.ChallengeDAO;
+import dataBase.ConnectionPool;
 import dataBase.DbChallengeDAO;
 import objects.Challenge;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,19 +19,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ChallengeDAOTest {
     private ChallengeDAO challengeDAO;
-    private BasicDataSource dataSource;
+    private Connection connection;
+    private static ConnectionPool pool = new ConnectionPool(5,"test_challenge","123456789");
 
     @BeforeEach
     void setUp() {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_challenge");
-        dataSource.setUsername("root");
-        dataSource.setPassword("123456789");
-
-        challengeDAO = new DbChallengeDAO(dataSource);
+        connection = pool.getConnection();
+        challengeDAO = new DbChallengeDAO(pool);
     }
-
-
+    @AfterEach
+    void tearDown(){
+        pool.releaseConnection(connection);
+    }
+    @AfterAll
+    public void closeUp() throws SQLException {
+        pool.close();
+    }
     @Test
     void addChallenge() {
 //        Challenge challenge = new Challenge(2, 3, 4);

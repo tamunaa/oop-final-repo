@@ -151,7 +151,7 @@ CREATE TABLE CATEGORY(
                          ID int NOT NULL AUTO_INCREMENT,
                          PRIMARY KEY(ID),
                          User_ID int NOT NULL,
-                         Category VARCHAR(50) NOT NULL,
+                         Category VARCHAR(50) NOT NULL UNIQUE,
                          FOREIGN KEY (User_ID) REFERENCES USERS(ID) ON DELETE CASCADE
 
 )

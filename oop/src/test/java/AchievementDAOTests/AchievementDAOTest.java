@@ -1,29 +1,33 @@
 package AchievementDAOTests;
 
 import dataBase.AchievementDAO;
+import dataBase.ConnectionPool;
 import dataBase.DbAchievementDAO;
 import objects.Achievement;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AchievementDAOTest {
     private AchievementDAO achievementDAO;
-    private BasicDataSource dataSource;
+    private ConnectionPool pool = new ConnectionPool(5,"test_achievement","123456789");
+    private Connection conn;
 
     @BeforeEach
     void setUp() {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test_achievement");
-        dataSource.setUsername("root");
-        dataSource.setPassword("123456789");
-
-        achievementDAO = new DbAchievementDAO(dataSource);
+        conn = pool.getConnection();
+        achievementDAO = new DbAchievementDAO(pool);
+    }
+    @AfterEach
+    public void tearDown() {
+        pool.releaseConnection(conn);
     }
 
     @Test
