@@ -115,5 +115,18 @@
 </section>
 
 
+<section class="admin-section p-4">
+    <h2 class="mb-4">Add Category</h2>
+    <form id="add-category-form" action="AdminServlet" method="GET">
+        <input type="hidden" name="type" value="addCategory">
+
+        <label for="categoryName">Category Name:</label>
+        <input id="categoryName" name="categoryName" class="form-control mb-1" required>
+
+        <button type="submit" class="btn btn-primary">Add Category</button>
+    </form>
+</section>
+
+
 </body>
 </html>
