@@ -1,4 +1,4 @@
-Quiz Website Project
+**Quiz Website Project**
 
 Welcome to the Quiz Website Project! This web application is designed to facilitate the creation, management, and participation in quizzes. Whether you're a developer, contributor, or user, this README will guide you through the project's purpose, features, setup, and contribution guidelines.
 Table of Contents
@@ -9,10 +9,11 @@ Table of Contents
     Usage
     Contributing
 
-Project Overview
+**Project Overview**
 
 The Quiz Website Project is a web application that empowers users to create, manage, and participate in quizzes. It provides an engaging platform for educational purposes, testing, and fun quizzes.
 Technologies Used
+
 Backend
 
     Maven: Efficiently manages project dependencies and builds.
@@ -24,7 +25,7 @@ Frontend
     HTML: Structures web content.
     CSS: Enhances the user interface.
 
-Features
+**Features**
 
 The Quiz Website Project offers a range of features to enhance user engagement and interaction:
 
@@ -36,7 +37,8 @@ The Quiz Website Project offers a range of features to enhance user engagement a
     Admin Panel: Empowers administrators to manage users, quizzes, and reported content.
     Messaging Feature: Provides a real-time messaging system for user communication.
 
-Getting Started
+**Getting Started**
+
 Installation
 
 To set up the project locally, follow these steps:
@@ -57,12 +59,9 @@ Build and Run:
 
 Build the project using Maven. This will download dependencies, compile the source code, and generate artifacts.
 
-
-
     mvn clean package
 
 Start the project using the embedded Tomcat server.
-
 
     mvn tomcat7:run
 
@@ -94,20 +93,22 @@ Upon launching the application, three default users are added automatically:
 For security, it is advisable to change the default passwords, except for the admin user, who has administrative privileges.
 Contributing
 
+**Contributing**
+
 We welcome contributions from the community! To contribute to this project:
 
 Fork the repository.
 Create a new branch:
 
-    git checkout -b feature/your-feature-name.
+    git checkout -b feature/your-feature-name
     
 Make your changes and commit them: 
 
-    git commit -m 'Add some feature'.
+    git commit -m 'Add some feature'
     
 Push your changes to the branch: 
     
-    git push origin feature/your-feature-name.
+    git push origin feature/your-feature-name
 Open a pull request.
 
 
